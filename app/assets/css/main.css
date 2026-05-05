@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg: #0a0c12;
+    --primary: #023661;
+    --secondary: #3F3A42;
+    --accent: #76B2BE;
+    --warning: #DB5227;
+    --logo-bg: #dd1814;
+  }
+}
