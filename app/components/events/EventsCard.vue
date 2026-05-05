@@ -1,11 +1,5 @@
 <script lang="ts" setup>
-type Event = {
-  id: number
-  image: string
-  title: string
-  category: string
-  datetime: string
-}
+import type { Event } from '~/types/events'
 
 defineProps<{
   event: Event
@@ -19,7 +13,7 @@ defineProps<{
     <div
       class="w-16 h-16 rounded-2xl bg-[#0F0F0F] flex items-center justify-center text-3xl shadow-inner"
     >
-      <img :src="event.image" alt="" class="" />
+      <img :src="'event.image'" alt="" class="" />
     </div>
 
     <div class="grow">
@@ -28,7 +22,7 @@ defineProps<{
         <span
           class="text-[10px] bg-(--logo-bg)/10 text-(--logo-bg) px-2 py-0.5 rounded-full font-bold uppercase"
         >
-          {{ event.category }}
+          {{ event.gameType }}
         </span>
       </div>
 
@@ -39,7 +33,12 @@ defineProps<{
               d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
             />
           </svg>
-          {{ event.datetime }}
+          {{
+            formatDate(event.createdAt, {
+              dateStyle: 'medium',
+              timeStyle: 'short',
+            })
+          }}
         </span>
       </div>
     </div>

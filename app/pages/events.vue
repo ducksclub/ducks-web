@@ -10,7 +10,15 @@
           Ближайшие события
         </h3>
 
-        <div class="space-y-3">
+        <div v-if="isLoading" class="space-y-3">
+          <div v-for="i in 3" :key="i" class="h-24 rounded-xl bg-(--secondary)/20 animate-pulse" />
+        </div>
+
+        <div v-else-if="error" class="text-sm text-(--warning)">
+          {{ error }}
+        </div>
+
+        <div v-else class="space-y-3">
           <EventsCard v-for="event in events" :key="event.id" :event="event" />
         </div>
       </section>
@@ -30,27 +38,20 @@
 <script setup lang="ts">
 import EventsButtonGroup from '~/components/events/EventsButtonGroup.vue'
 
-const categories = ref<string[]>(['Все', 'Бильярд', 'Покер', 'Дартс', 'Квиз'])
-const selectedCategory = ref<string>(categories.value[0] ?? 'Все')
-
-const events = [
+const categories = [
+  { label: 'Все', value: '' },
   {
-    id: 1,
-    title: 'Турнир по покеру',
-    datetime: '25 мая 19:00',
-    category: 'Покер',
-    image: '♠️',
+    label: 'Бильярд',
+    value: 'billiards',
   },
-  { id: 2, title: 'Дартс баттл', datetime: '27 мая 20:00', category: 'Дартс', image: '🎯' },
-  {
-    id: 3,
-    title: 'Квиз: Кино и музыка',
-    datetime: '30 мая 18:00',
-    category: 'Квиз',
-    image: '🎬',
-  },
-  { id: 4, title: 'Мафия Night', datetime: '31 мая 19:30', category: 'Квиз', image: '🕵️‍♂️' },
+  { label: 'Покер', value: 'poker' },
+  { label: 'Дартс', value: 'darts' },
 ]
+const selectedCategory = ref<string>('')
+
+const { events, isLoading, error, fetchEvents } = useEventsQuery(selectedCategory)
+
+onMounted(fetchEvents)
 </script>
 
 <style>
