@@ -1,18 +1,24 @@
 <template>
   <div
-    class="min-h-screen bg-[#0F0F0F] text-white flex flex-col items-center justify-start p-6 font-sans overflow-x-hidden"
+    class="min-h-screen bg-(--bg) text-white flex flex-col items-center justify-start p-6 font-sans overflow-x-hidden"
   >
     <BackButton to="/login" label="Назад" />
 
     <AuthLogo class="mt-8" />
 
     <!-- Форма регистрации -->
-    <div class="w-full max-w-85 space-y-4">
+    <form @submit.prevent="registerHandler" class="w-full max-w-85 space-y-4">
       <h2 class="text-center uppercase text-lg font-black mb-6 tracking-wide">Регистрация</h2>
 
       <div class="space-y-3">
         <!-- Никнейм -->
-        <AuthInput v-model="form.nickname" type="text" placeholder="Ваш никнейм">
+        <AuthInput
+          v-model="form.name"
+          type="text"
+          placeholder="Ваше имя"
+          :error="!!errors.name"
+          :error-message="errors.name"
+        >
           <template #icon>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -26,7 +32,13 @@
         </AuthInput>
 
         <!-- Email -->
-        <AuthInput v-model="form.email" type="text" placeholder="Email">
+        <AuthInput
+          v-model="form.email"
+          type="text"
+          placeholder="Email"
+          :error="!!errors.email"
+          :error-message="errors.email"
+        >
           <template #icon>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -40,7 +52,13 @@
         </AuthInput>
 
         <!-- Пароль -->
-        <AuthInput v-model="form.password" type="password" placeholder="Придумайте пароль">
+        <AuthInput
+          v-model="form.password"
+          type="password"
+          placeholder="Придумайте пароль"
+          :error="!!errors.password"
+          :error-message="errors.password"
+        >
           <template #icon>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -54,7 +72,13 @@
         </AuthInput>
 
         <!-- Подтверждение пароля -->
-        <AuthInput v-model="form.confirmPassword" type="password" placeholder="Повторите пароль">
+        <AuthInput
+          v-model="form.confirmPassword"
+          type="password"
+          placeholder="Повторите пароль"
+          :error="!!errors.confirmPassword"
+          :error-message="errors.confirmPassword"
+        >
           <template #icon>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -76,7 +100,7 @@
       </CheckboxAgreement>
 
       <!-- Кнопка регистрации -->
-      <BaseButton> ЗАРЕГИСТРИРОВАТЬСЯ </BaseButton>
+      <BaseButton type="submit"> ЗАРЕГИСТРИРОВАТЬСЯ </BaseButton>
 
       <div class="text-center pt-4">
         <p class="text-center text-sm text-gray-500 mt-8">
@@ -84,31 +108,44 @@
           <NuxtLink to="/login" class="text-(--logo-bg) font-semibold">Войти</NuxtLink>
         </p>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 
-<script setup>
-definePageMeta({ layout: false }) // Без навигации
-// Данные формы хранятся прямо на странице
-const form = ref({
-  nickname: '',
+<script setup lang="ts">
+import { registerSchema, type RegisterSchema } from '~/validation/register'
+import { useZodValidation } from '~/composables/useZodValidation'
+
+definePageMeta({ layout: false })
+
+const form = ref<RegisterSchema>({
+  name: '',
   email: '',
   password: '',
   confirmPassword: '',
   agree: false,
 })
 
-const handleRegister = () => {
-  // Базовая проверка (для UX)
-  if (form.value.password !== form.value.confirmPassword) {
-    alert('Пароли не совпадают!')
-    return
-  }
+const isLoading = ref(false)
 
-  console.log('Регистрация нового утки:', form.value)
-  // Имитация успеха и переход в приложение
-  navigateTo('/events')
+const { errors, validate } = useZodValidation<RegisterSchema>(registerSchema)
+const { register } = useAuth()
+
+const registerHandler = async () => {
+  if (!validate(form.value)) return
+
+  try {
+    isLoading.value = true
+
+    await register({
+      email: form.value.email,
+      name: form.value.name,
+      password: form.value.password,
+    })
+    await navigateTo('/events')
+  } finally {
+    isLoading.value = false
+  }
 }
 </script>
 

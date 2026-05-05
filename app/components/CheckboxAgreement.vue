@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-  modelValue: boolean
+  modelValue?: boolean
 }>()
 
 const emit = defineEmits<{

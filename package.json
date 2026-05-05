@@ -15,9 +15,11 @@
     "nuxt-icon": "^1.0.0-beta.7",
     "tailwindcss": "^4.2.4",
     "vue": "^3.5.33",
-    "vue-router": "^5.0.6"
+    "vue-router": "^5.0.6",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@types/node": "^25.6.0",
     "typescript": "^6.0.3"
   }
 }

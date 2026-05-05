@@ -3,7 +3,7 @@
     <!-- Icon -->
     <span
       v-if="$slots.icon"
-      class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 transition-colors group-focus-within:text-(--logo-bg)"
+      class="absolute left-4 top-4.5 text-gray-500 transition-colors group-focus-within:text-(--logo-bg)"
     >
       <slot name="icon" />
     </span>
@@ -16,6 +16,10 @@
       :disabled="disabled"
       :class="classes"
     />
+
+    <p v-if="errorMessage" class="text-xs text-(--logo-bg) mt-1">
+      {{ errorMessage }}
+    </p>
   </div>
 </template>
 
@@ -25,8 +29,9 @@ import { computed } from 'vue'
 const props = withDefaults(
   defineProps<{
     modelValue: string
-    error?: boolean
     disabled?: boolean
+    errorMessage?: string
+    error?: boolean
   }>(),
   {
     modelValue: '',

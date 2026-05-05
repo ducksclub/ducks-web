@@ -14,6 +14,8 @@
             :disabled="isLoading"
             type="email"
             placeholder="Email"
+            :error="!!errors.email"
+            :error-message="errors.email"
           >
             <template #icon>
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -32,6 +34,8 @@
             :disabled="isLoading"
             type="password"
             placeholder="Пароль"
+            :error="!!errors.password"
+            :error-message="errors.password"
           >
             <template #icon>
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -91,22 +95,35 @@
 </template>
 
 <script setup lang="ts">
+import { loginSchema, type LoginSchema } from '~/validation/auth'
+import { useZodValidation } from '~/composables/useZodValidation'
 import Apple from '~/components/icons/Apple.vue'
 import Google from '~/components/icons/Google.vue'
 import Telegram from '~/components/icons/Telegram.vue'
 
 definePageMeta({ layout: false })
 
-const isLoading = ref<boolean>(false)
-const formData = ref({
+const formData = ref<LoginSchema>({
   email: '',
   password: '',
   remember: false,
 })
 
-const submit = () => {
-  console.log(formData.value)
-  navigateTo('/events')
+const isLoading = ref(false)
+
+const { errors, validate } = useZodValidation<LoginSchema>(loginSchema)
+const { login } = useAuth()
+
+const submit = async () => {
+  if (!validate(formData.value)) return
+
+  try {
+    isLoading.value = true
+    await login({ email: formData.value.email, password: formData.value.password })
+    await navigateTo('/events')
+  } finally {
+    isLoading.value = false
+  }
 }
 
 const authSocial = () => {
