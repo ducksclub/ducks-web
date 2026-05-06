@@ -10,7 +10,7 @@
       <textarea
         v-model="text"
         rows="6"
-        class="w-full bg-[#1A1A1A] border border-white/5 rounded-xl p-4 outline-none focus:border-(--logo-bg)/50 placeholder:text-gray-700"
+        class="w-full bg-(--secondary)/20 border border-white/5 rounded-xl p-4 outline-none focus:border-(--logo-bg)/50 placeholder:text-gray-700"
         placeholder="Опишите вашу идею..."
       ></textarea>
 

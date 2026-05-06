@@ -15,7 +15,7 @@ const { rating, isLoading, error } = useRatingQuery(activeTab)
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#0F0F0F] text-white pb-24 font-sans">
+  <div class="min-h-screen bg-(--bg) text-white pb-24 font-sans">
     <LayoutHeader>Рейтинг игроков</LayoutHeader>
 
     <div class="p-4">

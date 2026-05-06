@@ -29,7 +29,7 @@ const contacts = [
       <NuxtLink
         v-for="contact in contacts"
         :key="contact.label"
-        class="bg-[#1A1A1A] p-5 rounded-xl border border-white/5 flex items-center gap-4 active:scale-95 transition-all cursor-pointer"
+        class="bg-(--secondary)/20 p-5 rounded-xl border border-white/5 flex items-center gap-4 active:scale-95 transition-all cursor-pointer"
         :to="contact.link"
       >
         <span class="text-3xl">{{ contact.icon }}</span>
