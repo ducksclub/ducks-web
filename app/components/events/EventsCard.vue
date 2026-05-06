@@ -8,7 +8,9 @@ defineProps<{
 
 <template>
   <div
-    class="bg-(--secondary)/20 border border-white/5 p-4 rounded-xl flex items-center gap-4 active:scale-[0.98] transition-transform"
+    aria-label="button"
+    @click="navigateTo(`/events/${event.id}`)"
+    class="bg-(--secondary)/20 border border-white/5 p-4 rounded-xl flex items-center gap-4 active:scale-[0.98] transition-transform select-none cursor-pointer"
   >
     <div
       class="w-16 h-16 rounded-2xl bg-(--secondary)/20 flex items-center justify-center text-3xl shadow-inner"
