@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import NavEvents from '~/components/icons/NavEvents.vue'
+import NavHome from '~/components/icons/NavHome.vue'
 import NavUsers from '~/components/icons/NavProfile.vue'
 import NavRating from '~/components/icons/NavRating.vue'
 
 const route = useRoute()
 
 const nav = [
+  { label: 'Главная', path: '/events', icon: NavHome },
   { label: 'События', path: '/admin/events', icon: NavEvents },
-  { label: 'Юзеры', path: '/admin/users', icon: NavUsers },
-  { label: 'Рейтинг', path: '/admin/rating', icon: NavRating },
+  // { label: 'Юзеры', path: '/admin/users', icon: NavUsers },
+  // { label: 'Рейтинг', path: '/admin/rating', icon: NavRating },
 ]
 
 const isActive = (path: string) => {
