@@ -153,15 +153,13 @@ const onFileChange = (e: Event) => {
         class="w-full bg-(--secondary)/20 rounded-xl p-3 outline-none"
       />
 
-      <!-- SAVE -->
-      <button
+      <BaseButton
         @click="save"
         :disabled="isSaving || isUploading"
-        class="w-full bg-(--logo-bg) py-3 rounded-xl font-black uppercase active:scale-95 transition"
+        :loading="isSaving || isUploading"
       >
-        <span v-if="isSaving">Сохранение...</span>
-        <span v-else>Сохранить</span>
-      </button>
+        Сохранить
+      </BaseButton>
     </div>
   </div>
 </template>
