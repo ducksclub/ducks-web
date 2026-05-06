@@ -4,6 +4,10 @@ import EventsButtonGroup from '~/components/events/EventsButtonGroup.vue'
 import { categories } from '~/constants/categories'
 import type { Event } from '~/types/events'
 
+definePageMeta({
+  middleware: 'auth',
+})
+
 const { getEvents } = useEventsApi()
 
 const selectedCategory = ref<string>('')
