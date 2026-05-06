@@ -1,21 +1,19 @@
 <template>
-  <div class="p-6 space-y-6">
-    <h1 class="text-xl font-black italic uppercase text-center py-4">ПРАВИЛА КЛУБА</h1>
+  <div class="min-h-screen p-6 space-y-6">
+    <LayoutHeader>ПРАВИЛА КЛУБА</LayoutHeader>
+
     <div class="space-y-4">
       <div
-        v-for="(r, i) in rules"
-        :key="i"
-        class="bg-[#1A1A1A] p-5 rounded-[24px] border border-white/5 flex gap-4"
+        v-for="(rule, index) in rules"
+        :key="index"
+        class="bg-[#1A1A1A] p-5 rounded-xl border border-white/5 flex gap-4"
       >
-        <span class="text-[#E11D48] font-black italic text-xl">{{ i + 1 }}</span>
-        <p class="text-sm font-medium leading-relaxed">{{ r }}</p>
+        <span class="text-(--logo-bg) font-black text-xl">{{ index + 1 }}</span>
+        <p class="text-sm font-medium leading-relaxed mt-0.5">{{ rule }}</p>
       </div>
     </div>
-    <button
-      class="w-full bg-[#E11D48] font-black py-4 rounded-2xl shadow-xl italic uppercase tracking-widest"
-    >
-      Полные правила PDF
-    </button>
+
+    <BaseButton> Полные правила PDF </BaseButton>
   </div>
 </template>
 
