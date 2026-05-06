@@ -36,15 +36,15 @@ const menu = [
       </div> -->
       <div class="bg-(--secondary)/20 p-4 rounded-xl text-center border border-white/5">
         <p class="text-[9px] text-gray-500 font-black uppercase italic">Покер</p>
-        <p class="text-xl font-black text-(--logo-bg)">#{{ 's.rank' }}</p>
+        <p class="text-xl font-black text-(--logo-bg)">-</p>
       </div>
       <div class="bg-(--secondary)/20 p-4 rounded-xl text-center border border-white/5">
         <p class="text-[9px] text-gray-500 font-black uppercase italic">Бильярд</p>
-        <p class="text-xl font-black text-(--logo-bg)">#{{ 's.rank' }}</p>
+        <p class="text-xl font-black text-(--logo-bg)">-</p>
       </div>
       <div class="bg-(--secondary)/20 p-4 rounded-xl text-center border border-white/5">
         <p class="text-[9px] text-gray-500 font-black uppercase italic">Дартс</p>
-        <p class="text-xl font-black text-(--logo-bg)">#{{ 's.rank' }}</p>
+        <p class="text-xl font-black text-(--logo-bg)">-</p>
       </div>
     </div>
 
