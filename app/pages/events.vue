@@ -12,9 +12,7 @@ const categories = [
 ]
 const selectedCategory = ref<string>('')
 
-const { events, isLoading, error, fetchEvents } = useEventsQuery(selectedCategory)
-
-onMounted(fetchEvents)
+const { events, isLoading, error } = useEventsQuery(selectedCategory)
 </script>
 
 <template>

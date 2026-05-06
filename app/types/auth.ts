@@ -27,3 +27,7 @@ export type RegisterResponse = {
   token: string
   user: AuthUser
 }
+
+export type MeResponse = AuthUser & {
+  ratings: []
+}

@@ -1,3 +1,40 @@
+<script setup lang="ts">
+import { registerSchema, type RegisterSchema } from '~/validation/register'
+import { useZodValidation } from '~/composables/useZodValidation'
+
+definePageMeta({ layout: false, middleware: 'guest' })
+
+const form = ref<RegisterSchema>({
+  name: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+  agree: false,
+})
+
+const isLoading = ref(false)
+
+const { errors, validate } = useZodValidation<RegisterSchema>(registerSchema)
+const { register } = useAuth()
+
+const registerHandler = async () => {
+  if (!validate(form.value)) return
+
+  try {
+    isLoading.value = true
+
+    await register({
+      email: form.value.email,
+      name: form.value.name,
+      password: form.value.password,
+    })
+    await navigateTo('/events')
+  } finally {
+    isLoading.value = false
+  }
+}
+</script>
+
 <template>
   <div
     class="min-h-screen bg-(--bg) text-white flex flex-col items-center justify-start p-6 font-sans overflow-x-hidden"
@@ -111,43 +148,6 @@
     </form>
   </div>
 </template>
-
-<script setup lang="ts">
-import { registerSchema, type RegisterSchema } from '~/validation/register'
-import { useZodValidation } from '~/composables/useZodValidation'
-
-definePageMeta({ layout: false })
-
-const form = ref<RegisterSchema>({
-  name: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-  agree: false,
-})
-
-const isLoading = ref(false)
-
-const { errors, validate } = useZodValidation<RegisterSchema>(registerSchema)
-const { register } = useAuth()
-
-const registerHandler = async () => {
-  if (!validate(form.value)) return
-
-  try {
-    isLoading.value = true
-
-    await register({
-      email: form.value.email,
-      name: form.value.name,
-      password: form.value.password,
-    })
-    await navigateTo('/events')
-  } finally {
-    isLoading.value = false
-  }
-}
-</script>
 
 <style scoped>
 /* Плавное появление контента */

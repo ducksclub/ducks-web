@@ -4,7 +4,7 @@ import type {
   LoginResponse,
   RegisterPayload,
   RegisterResponse,
-  // MeResponse,
+  MeResponse,
   // UserRole,
   // RegisterOwnerPayload,
   // RegisterOwnerResponse,
@@ -18,7 +18,7 @@ export function useAuth() {
     sameSite: 'lax',
   })
 
-  const user = useState<null>('auth:user', () => null)
+  const user = useState<MeResponse | null>('auth:user', () => null)
   const isLoadingUser = useState<boolean>('auth:is-loading-user', () => false)
 
   const isAuthenticated = computed(() => Boolean(token.value))
@@ -35,31 +35,31 @@ export function useAuth() {
     return response
   }
 
-  // async function fetchMe() {
-  //   if (!token.value) {
-  //     user.value = null
-  //     return null
-  //   }
+  async function fetchMe() {
+    if (!token.value) {
+      user.value = null
+      return null
+    }
 
-  //   isLoadingUser.value = true
+    isLoadingUser.value = true
 
-  //   try {
-  //     const response = await api.request<MeResponse>('/auth/me', {
-  //       method: 'GET',
-  //     })
+    try {
+      const response = await api.request<MeResponse>('/users/me', {
+        method: 'GET',
+      })
 
-  //     user.value = response.data
+      user.value = response
 
-  //     return response.data
-  //   } catch (error) {
-  //     token.value = null
-  //     user.value = null
+      return response
+    } catch (error) {
+      token.value = null
+      user.value = null
 
-  //     return null
-  //   } finally {
-  //     isLoadingUser.value = false
-  //   }
-  // }
+      return null
+    } finally {
+      isLoadingUser.value = false
+    }
+  }
 
   async function register(payload: RegisterPayload) {
     const response = await api.request<RegisterResponse, RegisterPayload>('/auth/register', {
@@ -70,7 +70,7 @@ export function useAuth() {
 
     token.value = response.token
 
-    // await fetchMe()
+    await fetchMe()
 
     return response
   }
@@ -87,7 +87,7 @@ export function useAuth() {
     isLoadingUser,
     isAuthenticated,
     login,
-    // fetchMe,
+    fetchMe,
     logout,
     register,
   }

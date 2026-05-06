@@ -36,7 +36,7 @@ export function useEventsQuery(category: Ref<string>) {
     }
   }
 
-  watch(category, fetchEvents)
+  watch(category, fetchEvents, { immediate: true })
 
   return {
     events,

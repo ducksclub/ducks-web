@@ -1,3 +1,31 @@
+<script setup lang="ts">
+definePageMeta({
+  middleware: 'auth',
+})
+
+const auth = useAuth()
+
+const user = {
+  name: 'Alexey Duck',
+  id: 'DUCKS-24-001',
+  stats: [
+    { label: 'Покер', rank: 12 },
+    { label: 'Дартс', rank: 8 },
+    { label: 'Бильярд', rank: 15 },
+  ],
+}
+const menu = [
+  { label: 'Идеи и предложения', path: '/ideas' },
+  { label: 'Достижения', path: '#' },
+  { label: 'Настройки профиля', path: '#' },
+]
+
+onMounted(async () => {
+  await auth.fetchMe()
+  console.log(auth.user.value)
+})
+</script>
+
 <template>
   <div class="p-6 space-y-8">
     <div class="bg-[#1A1A1A] rounded-4xl p-8 text-center border border-white/5">
@@ -36,20 +64,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-const user = {
-  name: 'Alexey Duck',
-  id: 'DUCKS-24-001',
-  stats: [
-    { label: 'Покер', rank: 12 },
-    { label: 'Дартс', rank: 8 },
-    { label: 'Бильярд', rank: 15 },
-  ],
-}
-const menu = [
-  { label: 'Идеи и предложения', path: '/ideas' },
-  { label: 'Достижения', path: '#' },
-  { label: 'Настройки профиля', path: '#' },
-]
-</script>

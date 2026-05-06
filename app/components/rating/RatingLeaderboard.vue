@@ -5,7 +5,9 @@ defineProps<{
   rating: Rating[]
 }>()
 
-const isMe = (id: string) => id === 'cmosiavmr000113jab6o2vh3j'
+const { user } = useAuth()
+
+const isMe = (id: string) => id === user.value?.id
 </script>
 
 <template>

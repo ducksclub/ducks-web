@@ -1,3 +1,40 @@
+<script setup lang="ts">
+import { loginSchema, type LoginSchema } from '~/validation/auth'
+import { useZodValidation } from '~/composables/useZodValidation'
+import Apple from '~/components/icons/Apple.vue'
+import Google from '~/components/icons/Google.vue'
+import Telegram from '~/components/icons/Telegram.vue'
+
+definePageMeta({ layout: false, middleware: 'guest' })
+
+const formData = ref<LoginSchema>({
+  email: '',
+  password: '',
+  remember: false,
+})
+
+const isLoading = ref(false)
+
+const { errors, validate } = useZodValidation<LoginSchema>(loginSchema)
+const { login } = useAuth()
+
+const submit = async () => {
+  if (!validate(formData.value)) return
+
+  try {
+    isLoading.value = true
+    await login({ email: formData.value.email, password: formData.value.password })
+    await navigateTo('/events')
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const authSocial = () => {
+  alert('Скоро...')
+}
+</script>
+
 <template>
   <div
     class="min-h-screen bg-(--bg) text-white flex flex-col items-center justify-center p-6 relative overflow-hidden"
@@ -93,40 +130,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { loginSchema, type LoginSchema } from '~/validation/auth'
-import { useZodValidation } from '~/composables/useZodValidation'
-import Apple from '~/components/icons/Apple.vue'
-import Google from '~/components/icons/Google.vue'
-import Telegram from '~/components/icons/Telegram.vue'
-
-definePageMeta({ layout: false })
-
-const formData = ref<LoginSchema>({
-  email: '',
-  password: '',
-  remember: false,
-})
-
-const isLoading = ref(false)
-
-const { errors, validate } = useZodValidation<LoginSchema>(loginSchema)
-const { login } = useAuth()
-
-const submit = async () => {
-  if (!validate(formData.value)) return
-
-  try {
-    isLoading.value = true
-    await login({ email: formData.value.email, password: formData.value.password })
-    await navigateTo('/events')
-  } finally {
-    isLoading.value = false
-  }
-}
-
-const authSocial = () => {
-  alert('Скоро...')
-}
-</script>
