@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { useEventsApi } from '~/api/events.api'
 import { useEventRegistrationApi } from '~/api/event-registration.api'
+import type { Event } from '~/types/events'
 
 const route = useRoute()
 const eventId = computed(() => route.params.id as string)
 
 const eventsApi = useEventsApi()
 
-const event = ref<any>(null)
+const event = ref<Event>()
 const isLoadingEvent = ref(false)
 const error = ref<string | null>(null)
 
@@ -103,7 +104,7 @@ onMounted(async () => {
       </div> -->
 
         <!-- ACTION -->
-        <div class="pt-2">
+        <div class="pt-2" v-if="event.status === 'published'">
           <BaseButton v-if="!isRegistered" :disabled="isLoading" @click="register">
             Записаться
           </BaseButton>
@@ -112,6 +113,8 @@ onMounted(async () => {
             Отписаться
           </BaseButton>
         </div>
+
+        <div v-else class="text-red-400 text-sm">Событие завершено!</div>
       </div>
     </div>
   </div>
