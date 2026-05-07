@@ -11,20 +11,17 @@ definePageMeta({
   middleware: 'admin',
 })
 
-const route = useRoute()
 const router = useRouter()
-
-const id = route.params.id as string
 
 const api = useEventsApi()
 const { uploadImage, isUploading } = useUploadApi()
 
-const isLoading = ref(true)
 const isSaving = ref(false)
-
 const errorMessage = ref('')
 
 const form = reactive({
+  title: '',
+  description: '',
   address: '',
   gameType: '',
   startsAt: '',
@@ -36,37 +33,9 @@ const form = reactive({
 })
 
 /**
- * Load event
+ * Create event
  */
-const loadEvent = async () => {
-  isLoading.value = true
-
-  try {
-    const event = await api.getEvent(id)
-
-    form.address = event.address ?? ''
-    form.gameType = event.gameType ?? ''
-    form.startsAt = new Date(event.startsAt).toISOString().slice(0, 16)
-
-    form.participantLimit = event.participantLimit ?? 10
-
-    form.imageUrl = event.imageUrl ?? ''
-    form.imageHash = event.imageHash ?? ''
-  } catch (e: any) {
-    console.error(e)
-
-    errorMessage.value = e?.error || 'Не удалось загрузить событие'
-  } finally {
-    isLoading.value = false
-  }
-}
-
-onMounted(loadEvent)
-
-/**
- * Update event
- */
-const updateEvent = async () => {
+const createEvent = async () => {
   if (isSaving.value || isUploading.value) return
 
   errorMessage.value = ''
@@ -74,11 +43,11 @@ const updateEvent = async () => {
   try {
     isSaving.value = true
 
-    let imageUrl = form.imageUrl
-    let imageHash = form.imageHash
+    let imageUrl = ''
+    let imageHash = ''
 
     /**
-     * Upload new image
+     * Upload image
      */
     if (form.file) {
       const uploaded = await uploadImage(form.file)
@@ -87,31 +56,27 @@ const updateEvent = async () => {
       imageHash = uploaded.hash
     }
 
-    await api.updateEvent(
-      { id },
-      {
-        address: form.address,
-        gameType: form.gameType,
-        startsAt: form.startsAt,
-        participantLimit: form.participantLimit,
-
-        imageUrl,
-        imageHash,
-      },
-    )
+    await api.createEvent({
+      address: form.address,
+      gameType: form.gameType,
+      startsAt: form.startsAt,
+      participantLimit: form.participantLimit,
+      imageUrl,
+      imageHash,
+    })
 
     router.push('/admin/events')
   } catch (e: any) {
     console.error(e)
 
-    errorMessage.value = e?.error || 'Не удалось обновить событие'
+    errorMessage.value = e?.error || 'Не удалось создать событие'
   } finally {
     isSaving.value = false
   }
 }
 
 /**
- * Preview image
+ * File preview
  */
 const onFileChange = (e: Event) => {
   const target = e.target as HTMLInputElement
@@ -133,13 +98,69 @@ const onFileChange = (e: Event) => {
       </div>
     </div>
 
-    <!-- LOADING -->
-    <div v-if="isLoading" class="flex items-center justify-center py-20 text-gray-500">
-      Загрузка события...
-    </div>
-
     <!-- CONTENT -->
-    <div v-else class="mx-auto max-w-2xl space-y-6 p-4 pb-28">
+    <div class="mx-auto max-w-2xl space-y-6 p-4 pb-28">
+      <!-- TITLE -->
+      <!-- <div>
+        <label class="mb-2 block text-sm text-gray-400"> Название события </label>
+
+        <div
+          class="flex h-14 items-center gap-3 rounded-2xl border border-white/5 bg-(--secondary)/20 px-4 transition focus-within:border-(--primary)/40"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="size-5 text-gray-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="1.8"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h10M4 17h7" />
+          </svg>
+
+          <input
+            v-model="form.title"
+            placeholder="Например: Poker Night"
+            class="h-full w-full bg-transparent outline-none"
+          />
+        </div>
+      </div> -->
+
+      <!-- DESCRIPTION -->
+      <!-- <div>
+        <label class="mb-2 block text-sm text-gray-400"> Описание </label>
+
+        <div
+          class="rounded-3xl border border-white/5 bg-(--secondary)/20 p-4 transition focus-within:border-(--primary)/40"
+        >
+          <div class="mb-3 flex items-center gap-2 text-gray-500">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="size-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="1.8"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M8 10h8M8 14h5M7 4h10a2 2 0 012 2v12l-3-2-3 2-3-2-3 2V6a2 2 0 012-2z"
+              />
+            </svg>
+
+            <span class="text-sm"> Описание события </span>
+          </div>
+
+          <textarea
+            v-model="form.description"
+            rows="5"
+            placeholder="Расскажите подробнее о мероприятии..."
+            class="w-full resize-none bg-transparent outline-none"
+          />
+        </div>
+      </div> -->
+
       <!-- IMAGE -->
       <div>
         <label class="mb-2 block text-sm text-gray-400"> Обложка </label>
@@ -149,7 +170,7 @@ const onFileChange = (e: Event) => {
         >
           <img
             v-if="form.imageUrl"
-            :src="form.imageUrl.startsWith('/') ? renderPicture(form.imageUrl) : form.imageUrl"
+            :src="form.imageUrl"
             class="absolute inset-0 h-full w-full object-cover"
           />
 
@@ -180,21 +201,15 @@ const onFileChange = (e: Event) => {
             </div>
 
             <div>
-              <p class="text-sm font-medium">Загрузить изображение</p>
+              <p class="text-sm font-medium">
+                {{ form.imageUrl ? 'Изменить изображение' : 'Загрузить изображение' }}
+              </p>
 
               <p class="mt-1 text-xs text-gray-400">PNG, JPG, WEBP</p>
             </div>
           </div>
 
-          <!-- EDIT BADGE -->
-          <div
-            v-if="form.imageUrl"
-            class="absolute right-3 bottom-3 rounded-xl bg-black/60 px-3 py-1 text-xs backdrop-blur-md"
-          >
-            Изменить
-          </div>
-
-          <input type="file" accept="image/*" class="hidden" @change="onFileChange" />
+          <input type="file" accept="image/.png,.jpg,.jpeg" class="hidden" @change="onFileChange" />
         </label>
 
         <p v-if="isUploading" class="mt-2 text-xs text-gray-500">Загрузка изображения...</p>
@@ -338,9 +353,9 @@ const onFileChange = (e: Event) => {
         class="w-full"
         :disabled="isSaving || isUploading"
         :loading="isSaving || isUploading"
-        @click="updateEvent"
+        @click="createEvent"
       >
-        Сохранить изменения
+        Создать событие
       </BaseButton>
     </div>
   </div>

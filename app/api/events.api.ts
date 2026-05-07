@@ -1,4 +1,10 @@
-import type { EventResponse, EventsResponse, UpdateEventParams, UpdateEventPayload } from '~/types/events'
+import type {
+  CreateEventPayload,
+  EventResponse,
+  EventsResponse,
+  UpdateEventParams,
+  UpdateEventPayload,
+} from '~/types/events'
 
 export type GetEventsParams = {
   gameType?: string
@@ -23,13 +29,21 @@ export function useEventsApi() {
   const updateEvent = (params: UpdateEventParams, payload: UpdateEventPayload) => {
     return api.request<EventResponse>(`/events/${params.id}`, {
       method: 'PATCH',
-      body: payload
+      body: payload,
+    })
+  }
+
+  const createEvent = (payload: CreateEventPayload) => {
+    return api.request<EventResponse>(`/events`, {
+      method: 'POST',
+      body: payload,
     })
   }
 
   return {
     getEvent,
     getEvents,
-    updateEvent
+    updateEvent,
+    createEvent,
   }
 }

@@ -34,6 +34,16 @@ export type UpdateEventParams = { id: Event['id'] }
 export type UpdateEventPayload = {
   address: Event['address']
   startsAt: Event['startsAt']
+  gameType: Event['gameType']
+  participantLimit: Event['participantLimit']
+  imageUrl: Event['imageUrl']
+  imageHash: Event['imageHash']
+}
+
+export type CreateEventPayload = {
+  address: Event['address']
+  startsAt: Event['startsAt']
+  gameType: Event['gameType']
   participantLimit: Event['participantLimit']
   imageUrl: Event['imageUrl']
   imageHash: Event['imageHash']
