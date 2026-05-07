@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+definePageMeta({
+  layout: false,
+})
+
 onMounted(() => {
   navigateTo('/login')
 })

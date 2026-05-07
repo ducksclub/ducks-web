@@ -52,6 +52,10 @@ watch(selectedCategory, fetchEvents, { immediate: true })
           {{ errorMessage }}
         </div>
 
+        <div v-else-if="events && !events.length" class="mt-4 text-sm text-gray-500 text-center">
+          Нет данных
+        </div>
+
         <div v-else class="space-y-3">
           <EventsCard v-for="event in events" :key="event.id" :event="event" />
         </div>

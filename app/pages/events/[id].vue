@@ -96,13 +96,6 @@ onMounted(async () => {
           </div>
         </div>
 
-        <!-- DESCRIPTION -->
-        <!-- <div class="bg-[#1A1A1A] p-4 rounded-2xl">
-        <p class="text-sm text-gray-300 leading-relaxed">
-          {{ event.description || 'Описание отсутствует' }}
-        </p>
-      </div> -->
-
         <!-- ACTION -->
         <div class="pt-2" v-if="event.status === 'published'">
           <BaseButton v-if="!isRegistered" :disabled="isLoading" @click="register">

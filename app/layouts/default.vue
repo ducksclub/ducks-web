@@ -34,17 +34,17 @@
 </template>
 
 <script setup lang="ts">
-import NavEvents from '~/components/icons/NavEvents.vue'
-import NavRating from '~/components/icons/NavRating.vue'
-import NavProfile from '~/components/icons/NavProfile.vue'
-import NavRules from '~/components/icons/NavRules.vue'
-import NavSupport from '~/components/icons/NavSupport.vue'
+import CalendarIcon from '~/components/icons/CalendarIcon.vue'
+import StarIcon from '~/components/icons/StarIcon.vue'
+import UserIcon from '~/components/icons/UserIcon.vue'
+import ListIcon from '~/components/icons/ListIcon.vue'
+import InfoIcon from '~/components/icons/InfoIcon.vue'
 
 const nav = [
-  { label: 'Афиша', path: '/events', icon: NavEvents },
-  { label: 'Рейтинг', path: '/rating', icon: NavRating },
-  { label: 'Профиль', path: '/profile', icon: NavProfile },
-  { label: 'Правила', path: '/rules', icon: NavRules },
-  { label: 'Help', path: '/support', icon: NavSupport },
+  { label: 'Афиша', path: '/events', icon: CalendarIcon },
+  { label: 'Рейтинг', path: '/rating', icon: StarIcon },
+  { label: 'Профиль', path: '/profile', icon: UserIcon },
+  { label: 'Правила', path: '/rules', icon: ListIcon },
+  { label: 'Help', path: '/support', icon: InfoIcon },
 ]
 </script>

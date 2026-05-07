@@ -161,6 +161,45 @@ const goToEvents = () => {
           Смотреть события
         </button>
       </div>
+
+      <!-- BUSINESS / FRANCHISE -->
+      <div
+        class="rounded-3xl border border-(--logo-bg)/10 bg-linear-to-br from-(--logo-bg)/10 to-(--logo-bg)/5 p-6"
+      >
+        <div class="flex items-center gap-3">
+          <div
+            class="flex size-12 items-center justify-center rounded-2xl bg-(--logo-bg)/20 shrink-0"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="size-6 text-(--logo-bg) shrink-0"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="1.8"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 8c-3 0-5 2-5 5v4h10v-4c0-3-2-5-5-5z"
+              />
+              <circle cx="12" cy="5" r="2" />
+            </svg>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-semibold">Франшиза DUCK’S</h3>
+            <p class="text-sm text-gray-400">Откройте игровой клуб вместе с нами</p>
+          </div>
+        </div>
+
+        <p class="mt-4 text-sm leading-relaxed text-gray-300">
+          Мы помогаем запускать игровые пространства, организовывать турниры и строить сильное
+          комьюнити игроков.
+        </p>
+
+        <BaseButton class="mt-5"> Стать партнером </BaseButton>
+      </div>
     </div>
   </div>
 </template>

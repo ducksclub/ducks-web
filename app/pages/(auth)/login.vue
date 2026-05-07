@@ -50,7 +50,7 @@ const authSocial = () => {
     <div class="relative z-10 w-full max-w-85">
       <AuthLogo />
 
-      <h2 class="text-center text-lg font-bold uppercase mb-6">Вход в клуб</h2>
+      <h2 class="text-center text-lg font-bold uppercase mb-6">Вход</h2>
 
       <form @submit.prevent="submit">
         <div class="space-y-3">
