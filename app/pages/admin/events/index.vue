@@ -3,7 +3,7 @@
 
 import { useEventsApi } from '~/api/events.api'
 import EventsButtonGroup from '~/components/events/EventsButtonGroup.vue'
-import { categories } from '~/constants/categories'
+import { categories, statuses } from '~/constants/categories'
 import type { Event } from '~/types/events'
 
 definePageMeta({
@@ -16,6 +16,7 @@ const router = useRouter()
 const { getEvents } = useEventsApi()
 
 const selectedCategory = ref('')
+const selectedStatus = ref('')
 
 const events = ref<Event[]>([])
 const isLoading = ref(true)
@@ -28,6 +29,7 @@ const fetchEvents = async () => {
   try {
     const response = await getEvents({
       gameType: selectedCategory.value,
+      status: selectedStatus.value,
     })
 
     events.value = response.data
@@ -42,7 +44,7 @@ const goToCreate = () => {
   router.push('/admin/events/create')
 }
 
-watch(selectedCategory, fetchEvents, {
+watch([selectedCategory, selectedStatus], fetchEvents, {
   immediate: true,
 })
 </script>
@@ -64,6 +66,7 @@ watch(selectedCategory, fetchEvents, {
 
     <div class="sticky top-0 z-10 bg-(--background)/80 backdrop-blur-md">
       <EventsButtonGroup v-model="selectedCategory" class="p-6 pt-4" :list="categories" />
+      <EventsButtonGroup v-model="selectedStatus" class="p-6 pt-4" :list="statuses" />
     </div>
 
     <div class="p-6 pb-32">

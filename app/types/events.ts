@@ -55,3 +55,12 @@ export type ReorderParticipantsPayload = {
     position: number
   }[]
 }
+
+export type FinalizeEventResponse = {
+  success: boolean
+}
+
+export type GetEventParticipantsResponse = {
+  participants: {}
+  event: Event
+}

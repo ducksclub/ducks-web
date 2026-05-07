@@ -4,3 +4,11 @@ export const categories = [
   { label: 'Дартс', value: 'darts' },
   { label: 'Бильярд', value: 'billiards' },
 ]
+
+export const statuses = [
+  { label: 'Все', value: '' },
+  { label: 'Публикованные', value: 'published' },
+  { label: 'Завершенные', value: 'completed' },
+  { label: 'Отмененные', value: 'cancelled' },
+  { label: 'Черновые', value: 'draft' },
+]

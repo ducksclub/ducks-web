@@ -2,6 +2,8 @@ import type {
   CreateEventPayload,
   EventResponse,
   EventsResponse,
+  FinalizeEventResponse,
+  GetEventParticipantsResponse,
   ReorderParticipantsPayload,
   UpdateEventParams,
   UpdateEventPayload,
@@ -9,6 +11,7 @@ import type {
 
 export type GetEventsParams = {
   gameType?: string
+  status?: string
 }
 
 export function useEventsApi() {
@@ -36,7 +39,7 @@ export function useEventsApi() {
   }
 
   const getEventParticipants = (eventId: string) => {
-    return api.request<EventsResponse>(`/events/${eventId}/participants`, {
+    return api.request<GetEventParticipantsResponse>(`/events/${eventId}/participants`, {
       method: 'GET',
     })
   }
@@ -68,6 +71,12 @@ export function useEventsApi() {
     })
   }
 
+  const finalizeEvent = (eventId: string) => {
+    return api.request<FinalizeEventResponse>(`/events/${eventId}/finalize`, {
+      method: 'POST',
+    })
+  }
+
   return {
     getEvent,
     getEvents,
@@ -77,5 +86,6 @@ export function useEventsApi() {
     reorderParticipants,
     updateEvent,
     createEvent,
+    finalizeEvent,
   }
 }
