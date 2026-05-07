@@ -21,7 +21,7 @@ const goToEvents = () => {
     </div>
 
     <div class="mx-auto max-w-2xl space-y-6 p-4 pb-24">
-      <!-- HERO -->
+      <!-- HERO / INTRO -->
       <div class="rounded-3xl border border-white/5 bg-(--secondary)/20 p-6">
         <div class="flex items-center gap-4">
           <div class="flex size-14 items-center justify-center rounded-2xl bg-white/10">
@@ -45,14 +45,56 @@ const goToEvents = () => {
 
           <div>
             <h2 class="text-lg font-semibold">DUCK’S GameClub</h2>
-            <p class="text-sm text-gray-400">Игровое комьюнити нового формата</p>
+            <p class="text-sm text-gray-400">Основан как игровое комьюнити</p>
           </div>
         </div>
 
         <p class="mt-4 text-sm text-gray-300 leading-relaxed">
-          Мы создаём пространство, где люди собираются не просто играть, а знакомиться,
-          соревноваться и развиваться через игровые события.
+          DUCK’S GameClub появился как идея собрать людей, которым не хватает живого общения, эмоций
+          и соревновательного духа. Мы начали с небольших встреч, а выросли в полноценное игровое
+          сообщество.
         </p>
+      </div>
+
+      <!-- HISTORY -->
+      <div class="rounded-3xl border border-white/5 bg-(--secondary)/20 p-6">
+        <div class="mb-4 flex items-center gap-3 text-gray-400">
+          <!-- HISTORY ICON -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="size-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="1.8"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3 12a9 9 0 1018 0A9 9 0 003 12z"
+            />
+          </svg>
+
+          <span class="text-sm font-medium">История клуба</span>
+        </div>
+
+        <div class="space-y-3 text-sm text-gray-300 leading-relaxed">
+          <p>
+            Изначально клуб был небольшой инициативой среди друзей, которые собирались играть в
+            покер и настольные игры.
+          </p>
+
+          <p>
+            Со временем формат вырос: появились регулярные события, рейтинги игроков и система
+            участия.
+          </p>
+
+          <p>
+            Сейчас DUCK’S GameClub — это структурированная платформа для организации игровых
+            мероприятий.
+          </p>
+        </div>
       </div>
 
       <!-- MISSION -->
@@ -71,114 +113,36 @@ const goToEvents = () => {
             <circle cx="12" cy="12" r="3" />
           </svg>
 
-          <span class="text-sm font-medium">Наша миссия</span>
+          <span class="text-sm font-medium">Миссия</span>
         </div>
 
         <p class="text-sm text-gray-300 leading-relaxed">
-          Объединять людей через игровые события, создавать живое комьюнити и давать каждому
-          участнику возможность почувствовать себя частью чего-то большего.
+          Создавать пространство, где люди могут объединяться через игры, развивать навыки,
+          соревноваться и находить новое окружение. Мы верим, что игра — это лучший способ
+          социализации.
         </p>
       </div>
 
-      <!-- FEATURES -->
+      <!-- VALUES -->
       <div class="grid gap-3 md:grid-cols-2">
-        <!-- CARD -->
         <div class="rounded-3xl border border-white/5 bg-(--secondary)/20 p-5">
-          <div class="flex items-center gap-3 text-gray-400">
-            <!-- GAME ICON -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="size-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="1.8"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M9 12h.01M15 12h.01M7 16h10M5 8h14a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2z"
-              />
-            </svg>
-
-            <span class="text-sm">Игры</span>
-          </div>
-
-          <p class="mt-3 text-sm text-gray-300">Poker, Darts, Board games и другие форматы</p>
+          <p class="text-sm font-medium text-white">Комьюнити</p>
+          <p class="mt-2 text-sm text-gray-400">Люди важнее формата игры</p>
         </div>
 
         <div class="rounded-3xl border border-white/5 bg-(--secondary)/20 p-5">
-          <div class="flex items-center gap-3 text-gray-400">
-            <!-- USERS ICON -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="size-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="1.8"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2"
-              />
-              <circle cx="9" cy="7" r="3" />
-            </svg>
-
-            <span class="text-sm">Комьюнити</span>
-          </div>
-
-          <p class="mt-3 text-sm text-gray-300">Люди, которые любят соревноваться и общаться</p>
+          <p class="text-sm font-medium text-white">Соревнование</p>
+          <p class="mt-2 text-sm text-gray-400">Рейтинг и прогресс игроков</p>
         </div>
 
         <div class="rounded-3xl border border-white/5 bg-(--secondary)/20 p-5">
-          <div class="flex items-center gap-3 text-gray-400">
-            <!-- STAR ICON -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="size-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="1.8"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l2.07 6.36a1 1 0 00.95.69h6.7c.969 0 1.371 1.24.588 1.81l-5.42 3.94a1 1 0 00-.364 1.118l2.07 6.36c.3.921-.755 1.688-1.54 1.118l-5.42-3.94a1 1 0 00-1.175 0l-5.42 3.94c-.784.57-1.838-.197-1.539-1.118l2.07-6.36a1 1 0 00-.364-1.118l-5.42-3.94c-.783-.57-.38-1.81.588-1.81h6.7a1 1 0 00.95-.69l2.07-6.36z"
-              />
-            </svg>
-
-            <span class="text-sm">Опыт</span>
-          </div>
-
-          <p class="mt-3 text-sm text-gray-300">Каждое событие — это эмоции и рейтинг</p>
+          <p class="text-sm font-medium text-white">Развитие</p>
+          <p class="mt-2 text-sm text-gray-400">Каждый ивент — новый опыт</p>
         </div>
 
         <div class="rounded-3xl border border-white/5 bg-(--secondary)/20 p-5">
-          <div class="flex items-center gap-3 text-gray-400">
-            <!-- LOCATION ICON -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="size-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="1.8"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M12 21s-6-4.35-6-10a6 6 0 1112 0c0 5.65-6 10-6 10z"
-              />
-              <circle cx="12" cy="11" r="2.5" />
-            </svg>
-
-            <span class="text-sm">Локация</span>
-          </div>
-
-          <p class="mt-3 text-sm text-gray-300">DUCK’S GameClub — офлайн пространство</p>
+          <p class="text-sm font-medium text-white">Эмоции</p>
+          <p class="mt-2 text-sm text-gray-400">Игра ради впечатлений</p>
         </div>
       </div>
 
@@ -186,15 +150,15 @@ const goToEvents = () => {
       <div
         class="rounded-3xl border border-white/5 bg-gradient-to-br from-white/10 to-white/5 p-6 text-center"
       >
-        <h3 class="text-lg font-semibold">Присоединяйся к событиям</h3>
+        <h3 class="text-lg font-semibold">Хочешь стать частью клуба?</h3>
 
-        <p class="mt-2 text-sm text-gray-400">Смотри афишу и участвуй в ближайших играх</p>
+        <p class="mt-2 text-sm text-gray-400">Присоединяйся к ближайшим событиям и начни играть</p>
 
         <button
           class="mt-5 rounded-2xl bg-(--primary) px-6 py-3 text-sm font-medium text-white transition hover:opacity-90"
           @click="goToEvents"
         >
-          Перейти к событиям
+          Смотреть события
         </button>
       </div>
     </div>
