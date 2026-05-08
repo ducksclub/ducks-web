@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import CalendarIcon from '~/components/icons/CalendarIcon.vue'
-import StarIcon from '~/components/icons/StarIcon.vue'
-import UserIcon from '~/components/icons/UserIcon.vue'
-import ListIcon from '~/components/icons/ListIcon.vue'
-import InfoIcon from '~/components/icons/InfoIcon.vue'
+import { Calendar, Info, List, Star, User } from '@lucide/vue'
 </script>
 
 <template>
@@ -13,35 +9,35 @@ import InfoIcon from '~/components/icons/InfoIcon.vue'
     <LayoutNavbar>
       <LayoutNavbarButton path="/events">
         <template #icon>
-          <CalendarIcon />
+          <Calendar />
         </template>
         <template #default> Афиша </template>
       </LayoutNavbarButton>
 
       <LayoutNavbarButton path="/rating">
         <template #icon>
-          <StarIcon />
+          <Star />
         </template>
         <template #default> Рейтинг </template>
       </LayoutNavbarButton>
 
       <LayoutNavbarButton path="/profile">
         <template #icon>
-          <UserIcon />
+          <User />
         </template>
         <template #default> Профиль </template>
       </LayoutNavbarButton>
 
       <LayoutNavbarButton path="/rules">
         <template #icon>
-          <ListIcon />
+          <List />
         </template>
         <template #default> Правила </template>
       </LayoutNavbarButton>
 
       <LayoutNavbarButton path="/support">
         <template #icon>
-          <InfoIcon />
+          <Info />
         </template>
         <template #default> Поддержка </template>
       </LayoutNavbarButton>
