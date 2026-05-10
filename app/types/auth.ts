@@ -27,6 +27,7 @@ export type RegisterPayload = {
   name: string
   email: string
   password: string
+  initData?: string
 }
 
 export type RegisterResponse = {
