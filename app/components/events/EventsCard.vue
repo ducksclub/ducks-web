@@ -48,7 +48,7 @@ const statusConfig = computed(() => {
         <span class="flex items-center gap-1">
           <Calendar :size="12" />
           {{
-            formatDate(event.createdAt, {
+            formatDate(event.startsAt, {
               dateStyle: 'medium',
               timeStyle: 'short',
             })
