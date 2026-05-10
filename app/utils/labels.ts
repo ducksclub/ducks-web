@@ -28,7 +28,7 @@ export const statusMap = {
   },
   published: {
     label: 'Доступен',
-    class: 'bg-(--logo-bg)/10 text-(--logo-bg) border-(--logo-bg)/20',
+    class: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20',
   },
   cancelled: {
     label: 'Отменен',
