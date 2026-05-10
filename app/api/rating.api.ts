@@ -4,7 +4,7 @@ export function useRatingApi() {
   const api = useApi()
 
   const getRating = (gameType: string) => {
-    return api.request<RatingResponse>(`/rating/${gameType}`, {
+    return api.request<RatingResponse>(`/ratings/${gameType}`, {
       method: 'GET',
     })
   }

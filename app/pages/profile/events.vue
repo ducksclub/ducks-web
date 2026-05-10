@@ -68,7 +68,7 @@ watch(selectedStatus, loadEvents, { immediate: true })
       <p class="mt-2 max-w-xs text-sm text-gray-400">Вы ещё не записались ни на одно мероприятие</p>
 
       <button
-        class="mt-6 rounded-2xl bg-(--primary) px-5 py-3 text-sm font-medium text-white transition hover:opacity-90"
+        class="mt-6 rounded-2xl bg-(--logo-bg) text-white hover:bg-(--logo-bg)/80 px-5 py-3 text-sm font-medium transition"
         @click="router.push('/events')"
       >
         Смотреть события

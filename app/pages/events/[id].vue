@@ -37,6 +37,8 @@ const fetchEvent = async () => {
   }
 }
 
+watch(isRegistered, fetchEvent)
+
 onMounted(async () => {
   await Promise.all([fetchEvent(), fetchStatus()])
 })

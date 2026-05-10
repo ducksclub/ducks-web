@@ -7,7 +7,7 @@ const props = defineProps<{
 
 const { user } = useAuthStore()
 
-const isMe = (id: string) => id === user.value?.id
+const isMe = (id: string) => id === user?.id
 
 const getInitial = (name?: string) => {
   if (!name) return '?'
