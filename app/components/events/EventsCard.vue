@@ -52,9 +52,9 @@ const gameTypeColors: Record<string, string> = {
         </span>
       </div>
 
-      <div class="mt-2 flex items-center gap-3 text-[11px] text-gray-500">
+      <div class="mt-2 flex items-center gap-3 text-[12px] text-gray-500">
         <span class="flex items-center gap-1">
-          <Calendar :size="12" />
+          <Calendar :size="16" />
           {{
             formatDate(event.startsAt, {
               dateStyle: 'medium',
