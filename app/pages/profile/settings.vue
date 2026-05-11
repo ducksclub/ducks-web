@@ -41,7 +41,9 @@ const loadProfile = async () => {
     })
 
     form.name = me?.name ?? ''
+    form.phone = me?.phone ?? ''
     form.avatar = me?.avatarUrl ?? ''
+    form.username = me?.username ?? ''
   } catch (e: any) {
     console.error(e)
     errorMessage.value = 'Не удалось загрузить профиль'
@@ -53,7 +55,7 @@ onMounted(loadProfile)
 const saveProfile = async () => {
   if (!validate(form)) return
 
-  if (isSaving.value) {
+  if (isSaving.value || isUploading.value) {
     return
   }
 
@@ -104,7 +106,12 @@ const saveProfile = async () => {
   </BaseHeader>
 
   <form @submit.prevent="saveProfile" class="space-y-6 p-4 pb-10">
-    <ImageUpload v-model="form.avatar" label="Аватар" @change="(file) => (form.file = file)" />
+    <ImageUpload
+      v-model="form.avatar"
+      :loading="isUploading"
+      label="Аватар"
+      @change="(file) => (form.file = file)"
+    />
 
     <BaseInput
       v-model="form.name"
@@ -114,7 +121,7 @@ const saveProfile = async () => {
       :error="errors.name"
     />
 
-    <!-- <BaseInput
+    <BaseInput
       v-model="form.username"
       label="Имя пользователя"
       placeholder="username"
@@ -129,7 +136,7 @@ const saveProfile = async () => {
       placeholder="+7 777 777 77 77"
       :icon="Phone"
       :error="errors.phone"
-    /> -->
+    />
 
     <div
       v-if="errorMessage"
@@ -138,7 +145,12 @@ const saveProfile = async () => {
       {{ errorMessage }}
     </div>
 
-    <BaseButton class="w-full" :loading="isSaving" :disabled="isSaving" type="submit">
+    <BaseButton
+      class="w-full"
+      :loading="isSaving || isUploading"
+      :disabled="isSaving || isUploading"
+      type="submit"
+    >
       Сохранить изменения
     </BaseButton>
   </form>

@@ -4,6 +4,8 @@ export type AuthUser = {
   avatarUrl: null
   avatarHash: null
   name: string
+  phone: string | null
+  username: string
   role: 'user' | 'admin'
   updatedAt: string
   createdAt: string
