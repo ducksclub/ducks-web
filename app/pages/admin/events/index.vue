@@ -14,8 +14,9 @@ definePageMeta({
 })
 
 const router = useRouter()
+const notify = useNotify()
 
-const { getEvents } = useEventsApi()
+const { getEvents, deleteEvent } = useEventsApi()
 
 const selectedCategory = ref()
 const selectedStatus = ref()
@@ -40,6 +41,16 @@ const fetchEvents = async () => {
   } finally {
     isLoading.value = false
   }
+}
+
+const handleDeleteEvent = async (eventId: string) => {
+  await notify.promise(deleteEvent({ id: eventId }), {
+    loading: 'Удаление...',
+    success: 'Успешно удалено',
+    error: 'Ошибка удаления',
+  })
+
+  await fetchEvents()
 }
 
 const goToCreate = () => {
@@ -104,7 +115,12 @@ watch([selectedCategory, selectedStatus], fetchEvents, {
     </div>
 
     <div v-else class="space-y-4">
-      <AdminEventCard v-for="event in events" :key="event.id" :event="event" />
+      <AdminEventCard
+        v-for="event in events"
+        :key="event.id"
+        :event="event"
+        @delete-event="handleDeleteEvent"
+      />
     </div>
   </div>
 </template>

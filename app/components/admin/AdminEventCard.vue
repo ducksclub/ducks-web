@@ -5,6 +5,10 @@ const props = defineProps<{
   event: Event
 }>()
 
+const emit = defineEmits<{
+  deleteEvent: [eventId: string]
+}>()
+
 const statusConfig = computed(() => {
   const status = props.event.status
   return statusMap[status] ?? statusMap.draft
@@ -69,6 +73,7 @@ const statusConfig = computed(() => {
         </NuxtLink>
 
         <button
+          @click="emit('deleteEvent', event.id)"
           class="flex-1 rounded-xl bg-red-500/10 py-2 text-xs font-bold text-red-400 transition hover:bg-red-500/20"
         >
           Удалить

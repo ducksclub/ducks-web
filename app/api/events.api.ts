@@ -56,6 +56,11 @@ export function useEventsApi() {
       body: payload,
     })
   }
+  const deleteEvent = (params: UpdateEventParams) => {
+    return api.request<EventResponse>(`/events/${params.id}`, {
+      method: 'DELETE',
+    })
+  }
 
   const reorderParticipants = (eventId: string, payload: ReorderParticipantsPayload) => {
     return api.request(`/events/${eventId}/participants/reorder`, {
@@ -86,6 +91,7 @@ export function useEventsApi() {
     reorderParticipants,
     updateEvent,
     createEvent,
+    deleteEvent,
     finalizeEvent,
   }
 }
