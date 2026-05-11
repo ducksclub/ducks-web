@@ -5,7 +5,9 @@ import { useUploadApi } from '~/api/upload.api'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
+import BaseInput from '~/components/ui/BaseInput.vue'
 import BaseSelect from '~/components/ui/BaseSelect.vue'
+import ImageUpload from '~/components/ui/ImageUpload.vue'
 
 import { categories } from '~/constants/categories'
 
@@ -103,124 +105,39 @@ const onFileChange = (e: Event) => {
     </template>
   </BaseHeader>
 
-  <!-- CONTENT -->
   <div class="space-y-6 p-4 pb-10">
-    <!-- IMAGE -->
-    <div>
-      <label class="mb-2 block text-sm text-gray-400"> Обложка </label>
+    <ImageUpload
+      v-model="form.imageUrl"
+      :loading="isUploading"
+      @change="(file) => (form.file = file)"
+    />
 
-      <label
-        class="group relative flex h-56 cursor-pointer items-center justify-center overflow-hidden rounded-3xl border border-dashed border-white/10 bg-(--secondary)/10 transition hover:border-(--primary)/40"
-      >
-        <NuxtImg
-          v-if="form.imageUrl"
-          :src="form.imageUrl"
-          class="absolute inset-0 h-full w-full object-cover"
-        />
+    <BaseSelect v-model="form.gameType" label="Категория" :options="categories" />
 
-        <div class="absolute inset-0 bg-black/40 opacity-0 transition group-hover:opacity-100" />
+    <BaseInput
+      v-model="form.address"
+      type="text"
+      label="Адрес"
+      placeholder="Адрес мероприятия"
+      :icon="Map"
+    />
 
-        <div
-          v-if="!form.imageUrl"
-          class="relative z-10 flex flex-col items-center gap-3 text-center"
-        >
-          <div
-            class="flex size-14 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-md"
-          >
-            <!-- IMAGE ICON -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="size-7 text-white"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="1.8"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M4 16l4-4a2 2 0 012.828 0L14 15l2-2a2 2 0 012.828 0L20 14M7 8h.01M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"
-              />
-            </svg>
-          </div>
+    <BaseInput
+      v-model="form.startsAt"
+      type="datetime-local"
+      label="Дата и время"
+      :icon="Calendar"
+    />
 
-          <div>
-            <p class="text-sm font-medium">
-              {{ form.imageUrl ? 'Изменить изображение' : 'Загрузить изображение' }}
-            </p>
+    <BaseInput
+      v-model="form.participantLimit"
+      type="text"
+      inputmode="numeric"
+      label="Лимит участников"
+      placeholder="Количество мест"
+      :icon="Users"
+    />
 
-            <p class="mt-1 text-xs text-gray-400">PNG, JPG, WEBP</p>
-          </div>
-        </div>
-
-        <input type="file" accept="image/.png,.jpg,.jpeg" class="hidden" @change="onFileChange" />
-      </label>
-
-      <p v-if="isUploading" class="mt-2 text-xs text-gray-500">Загрузка изображения...</p>
-    </div>
-
-    <!-- CATEGORY -->
-    <div>
-      <label class="mb-2 block text-sm text-gray-400"> Категория </label>
-
-      <BaseSelect v-model="form.gameType" :options="categories" />
-    </div>
-
-    <!-- ADDRESS -->
-    <div>
-      <label class="mb-2 block text-sm text-gray-400"> Локация </label>
-
-      <div
-        class="flex h-11.5 items-center gap-3 rounded-2xl border border-white/5 bg-(--secondary)/20 px-4 transition focus-within:border-(--primary)/40"
-      >
-        <Map :size="20" class="text-gray-500 shrink-0" />
-
-        <input
-          v-model="form.address"
-          placeholder="Адрес мероприятия"
-          class="h-full w-full bg-transparent outline-none text-sm"
-        />
-      </div>
-    </div>
-
-    <!-- DATE -->
-    <div>
-      <label class="mb-2 block text-sm text-gray-400"> Дата и время </label>
-
-      <div
-        class="flex h-11.5 items-center gap-3 rounded-2xl border border-white/5 bg-(--secondary)/20 px-4 transition focus-within:border-(--primary)/40"
-      >
-        <Calendar :size="20" class="text-gray-500 shrink-0" />
-
-        <input
-          v-model="form.startsAt"
-          type="datetime-local"
-          class="h-full w-full bg-transparent outline-none text-sm"
-        />
-      </div>
-    </div>
-
-    <!-- PARTICIPANTS -->
-    <div>
-      <label class="mb-2 block text-sm text-gray-400"> Лимит участников </label>
-
-      <div
-        class="flex h-11.5 items-center gap-3 rounded-2xl border border-white/5 bg-(--secondary)/20 px-4 transition focus-within:border-(--primary)/40"
-      >
-        <Users :size="20" class="text-gray-500 shrink-0" />
-
-        <input
-          v-model.number="form.participantLimit"
-          type="text"
-          inputmode="numeric"
-          min="1"
-          placeholder="Количество мест"
-          class="h-full w-full bg-transparent outline-none text-sm"
-        />
-      </div>
-    </div>
-
-    <!-- ERROR -->
     <div
       v-if="errorMessage"
       class="rounded-2xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-400"
