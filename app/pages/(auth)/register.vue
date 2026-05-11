@@ -139,9 +139,14 @@ const registerHandler = async () => {
 
       <!-- Соглашение -->
       <CheckboxAgreement v-model="form.agree">
-        Я принимаю условия
-        <span class="text-(--logo-bg) font-bold underline"> Пользовательского соглашения </span>
-        и даю согласие на обработку данных.
+        Ставя галочку, я подтверждаю свое согласие с условиями
+        <NuxtLink to="/docs/agreement.pdf" class="text-(--logo-bg) font-bold underline">
+          пользовательского соглашения
+        </NuxtLink>
+        и
+        <NuxtLink to="/docs/oferta.pdf" class="text-(--logo-bg) font-bold underline">
+          публичной оферты.
+        </NuxtLink>
       </CheckboxAgreement>
 
       <!-- Кнопка регистрации -->
