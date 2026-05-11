@@ -29,6 +29,9 @@ const isSaving = ref(false)
 const errorMessage = ref('')
 
 const form = reactive({
+  city: '',
+  gameRules: '',
+  features: '',
   address: '',
   gameType: '',
   startsAt: '',
@@ -44,6 +47,9 @@ const loadEvent = async () => {
   try {
     const event = await api.getEvent(id)
 
+    form.city = event.city ?? ''
+    form.features = event.features ?? ''
+    form.gameRules = event.gameRules ?? ''
     form.address = event.address ?? ''
     form.gameType = event.gameType ?? ''
     form.startsAt = new Date(event.startsAt).toISOString().slice(0, 16)
@@ -85,6 +91,9 @@ const updateEvent = async () => {
     await api.updateEvent(
       { id },
       {
+        city: form.city,
+        features: form.features,
+        gameRules: form.gameRules,
         address: form.address,
         gameType: form.gameType,
         startsAt: form.startsAt,
@@ -113,7 +122,7 @@ const updateEvent = async () => {
     </template>
 
     <template #default>
-      <HeaderTitle title="Создание события" />
+      <HeaderTitle title="Редактирование события" />
     </template>
   </BaseHeader>
 
@@ -129,6 +138,8 @@ const updateEvent = async () => {
     />
 
     <BaseSelect v-model="form.gameType" label="Категория" :options="categories" />
+
+    <BaseInput v-model="form.city" type="text" label="Город" placeholder="Москва" :icon="Map" />
 
     <BaseInput
       v-model="form.address"
@@ -152,6 +163,22 @@ const updateEvent = async () => {
       label="Лимит участников"
       placeholder="Количество мест"
       :icon="Users"
+    />
+
+    <BaseInput
+      v-model="form.gameRules"
+      type="text"
+      label="Правила игры"
+      placeholder="1 правило игры, 2 правило игры ..."
+      :icon="Map"
+    />
+
+    <BaseInput
+      v-model="form.features"
+      type="text"
+      label="Особенности"
+      placeholder="1 особенность, 2 особенность ..."
+      :icon="Map"
     />
 
     <div
