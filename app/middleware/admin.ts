@@ -14,6 +14,6 @@ export default defineNuxtRouteMiddleware(async () => {
   }
 
   if (!auth.isAdmin) {
-    return navigateTo('/events')
+    return navigateTo('/')
   }
 })

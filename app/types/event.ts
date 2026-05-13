@@ -1,6 +1,26 @@
+import type { PaginatedResponse } from './api'
 import type { AuthUser } from './auth'
 
-export type EventStatus = keyof typeof statusMap
+export type EventStatus = keyof typeof statusMap // delete
+
+export const EventGameType = {
+  QUIZ: 'quiz',
+  POOL: 'pool',
+  MAFIA: 'mafia',
+  POKER: 'poker',
+  DARTS: 'darts',
+} as const
+
+export type EventGameType = (typeof EventGameType)[keyof typeof EventGameType]
+
+export const EventGameStatus = {
+  DRAFT: 'draft',
+  PUBLISHED: 'published',
+  CANCELLED: 'cancelled',
+  COMPLETED: 'completed',
+} as const
+
+export type EventGameStatus = (typeof EventGameStatus)[keyof typeof EventGameStatus]
 
 export type Event = {
   id: string
@@ -8,7 +28,7 @@ export type Event = {
   imageHash: string
   city: string
   address: string
-  gameType: string
+  gameType: EventGameType
   gameRules: string
   features: string
   startsAt: string
@@ -16,7 +36,7 @@ export type Event = {
   location: string
   participantLimit: number
   pointsForParticipation: number
-  status: EventStatus
+  status: EventGameStatus
   createdAt: string
   updatedAt: string
   _count: {
@@ -24,16 +44,7 @@ export type Event = {
   }
 }
 
-export type EventsResponse = {
-  data: Event[]
-  meta: {
-    page: number
-    total: number
-    limit: number
-    pages: number
-  }
-}
-
+export type EventsResponse = PaginatedResponse<Event>
 export type EventResponse = Event
 
 export type UpdateEventParams = { id: Event['id'] }

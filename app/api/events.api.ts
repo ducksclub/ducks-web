@@ -7,7 +7,7 @@ import type {
   ReorderParticipantsPayload,
   UpdateEventParams,
   UpdateEventPayload,
-} from '~/types/events'
+} from '~/types/event'
 
 export type GetEventsParams = {
   gameType?: string
