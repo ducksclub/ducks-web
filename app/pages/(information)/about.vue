@@ -104,7 +104,7 @@ const goToEvents = () => {
 
     <!-- FRANCHISE -->
     <div
-      class="rounded-3xl border border-green-500/10 bg-linear-to-br from-green-500/10 via-(--logo-bg)/5 to-transparent p-6 transition-all duration-300 hover:border-green-500/20"
+      class="rounded-3xl border border-green-500/10 bg-linear-to-br from-green-500/10 to-transparent p-6 transition-all duration-300 hover:border-green-500/20"
     >
       <div class="flex items-center gap-3">
         <div
