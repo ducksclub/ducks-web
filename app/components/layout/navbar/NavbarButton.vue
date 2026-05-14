@@ -4,12 +4,18 @@ const props = defineProps<{
 }>()
 
 const route = inject<any>('activeRoute')
+const { impact } = useTelegramHaptics()
 
 const isActive = computed(() => route?.path === props.path)
+
+const handleClick = () => {
+  impact('light')
+}
 </script>
 
 <template>
   <NuxtLink
+    @click="handleClick"
     :to="props.path"
     class="relative flex flex-1 flex-col items-center justify-center py-1 transition active:scale-95"
   >

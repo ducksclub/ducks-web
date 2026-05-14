@@ -1,24 +1,24 @@
+interface TelegramHapticFeedback {
+  impactOccurred(style: 'light' | 'medium' | 'heavy'): void
+  notificationOccurred(type: 'success' | 'error' | 'warning'): void
+  selectionChanged(): void
+}
+
 interface TelegramWebApp {
   initData: string
-  initDataUnsafe: Record<string, any>
+  initDataUnsafe: any
   version: string
   platform: string
-  colorScheme: 'light' | 'dark'
 
   ready(): void
   expand(): void
   close(): void
 
-  MainButton: {
-    text: string
-    show(): void
-    hide(): void
-    onClick(fn: () => void): void
-  }
+  HapticFeedback: TelegramHapticFeedback
 }
 
 interface Window {
-  Telegram: {
+  Telegram?: {
     WebApp: TelegramWebApp
   }
 }
