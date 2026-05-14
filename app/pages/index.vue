@@ -27,8 +27,6 @@ const loadTopEvents = async () => {
     })
     .slice(0, 2)
 
-  console.log(nearestEvents)
-
   topEvents.value = nearestEvents
 }
 
@@ -46,8 +44,6 @@ onMounted(() => {
 
   <main class="relative z-10 space-y-5 px-4 pb-6 pt-4">
     <HomeHero />
-
-    <PwaInstallButton />
 
     <section v-if="topEvents.length" class="space-y-4">
       <div class="flex items-center justify-between px-1">
