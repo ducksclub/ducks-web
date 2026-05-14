@@ -47,6 +47,8 @@ onMounted(() => {
   <main class="relative z-10 space-y-5 px-4 pb-6 pt-4">
     <HomeHero />
 
+    <PwaInstallButton />
+
     <section v-if="topEvents.length" class="space-y-4">
       <div class="flex items-center justify-between px-1">
         <h3 class="text-[11px] font-bold uppercase tracking-[0.22em] text-gray-500">
