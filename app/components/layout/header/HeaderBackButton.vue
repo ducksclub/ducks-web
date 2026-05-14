@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { ChevronLeft } from '@lucide/vue'
 
+const { impact } = useTelegramHaptics()
 const router = useRouter()
-const goBack = () => router.back()
+
+const goBack = () => {
+  impact('light')
+  router.back()
+}
 </script>
 
 <template>

@@ -37,6 +37,8 @@ const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void
 }>()
 
+const { impact } = useTelegramHaptics()
+
 const base =
   'w-full mt-5 py-4 rounded-xl font-bold uppercase text-xs tracking-widest transition active:scale-[0.97] flex items-center justify-center'
 
@@ -53,6 +55,7 @@ const classes = computed(() => [
 ])
 
 const onClick = (e: MouseEvent) => {
+  impact('light')
   if (props.disabled || props.loading) return
   emit('click', e)
 }
