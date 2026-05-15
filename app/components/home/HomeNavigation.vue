@@ -44,7 +44,7 @@
     </NuxtLink>
 
     <NuxtLink
-      to="/training"
+      to="/training/levels"
       class="relative col-span-2 overflow-hidden rounded-2xl border border-white/5 bg-white/3 p-5 backdrop-blur-xl active:scale-[0.98] transition"
     >
       <div class="absolute inset-0 bg-linear-to-br from-red-500/20 via-red-500/5 to-transparent" />
