@@ -34,6 +34,13 @@ import { Calendar, CalendarCheck, CornerDownLeft, MessageSquare } from '@lucide/
         </template>
         <template #default> Feedback </template>
       </LayoutNavbarButton>
+
+      <LayoutNavbarButton path="/admin/content">
+        <template #icon>
+          <MessageSquare />
+        </template>
+        <template #default>Контент </template>
+      </LayoutNavbarButton>
     </LayoutNavbar>
   </div>
 </template>

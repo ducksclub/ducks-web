@@ -12,6 +12,7 @@ const props = defineProps<{
   modelValue?: string
   placeholder?: string
   error?: string
+  disabled?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -23,26 +24,47 @@ const isOpen = ref(false)
 const selected = computed(() => props.options.find((i) => i.value === props.modelValue))
 
 const selectItem = (item: Item) => {
+  if (props.disabled) return
+
   emit('update:modelValue', item.value)
+
   isOpen.value = false
+}
+
+const toggle = () => {
+  if (props.disabled) return
+
+  isOpen.value = !isOpen.value
 }
 </script>
 
 <template>
   <div>
-    <label v-if="label" class="mb-2 block text-sm text-gray-400">
+    <label
+      v-if="label"
+      class="mb-2 block text-sm"
+      :class="disabled ? 'text-gray-500' : 'text-gray-400'"
+    >
       {{ label }}
     </label>
 
     <div ref="root" class="relative w-full">
       <button
-        class="flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-sm text-white transition-all duration-200 active:scale-[0.99]"
-        :class="
-          error
-            ? 'border-red-500/40 bg-red-500/5 hover:border-red-500/60'
-            : 'border-white/5 bg-(--secondary)/20 hover:border-white/10 hover:bg-white/6'
-        "
-        @click="isOpen = !isOpen"
+        type="button"
+        :disabled="disabled"
+        class="flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-sm transition-all duration-200"
+        :class="[
+          disabled
+            ? 'cursor-not-allowed border-white/5 bg-white/5 text-gray-500 opacity-60'
+            : 'text-white active:scale-[0.99]',
+
+          error && !disabled ? 'border-red-500/40 bg-red-500/5 hover:border-red-500/60' : '',
+
+          !error && !disabled
+            ? 'border-white/5 bg-(--secondary)/20 hover:border-white/10 hover:bg-white/6'
+            : '',
+        ]"
+        @click="toggle"
       >
         <span class="truncate">
           {{ selected?.label ?? placeholder ?? 'Выберите' }}
@@ -51,7 +73,11 @@ const selectItem = (item: Item) => {
         <ChevronDown
           :size="16"
           class="transition-transform duration-200"
-          :class="[isOpen ? 'rotate-180' : '', error ? 'text-red-400' : 'text-gray-400']"
+          :class="[
+            isOpen ? 'rotate-180' : '',
+
+            disabled ? 'text-gray-600' : error ? 'text-red-400' : 'text-gray-400',
+          ]"
         />
       </button>
 
@@ -64,12 +90,13 @@ const selectItem = (item: Item) => {
         leave-to-class="scale-95 opacity-0"
       >
         <div
-          v-if="isOpen"
+          v-if="isOpen && !disabled"
           class="absolute right-0 z-50 mt-2 w-full overflow-hidden rounded-2xl border border-white/5 bg-[#14151c] p-1 shadow-[0_10px_40px_rgba(0,0,0,0.45)] backdrop-blur-2xl"
         >
           <button
             v-for="item in options"
             :key="item.value"
+            type="button"
             class="flex w-full items-center rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-all"
             :class="
               item.value === modelValue

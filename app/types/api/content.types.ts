@@ -1,20 +1,37 @@
-export const ContentKeys = {
+export const ContentType = {
   FAQ: 'faq',
   RULES: 'rules',
   ABOUT: 'about',
   POKER_LEVELS: 'poker-levels',
 } as const
 
-export type ContentKeys = (typeof ContentKeys)[keyof typeof ContentKeys]
+export type ContentType = (typeof ContentType)[keyof typeof ContentType]
 
-export type GetContentsParams = {
-  key: ContentKeys
+export type Content = {
+  id: string
+  key: ContentType
+  title: string
+  body: string
+  updatedAt: string
+  createdAt: string
 }
 
-export type GetContentsResponse = {}
+export type GetContentByIdParams = {
+  id: string
+}
 
-export type UpdateContentParams = GetContentsParams
+export type GetContentByIdResponse = Content
 
-export type UpdateContentPayload = {}
+export type GetContentsParams = {
+  key: ContentType
+}
+
+export type GetContentsResponse = Content[]
+
+export type UpdateContentParams = {
+  id: string
+}
+
+export type UpdateContentPayload = Pick<Content, 'key' | 'title' | 'body'>
 
 export type UpdateContentResponse = {}
