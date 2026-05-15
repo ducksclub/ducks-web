@@ -35,7 +35,7 @@ const submit = async () => {
         error: 'Произошла ошибка при входе в аккаунт',
       },
     )
-    await navigateTo('/events')
+    await navigateTo('/')
   } finally {
     isLoading.value = false
   }
@@ -54,7 +54,7 @@ const authByTelegram = async () => {
       error: 'Произошла ошибка при входе в аккаунт',
     })
     console.log('Before navigate')
-    await navigateTo('/events')
+    await navigateTo('/')
     console.log('After navigate')
   } finally {
     isLoading.value = false
