@@ -2,7 +2,7 @@
 import { registerSchema, type RegisterSchema } from '~/validation/register'
 import { useZodValidation } from '~/composables/useZodValidation'
 
-definePageMeta({ layout: false, middleware: 'guest' })
+definePageMeta({ layout: false })
 
 const form = ref<RegisterSchema>({
   name: '',
