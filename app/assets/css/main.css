@@ -5,6 +5,10 @@
   font-family: "Montserrat", sans-serif;
 }
 
+html, body {
+  background: var(--bg);
+}
+
 @layer base {
   :root {
     --safe-top: env(safe-area-inset-top);
