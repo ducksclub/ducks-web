@@ -23,7 +23,11 @@ const gridClass = computed(() => {
 
 <template>
   <header class="sticky top-0 z-30 border-b border-white/5 bg-(--bg)/85 backdrop-blur-2xl">
-    <div class="grid h-14 items-center px-4" :class="gridClass">
+    <div
+      class="grid h-14 items-center px-4"
+      :class="gridClass"
+      :style="{ paddingTop: 'var(--safe-top)' }"
+    >
       <div v-if="$slots.left" class="flex items-center">
         <slot name="left" />
       </div>
