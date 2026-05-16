@@ -55,7 +55,7 @@ const toggleMetroRoute = () => {
 
       <div class="mt-5 grid grid-cols-2 gap-3">
         <a
-          href="https://maps.google.com/?q=Москва,+проспект+Мира,+102с25"
+          href="https://2gis.ru/moscow/geo/4504235316232548?m=37.638322%2C55.800898%2F18.61"
           target="_blank"
           class="rounded-2xl border border-white/5 bg-white/5 p-3 text-center text-sm"
         >
