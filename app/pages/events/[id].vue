@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { useEventsApi } from '~/api/events.api'
 import { useEventRegistrationApi } from '~/api/event-registration.api'
-import type { Event } from '~/types/event'
+import { EventGameType, type Event } from '~/types/event'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
+import EventSeatModal from '~/components/events/EventSeatModal.vue'
 import { gameTypeColors } from '~/constants/categories'
 import { Calendar, Map } from '@lucide/vue'
 
@@ -24,6 +25,33 @@ const error = ref<string | null>(null)
 
 const { isRegistered, register, unregister, fetchStatus, isLoading } =
   useEventRegistrationApi(eventId)
+
+const {
+  seatInfo,
+  isSeatLoading,
+  seatError,
+  isSeatModalOpen,
+  openSeatModal,
+  closeSeatModal,
+} = useEventSeat(eventId)
+
+const isPokerEvent = computed(() => event.value?.gameType === EventGameType.POKER)
+
+const seatingTotalSeats = computed(() => {
+  if (!isPokerEvent.value || !event.value?.seatsPerTable) return null
+
+  return event.value.maxParticipants ?? event.value.participantLimit ?? null
+})
+
+const seatingTableCount = computed(() => {
+  if (!seatingTotalSeats.value || !event.value?.seatsPerTable) return null
+
+  return event.value.tableCount ?? Math.ceil(seatingTotalSeats.value / event.value.seatsPerTable)
+})
+
+const hasSeatingInfo = computed(() => {
+  return Boolean(isPokerEvent.value && seatingTableCount.value && event.value?.seatsPerTable)
+})
 
 const fetchEvent = async () => {
   try {
@@ -46,7 +74,24 @@ const toList = (value?: string) => {
     .filter(Boolean)
 }
 
-watch(isRegistered, fetchEvent)
+const registerForEvent = async () => {
+  try {
+    await register()
+    await fetchEvent()
+  } catch (e: any) {
+    useNotify().error(e?.data?.message || e?.message || 'Не удалось записаться на событие')
+  }
+}
+
+const unregisterFromEvent = async () => {
+  try {
+    await unregister()
+    closeSeatModal()
+    await fetchEvent()
+  } catch (e: any) {
+    useNotify().error(e?.data?.message || e?.message || 'Не удалось отменить запись')
+  }
+}
 
 onMounted(async () => {
   await Promise.all([fetchEvent(), fetchStatus()])
@@ -167,20 +212,61 @@ onMounted(async () => {
             {{ event._count?.registrations }} / {{ event.participantLimit }}
           </p>
         </div>
+
+        <div
+          v-if="hasSeatingInfo"
+          class="rounded-2xl border border-white/5 bg-(--secondary)/20 p-4"
+        >
+          <p class="text-[10px] text-gray-500 uppercase tracking-widest">Посадка</p>
+          <p class="mt-1 text-sm font-bold text-white">
+            {{ seatingTableCount }} столов · по {{ event.seatsPerTable }} мест
+          </p>
+          <p v-if="seatingTotalSeats" class="mt-1 text-xs text-gray-400">
+            Всего мест: {{ seatingTotalSeats }}
+          </p>
+        </div>
       </div>
 
       <!-- CTA -->
       <div v-if="event.status === 'published'" class="pt-2">
-        <BaseButton v-if="!isRegistered" :disabled="isLoading" class="w-full" @click="register">
+        <BaseButton
+          v-if="!isRegistered"
+          :loading="isLoading"
+          :disabled="isLoading"
+          class="w-full"
+          @click="registerForEvent"
+        >
           Участвовать
         </BaseButton>
+
+        <div v-else-if="isPokerEvent" class="space-y-3">
+          <BaseButton
+            :loading="isSeatLoading"
+            :disabled="isSeatLoading || isLoading"
+            class="w-full mt-0"
+            @click="openSeatModal"
+          >
+            Узнать место
+          </BaseButton>
+
+          <BaseButton
+            variant="secondary"
+            :loading="isLoading"
+            :disabled="isLoading || isSeatLoading"
+            class="w-full mt-0"
+            @click="unregisterFromEvent"
+          >
+            Отменить запись
+          </BaseButton>
+        </div>
 
         <BaseButton
           v-else
           variant="secondary"
+          :loading="isLoading"
           :disabled="isLoading"
           class="w-full"
-          @click="unregister"
+          @click="unregisterFromEvent"
         >
           Отменить запись
         </BaseButton>
@@ -193,6 +279,13 @@ onMounted(async () => {
       >
         Событие недоступно
       </div>
+
+      <EventSeatModal
+        :open="isSeatModalOpen"
+        :seat-info="seatInfo"
+        :error="seatError"
+        @close="closeSeatModal"
+      />
     </div>
   </div>
 </template>

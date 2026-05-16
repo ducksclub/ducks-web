@@ -36,6 +36,9 @@ export type Event = {
   endsAt: string
   location: string
   participantLimit: number
+  maxParticipants?: number
+  seatsPerTable?: number
+  tableCount?: number
   pointsForParticipation: number
   status: EventGameStatus
   createdAt: string

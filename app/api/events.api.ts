@@ -8,6 +8,7 @@ import type {
   UpdateEventParams,
   UpdateEventPayload,
 } from '~/types/event'
+import type { MySeatResponse } from '~/types/event-seat'
 
 export type GetEventsParams = {
   gameType?: string
@@ -50,6 +51,12 @@ export function useEventsApi() {
     })
   }
 
+  const getMyEventSeat = (eventId: string) => {
+    return api.request<MySeatResponse>(`/events/${eventId}/my-seat`, {
+      method: 'GET',
+    })
+  }
+
   const updateEvent = (params: UpdateEventParams, payload: UpdateEventPayload) => {
     return api.request<EventResponse>(`/events/${params.id}`, {
       method: 'PATCH',
@@ -84,6 +91,7 @@ export function useEventsApi() {
 
   return {
     getEvent,
+    getMyEventSeat,
     getEvents,
     getMyEvents,
     getActiveEventsNow,
