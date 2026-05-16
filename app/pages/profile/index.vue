@@ -47,8 +47,8 @@ onMounted(async () => {
         {{ getInitial(user?.name) }}
       </div>
 
-      <h2 class="mt-4 text-xl font-black uppercase tracking-wide">
-        {{ user?.name }}
+      <h2 class="mt-4 text-xl font-black tracking-wide">
+        {{ user?.username ?? user?.name }}
       </h2>
 
       <p class="mt-1 text-[10px] font-bold tracking-[0.25em] text-(--logo-bg)">

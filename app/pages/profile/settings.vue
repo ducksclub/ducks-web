@@ -113,10 +113,11 @@ const saveProfile = async () => {
 
     <BaseInput
       v-model="form.username"
-      label="Имя пользователя"
+      label="Ваш никнейм"
       placeholder="username"
       :icon="AtSign"
       :error="errors.username"
+      hint="имя которое используете в игре"
     />
 
     <BaseInput

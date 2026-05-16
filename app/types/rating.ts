@@ -9,6 +9,7 @@ export type Rating = {
     id: string
     email: string
     name: string
+    username: string
   }
 }
 

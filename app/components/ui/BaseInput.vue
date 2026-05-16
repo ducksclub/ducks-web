@@ -8,6 +8,7 @@ withDefaults(
     placeholder?: string
     disabled?: boolean
     error?: string
+    hint?: string
     icon?: Component
   }>(),
   {
@@ -63,6 +64,10 @@ const onInput = (event: Event) => {
 
     <p v-if="error" class="mt-2 text-xs text-red-400">
       {{ error }}
+    </p>
+
+    <p v-else-if="hint" class="mt-2 text-xs leading-relaxed text-gray-500">
+      {{ hint }}
     </p>
   </div>
 </template>

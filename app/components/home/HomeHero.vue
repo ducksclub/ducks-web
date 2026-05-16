@@ -36,7 +36,7 @@ import { ArrowUpRight } from '@lucide/vue'
 
       <button
         @click="navigateTo('/events')"
-        class="mt-4 flex items-center gap-2 rounded-2xl bg-white/90 text-black px-5 py-3 text-sm font-bold transition active:scale-[0.98] hover:bg-white"
+        class="mt-4 flex items-center gap-2 rounded-2xl bg-white/70 px-5 py-3 text-sm font-bold text-black transition hover:bg-white/80 active:scale-[0.98]"
       >
         Открыть афишу
 
