@@ -1,8 +1,12 @@
+export type PromoLinkType = 'PUBLIC_SITE' | 'TELEGRAM_BOT' | 'TELEGRAM_MINI_APP'
+
 export type PromoLink = {
   id: string
   name: string
+  type: PromoLinkType
   code: string
   url: string
+  targetUrl?: string | null
   clicksCount: number
   registrationsCount: number
   conversionRate: number
@@ -12,12 +16,22 @@ export type PromoLink = {
 
 export type CreatePromoLinkPayload = {
   name: string
+  type: PromoLinkType
   code?: string
+  targetUrl?: string
 }
 
 export type UpdatePromoLinkPayload = {
   name?: string
+  type?: PromoLinkType
+  targetUrl?: string
   isActive?: boolean
+}
+
+export type TrackPromoClickPayload = {
+  code: string
+  type: PromoLinkType
+  telegramUserId?: number | string
 }
 
 export function usePromoLinksApi() {
@@ -25,6 +39,12 @@ export function usePromoLinksApi() {
 
   const getPromoLinks = () => {
     return api.request<PromoLink[]>('/admin/promo-links', {
+      method: 'GET',
+    })
+  }
+
+  const getPromoLink = (id: string) => {
+    return api.request<PromoLink>(`/admin/promo-links/${id}`, {
       method: 'GET',
     })
   }
@@ -43,16 +63,17 @@ export function usePromoLinksApi() {
     })
   }
 
-  const trackPromoClick = (code: string) => {
-    return api.request<void, { code: string }>('/promo-links/track-click', {
+  const trackPromoClick = (payload: TrackPromoClickPayload) => {
+    return api.request<void, TrackPromoClickPayload>('/promo-links/track-click', {
       method: 'POST',
-      body: { code },
+      body: payload,
       auth: false,
     })
   }
 
   return {
     getPromoLinks,
+    getPromoLink,
     createPromoLink,
     updatePromoLink,
     trackPromoClick,

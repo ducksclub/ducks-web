@@ -2,7 +2,6 @@
 onMounted(() => {
   window.Telegram?.WebApp.ready()
   window.Telegram?.WebApp.expand()
-  initPromoCodeTracking()
 })
 </script>
 

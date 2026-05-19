@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  BarChart3,
   Check,
   Copy,
   Link2,
@@ -9,7 +10,12 @@ import {
   RefreshCw,
   X,
 } from '@lucide/vue'
-import { usePromoLinksApi, type PromoLink } from '~/api/promoLinksApi'
+import {
+  usePromoLinksApi,
+  type CreatePromoLinkPayload,
+  type PromoLink,
+  type PromoLinkType,
+} from '~/api/promoLinksApi'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 
@@ -18,7 +24,10 @@ definePageMeta({
   middleware: 'admin',
 })
 
+const PROMO_CODE_PATTERN = /^[a-zA-Z0-9_-]{2,64}$/
+
 const notify = useNotify()
+const config = useRuntimeConfig()
 const { getPromoLinks, createPromoLink, updatePromoLink } = usePromoLinksApi()
 
 const promoLinks = ref<PromoLink[]>([])
@@ -27,11 +36,53 @@ const isSubmitting = ref(false)
 const errorMessage = ref('')
 const isCreateModalOpen = ref(false)
 const copiedCode = ref('')
+const selectedType = ref<PromoLinkType | 'ALL'>('ALL')
 const togglingIds = ref<Set<string>>(new Set())
 
-const form = reactive({
+const form = reactive<CreatePromoLinkPayload>({
   name: '',
+  type: 'PUBLIC_SITE',
   code: '',
+  targetUrl: '/',
+})
+
+const typeOptions: { label: string; shortLabel: string; value: PromoLinkType | 'ALL' }[] = [
+  { label: 'Все', shortLabel: 'Все', value: 'ALL' },
+  { label: 'Публичный сайт', shortLabel: 'Сайт', value: 'PUBLIC_SITE' },
+  { label: 'Telegram Bot', shortLabel: 'Bot', value: 'TELEGRAM_BOT' },
+  { label: 'Telegram Mini App', shortLabel: 'Mini App', value: 'TELEGRAM_MINI_APP' },
+]
+
+const createTypeOptions = typeOptions.filter((option) => option.value !== 'ALL') as {
+  label: string
+  shortLabel: string
+  value: PromoLinkType
+}[]
+
+const getTypeOption = (type: PromoLinkType) => {
+  return typeOptions.find((option) => option.value === type) || typeOptions[1]
+}
+
+const filteredPromoLinks = computed(() => {
+  if (selectedType.value === 'ALL') return promoLinks.value
+
+  return promoLinks.value.filter((link) => link.type === selectedType.value)
+})
+
+const summary = computed(() => {
+  const clicksCount = promoLinks.value.reduce((sum, link) => sum + Number(link.clicksCount || 0), 0)
+  const registrationsCount = promoLinks.value.reduce(
+    (sum, link) => sum + Number(link.registrationsCount || 0),
+    0,
+  )
+  const conversionRate = clicksCount ? (registrationsCount / clicksCount) * 100 : 0
+
+  return {
+    total: promoLinks.value.length,
+    clicksCount,
+    registrationsCount,
+    conversionRate,
+  }
 })
 
 const fetchPromoLinks = async () => {
@@ -49,7 +100,9 @@ const fetchPromoLinks = async () => {
 
 const resetForm = () => {
   form.name = ''
+  form.type = 'PUBLIC_SITE'
   form.code = ''
+  form.targetUrl = '/'
 }
 
 const openCreateModal = () => {
@@ -65,27 +118,36 @@ const closeCreateModal = () => {
 
 const createLink = async () => {
   const name = form.name.trim()
-  const code = form.code.trim()
+  const code = form.code?.trim()
+  const targetUrl = form.targetUrl?.trim()
 
   if (!name) {
     notify.error('Введите название ссылки')
     return
   }
 
+  if (code && !PROMO_CODE_PATTERN.test(code)) {
+    notify.error('Code должен содержать 2-64 символа: буквы, цифры, _ или -')
+    return
+  }
+
   isSubmitting.value = true
 
   try {
-    const createdLink = await createPromoLink({
+    const payload: CreatePromoLinkPayload = {
       name,
+      type: form.type,
       ...(code ? { code } : {}),
-    })
+      ...(form.type === 'PUBLIC_SITE' && targetUrl ? { targetUrl } : {}),
+    }
+    const createdLink = await createPromoLink(payload)
 
     isCreateModalOpen.value = false
     resetForm()
     await fetchPromoLinks()
     notify.success('Промо-ссылка создана')
 
-    if (createdLink?.url) {
+    if (createdLink?.url || createdLink?.code) {
       await copyLink(createdLink)
     }
   } catch (error: any) {
@@ -95,9 +157,32 @@ const createLink = async () => {
   }
 }
 
+const getPublicSiteUrl = () => {
+  const configuredUrl = String(config.public.siteUrl || '').trim()
+
+  if (configuredUrl) return configuredUrl
+  if (process.client) return window.location.origin
+
+  return ''
+}
+
+const getDisplayUrl = (link: PromoLink) => {
+  if (link.url) return link.url
+
+  if (link.type !== 'PUBLIC_SITE') return link.code
+
+  const baseUrl = getPublicSiteUrl()
+  if (!baseUrl) return link.code
+
+  const url = new URL(link.targetUrl || '/', baseUrl)
+  url.searchParams.set('promo', link.code)
+
+  return url.toString()
+}
+
 const copyLink = async (link: PromoLink) => {
   try {
-    await navigator.clipboard.writeText(link.url)
+    await navigator.clipboard.writeText(getDisplayUrl(link))
     copiedCode.value = link.code
     notify.success('Скопировано')
 
@@ -172,8 +257,8 @@ onMounted(fetchPromoLinks)
         <h1 class="text-2xl font-bold text-white">Промо-ссылки</h1>
 
         <p class="mt-2 text-sm leading-relaxed text-gray-400">
-          Создавайте ссылки для рекламы, Telegram-чатов и каналов. Система будет считать переходы
-          и регистрации по каждому источнику.
+          Создавайте ссылки для Telegram-бота, mini app и публичного сайта. Система будет считать
+          переходы, регистрации и конверсию по каждому источнику.
         </p>
       </div>
 
@@ -184,6 +269,47 @@ onMounted(fetchPromoLinks)
       >
         <Plus class="h-4 w-4" />
         Создать ссылку
+      </button>
+    </section>
+
+    <section class="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <div class="rounded-2xl border border-white/10 bg-(--secondary)/15 p-4">
+        <p class="text-xs text-gray-400">Всего ссылок</p>
+        <p class="mt-2 text-2xl font-bold text-white">{{ summary.total }}</p>
+      </div>
+
+      <div class="rounded-2xl border border-white/10 bg-(--secondary)/15 p-4">
+        <p class="text-xs text-gray-400">Всего переходов</p>
+        <p class="mt-2 text-2xl font-bold text-white">{{ summary.clicksCount }}</p>
+      </div>
+
+      <div class="rounded-2xl border border-white/10 bg-(--secondary)/15 p-4">
+        <p class="text-xs text-gray-400">Всего регистраций</p>
+        <p class="mt-2 text-2xl font-bold text-white">{{ summary.registrationsCount }}</p>
+      </div>
+
+      <div class="rounded-2xl border border-white/10 bg-(--secondary)/15 p-4">
+        <p class="text-xs text-gray-400">Средняя конверсия</p>
+        <p class="mt-2 text-2xl font-bold text-white">
+          {{ formatConversion(summary.conversionRate) }}
+        </p>
+      </div>
+    </section>
+
+    <section class="flex gap-2 overflow-x-auto pb-1">
+      <button
+        v-for="option in typeOptions"
+        :key="option.value"
+        class="shrink-0 rounded-2xl border px-4 py-2 text-sm font-medium transition"
+        :class="
+          selectedType === option.value
+            ? 'border-(--accent) bg-(--accent)/15 text-white'
+            : 'border-white/10 bg-white/5 text-gray-400 hover:text-white'
+        "
+        type="button"
+        @click="selectedType = option.value"
+      >
+        {{ option.label }}
       </button>
     </section>
 
@@ -216,7 +342,7 @@ onMounted(fetchPromoLinks)
       <p class="mt-4 text-lg font-medium text-white">Промо-ссылок пока нет</p>
 
       <p class="mt-2 max-w-sm text-sm text-gray-400">
-        Создайте первую ссылку для рекламы или Telegram-источника.
+        Создайте первую ссылку для Telegram или публичного сайта.
       </p>
 
       <button
@@ -229,12 +355,22 @@ onMounted(fetchPromoLinks)
       </button>
     </section>
 
+    <section
+      v-else-if="!filteredPromoLinks.length"
+      class="rounded-3xl border border-dashed border-white/10 px-6 py-16 text-center"
+    >
+      <BarChart3 class="mx-auto h-10 w-10 text-gray-500" />
+      <p class="mt-4 text-lg font-medium text-white">Нет ссылок этого типа</p>
+      <p class="mt-2 text-sm text-gray-400">Выберите другой фильтр или создайте новую ссылку.</p>
+    </section>
+
     <section v-else>
       <div class="hidden overflow-hidden rounded-2xl border border-white/10 md:block">
         <table class="w-full border-collapse text-left text-sm">
           <thead class="bg-white/5 text-xs uppercase text-gray-400">
             <tr>
               <th class="px-4 py-3 font-semibold">Название</th>
+              <th class="px-4 py-3 font-semibold">Тип</th>
               <th class="px-4 py-3 font-semibold">Code</th>
               <th class="px-4 py-3 font-semibold">Ссылка</th>
               <th class="px-4 py-3 font-semibold">Переходы</th>
@@ -247,15 +383,21 @@ onMounted(fetchPromoLinks)
           </thead>
 
           <tbody class="divide-y divide-white/10">
-            <tr v-for="link in promoLinks" :key="link.id" class="bg-(--secondary)/10">
+            <tr v-for="link in filteredPromoLinks" :key="link.id" class="bg-(--secondary)/10">
               <td class="max-w-44 px-4 py-4 font-medium text-white">
                 <span class="line-clamp-2">{{ link.name }}</span>
+              </td>
+
+              <td class="px-4 py-4">
+                <span class="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-gray-200">
+                  {{ getTypeOption(link.type).shortLabel }}
+                </span>
               </td>
 
               <td class="px-4 py-4 font-mono text-xs text-gray-300">{{ link.code }}</td>
 
               <td class="max-w-64 px-4 py-4">
-                <span class="block truncate text-xs text-gray-400">{{ link.url }}</span>
+                <span class="block truncate text-xs text-gray-400">{{ getDisplayUrl(link) }}</span>
               </td>
 
               <td class="px-4 py-4 text-white">{{ link.clicksCount }}</td>
@@ -300,15 +442,22 @@ onMounted(fetchPromoLinks)
 
       <div class="space-y-3 md:hidden">
         <article
-          v-for="link in promoLinks"
+          v-for="link in filteredPromoLinks"
           :key="link.id"
           class="rounded-2xl border border-white/10 bg-(--secondary)/15 p-4"
         >
           <div class="flex items-start justify-between gap-3">
             <div class="min-w-0">
-              <h2 class="line-clamp-2 text-base font-semibold text-white">{{ link.name }}</h2>
+              <div class="flex items-center gap-2">
+                <span
+                  class="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-gray-200"
+                >
+                  {{ getTypeOption(link.type).shortLabel }}
+                </span>
+                <span class="font-mono text-xs text-gray-400">{{ link.code }}</span>
+              </div>
 
-              <p class="mt-1 font-mono text-xs text-gray-400">{{ link.code }}</p>
+              <h2 class="mt-2 line-clamp-2 text-base font-semibold text-white">{{ link.name }}</h2>
             </div>
 
             <button
@@ -327,7 +476,7 @@ onMounted(fetchPromoLinks)
           </div>
 
           <p class="mt-3 truncate rounded-xl bg-black/20 px-3 py-2 text-xs text-gray-300">
-            {{ link.url }}
+            {{ getDisplayUrl(link) }}
           </p>
 
           <dl class="mt-4 grid grid-cols-3 gap-2 text-center">
@@ -374,7 +523,7 @@ onMounted(fetchPromoLinks)
       @click.self="closeCreateModal"
     >
       <form
-        class="w-full rounded-3xl border border-white/10 bg-(--bg) p-5 shadow-2xl sm:max-w-md"
+        class="max-h-[calc(100vh-2rem)] w-full overflow-y-auto rounded-3xl border border-white/10 bg-(--bg) p-5 shadow-2xl sm:max-w-md"
         @submit.prevent="createLink"
       >
         <div class="flex items-start justify-between gap-4">
@@ -382,7 +531,7 @@ onMounted(fetchPromoLinks)
             <h2 class="text-lg font-bold text-white">Создать ссылку</h2>
 
             <p class="mt-1 text-sm text-gray-400">
-              Если code оставить пустым, backend создаст его автоматически.
+              Выберите тип ссылки. Если code оставить пустым, backend создаст его автоматически.
             </p>
           </div>
 
@@ -399,16 +548,37 @@ onMounted(fetchPromoLinks)
 
         <div class="mt-5 space-y-4">
           <label class="block">
-            <span class="text-xs font-semibold uppercase text-gray-400">Название ссылки</span>
+            <span class="text-xs font-semibold uppercase text-gray-400">Название</span>
             <input
               v-model="form.name"
               class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-600 focus:border-(--accent)"
               type="text"
-              placeholder="Telegram канал"
+              placeholder="Instagram реклама"
               :disabled="isSubmitting"
               autocomplete="off"
             />
           </label>
+
+          <div>
+            <span class="text-xs font-semibold uppercase text-gray-400">Тип ссылки</span>
+            <div class="mt-2 grid grid-cols-1 gap-2">
+              <button
+                v-for="option in createTypeOptions"
+                :key="option.value"
+                class="rounded-2xl border px-4 py-3 text-left text-sm transition"
+                :class="
+                  form.type === option.value
+                    ? 'border-(--accent) bg-(--accent)/15 text-white'
+                    : 'border-white/10 bg-white/5 text-gray-400 hover:text-white'
+                "
+                type="button"
+                :disabled="isSubmitting"
+                @click="form.type = option.value"
+              >
+                {{ option.label }}
+              </button>
+            </div>
+          </div>
 
           <label class="block">
             <span class="text-xs font-semibold uppercase text-gray-400">Code, optional</span>
@@ -417,6 +587,19 @@ onMounted(fetchPromoLinks)
               class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-600 focus:border-(--accent)"
               type="text"
               placeholder="tg_channel_01"
+              :disabled="isSubmitting"
+              autocomplete="off"
+            />
+            <span class="mt-2 block text-xs text-gray-500">2-64 символа: буквы, цифры, _ или -</span>
+          </label>
+
+          <label v-if="form.type === 'PUBLIC_SITE'" class="block">
+            <span class="text-xs font-semibold uppercase text-gray-400">Target URL</span>
+            <input
+              v-model="form.targetUrl"
+              class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-600 focus:border-(--accent)"
+              type="text"
+              placeholder="/register"
               :disabled="isSubmitting"
               autocomplete="off"
             />

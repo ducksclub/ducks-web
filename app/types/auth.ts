@@ -20,6 +20,7 @@ export type LoginPayload = {
 
 export type LoginViaTelegramPayload = {
   initData: string
+  promoCode?: string
 }
 
 export type LoginResponse = {

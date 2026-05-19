@@ -7,12 +7,12 @@ import type {
   LoginViaTelegramPayload,
   UpdateProfilePayload,
 } from '~/types/auth'
-import { clearSavedPromoCode, getSavedPromoCode } from '~/utils/promoCode'
 
 export const useAuthStore = defineStore(
   'auth',
   () => {
     const api = useApi()
+    const promo = usePromoCode()
 
     const token = ref<string | null>(null)
     const user = ref<MeResponse | null>(null)
@@ -45,16 +45,19 @@ export const useAuthStore = defineStore(
     }
 
     async function loginViaTelegram() {
-      const initData = window.Telegram.WebApp.initData
+      const initData = window.Telegram?.WebApp?.initData
 
       if (!initData) {
         throw new Error('Telegram initData missing')
       }
 
+      const promoCode = promo.getSavedPromoCode()
+
       const response = await api.request<LoginResponse, LoginViaTelegramPayload>('/auth/telegram', {
         method: 'POST',
         body: {
           initData,
+          ...(promoCode ? { promoCode } : {}),
         },
         auth: false,
       })
@@ -93,7 +96,7 @@ export const useAuthStore = defineStore(
 
     async function register(payload: RegisterPayload) {
       const initData = window.Telegram?.WebApp?.initData
-      const promoCode = getSavedPromoCode()
+      const promoCode = promo.getSavedPromoCode()
 
       const response = await api.request<RegisterResponse, RegisterPayload>('/auth/register', {
         method: 'POST',
@@ -104,7 +107,7 @@ export const useAuthStore = defineStore(
       token.value = response.token
 
       await fetchMe()
-      clearSavedPromoCode()
+      promo.clearPromoCode()
 
       return response
     }
