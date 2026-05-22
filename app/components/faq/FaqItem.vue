@@ -15,7 +15,6 @@ const toggle = () => {
 
 <template>
   <div class="bg-(--secondary)/20 rounded-2xl border border-white/5 overflow-hidden transition">
-    <!-- HEADER -->
     <button
       @click="toggle"
       @keydown.enter.prevent="toggle"
@@ -39,7 +38,6 @@ const toggle = () => {
       </svg>
     </button>
 
-    <!-- CONTENT (animated) -->
     <transition
       enter-active-class="transition-all duration-300 ease-out"
       leave-active-class="transition-all duration-200 ease-in"
