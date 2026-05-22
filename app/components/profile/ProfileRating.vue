@@ -14,15 +14,15 @@ const props = withDefaults(
 
 const defaultRatings: RatingItem[] = [
   {
-    gameType: 'Бильярд',
+    gameType: 'pool',
     points: 0,
   },
   {
-    gameType: 'Покер',
+    gameType: 'poker',
     points: 0,
   },
   {
-    gameType: 'Дартс',
+    gameType: 'darts',
     points: 0,
   },
 ]
