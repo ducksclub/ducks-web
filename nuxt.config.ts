@@ -22,6 +22,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBaseUrl: publicApiBaseUrl,
+      backendBaseUrl: backendApiUrl,
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL,
     },
   },
