@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Calendar, CalendarCheck, CornerDownLeft, Link2, Menu, MessageSquare } from '@lucide/vue'
+import { Calendar, CornerDownLeft, Link2, Menu } from '@lucide/vue'
 </script>
 
 <template>
