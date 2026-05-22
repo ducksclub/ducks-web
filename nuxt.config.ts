@@ -24,11 +24,11 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      script: [
-        {
-          src: 'https://telegram.org/js/telegram-web-app.js',
-        },
-      ],
+      // script: [
+      //   {
+      //     src: 'https://telegram.org/js/telegram-web-app.js',
+      //   },
+      // ],
       meta: [
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
         { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
