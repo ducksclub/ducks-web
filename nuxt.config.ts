@@ -46,6 +46,11 @@ export default defineNuxtConfig({
         },
       ],
       link: [{ rel: 'apple-touch-icon', href: '/192.png' }],
+      script: [
+        {
+          src: 'https://telegram.org/js/telegram-web-app.js',
+        },
+      ],
     },
   },
 
