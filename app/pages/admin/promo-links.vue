@@ -1,15 +1,5 @@
 <script setup lang="ts">
-import {
-  BarChart3,
-  Check,
-  Copy,
-  Link2,
-  Loader2,
-  Plus,
-  Power,
-  RefreshCw,
-  X,
-} from '@lucide/vue'
+import { BarChart3, Check, Copy, Link2, Loader2, Plus, Power, RefreshCw, X } from '@lucide/vue'
 import {
   usePromoLinksApi,
   type CreatePromoLinkPayload,
@@ -17,6 +7,8 @@ import {
   type PromoLinkType,
 } from '~/api/promoLinksApi'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
+import HeaderMenu from '~/components/layout/header/HeaderMenu.vue'
+import HeaderMenuItem from '~/components/layout/header/HeaderMenuItem.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 
 definePageMeta({
@@ -240,38 +232,13 @@ onMounted(fetchPromoLinks)
     </template>
 
     <template #right>
-      <button
-        class="flex h-10 w-10 items-center justify-center rounded-2xl bg-(--logo-bg) text-white transition hover:opacity-90 active:scale-95"
-        type="button"
-        aria-label="Создать ссылку"
-        @click="openCreateModal"
-      >
-        <Plus class="h-5 w-5" />
-      </button>
+      <HeaderMenu>
+        <HeaderMenuItem @click="openCreateModal">Создать ссылку</HeaderMenuItem>
+      </HeaderMenu>
     </template>
   </BaseHeader>
 
   <main class="space-y-6 p-4 sm:p-6">
-    <section class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-      <div class="max-w-2xl">
-        <h1 class="text-2xl font-bold text-white">Промо-ссылки</h1>
-
-        <p class="mt-2 text-sm leading-relaxed text-gray-400">
-          Создавайте ссылки для Telegram-бота, mini app и публичного сайта. Система будет считать
-          переходы, регистрации и конверсию по каждому источнику.
-        </p>
-      </div>
-
-      <button
-        class="inline-flex items-center justify-center gap-2 rounded-2xl bg-(--logo-bg) px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90 active:scale-95"
-        type="button"
-        @click="openCreateModal"
-      >
-        <Plus class="h-4 w-4" />
-        Создать ссылку
-      </button>
-    </section>
-
     <section class="grid grid-cols-2 gap-3 lg:grid-cols-4">
       <div class="rounded-2xl border border-white/10 bg-(--secondary)/15 p-4">
         <p class="text-xs text-gray-400">Всего ссылок</p>
@@ -389,8 +356,10 @@ onMounted(fetchPromoLinks)
               </td>
 
               <td class="px-4 py-4">
-                <span class="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-gray-200">
-                  {{ getTypeOption(link.type).shortLabel }}
+                <span
+                  class="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-gray-200"
+                >
+                  {{ getTypeOption(link.type)?.shortLabel || link.type }}
                 </span>
               </td>
 
@@ -452,7 +421,7 @@ onMounted(fetchPromoLinks)
                 <span
                   class="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-gray-200"
                 >
-                  {{ getTypeOption(link.type).shortLabel }}
+                  {{ getTypeOption(link.type)?.shortLabel || link.type }}
                 </span>
                 <span class="font-mono text-xs text-gray-400">{{ link.code }}</span>
               </div>
@@ -590,7 +559,9 @@ onMounted(fetchPromoLinks)
               :disabled="isSubmitting"
               autocomplete="off"
             />
-            <span class="mt-2 block text-xs text-gray-500">2-64 символа: буквы, цифры, _ или -</span>
+            <span class="mt-2 block text-xs text-gray-500"
+              >2-64 символа: буквы, цифры, _ или -</span
+            >
           </label>
 
           <label v-if="form.type === 'PUBLIC_SITE'" class="block">
