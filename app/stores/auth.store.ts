@@ -101,7 +101,11 @@ export const useAuthStore = defineStore(
 
       const response = await api.request<RegisterResponse, RegisterPayload>('/auth/register', {
         method: 'POST',
-        body: { ...payload, initData, ...(promoCode ? { promoCode } : {}) },
+        body: {
+          ...payload,
+          ...(initData ? { initData } : {}),
+          ...(promoCode ? { promoCode } : {}),
+        },
         auth: false,
       })
 
