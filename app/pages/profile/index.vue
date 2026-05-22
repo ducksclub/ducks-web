@@ -6,6 +6,10 @@ definePageMeta({
   middleware: 'auth',
 })
 
+useHead({
+  title: "Duck's | Профиль",
+})
+
 const { user, logout, isAdmin } = useAuthStore()
 const router = useRouter()
 
@@ -34,75 +38,31 @@ onMounted(async () => {
   </BaseHeader>
 
   <div class="p-6 space-y-8">
-    <div class="rounded-2xl border border-white/5 bg-(--secondary)/20 p-8 text-center">
-      <NuxtImg
-        v-if="user?.avatarUrl"
-        class="mx-auto flex size-24 items-center justify-center rounded-3xl border border-(--logo-bg)/30 bg-black select-none"
-        :src="renderPicture(user.avatarUrl)"
-      />
-      <div
-        v-else
-        class="mx-auto flex size-24 items-center justify-center rounded-3xl border border-(--logo-bg)/30 bg-black text-4xl font-black"
-      >
-        {{ getInitial(user?.name) }}
-      </div>
-
-      <h2 class="mt-4 text-xl font-black tracking-wide">
-        {{ user?.username ?? user?.name }}
-      </h2>
-
-      <p class="mt-1 text-[10px] font-bold tracking-[0.25em] text-(--logo-bg)">
-        ID: {{ user?.id }}
-      </p>
-    </div>
+    <ProfileCard :username="user?.username!" :photo-url="user?.avatarUrl" />
+    <ProfileRating :ratings="user?.ratings ?? []" />
 
     <div class="space-y-3">
-      <p class="text-[10px] font-black uppercase tracking-[0.25em] text-gray-500">Рейтинг</p>
+      <p class="px-1 text-[10px] font-black uppercase tracking-[0.25em] text-gray-500">Навигация</p>
 
-      <div class="grid grid-cols-3 gap-3">
-        <div
-          v-for="s in user?.ratings"
-          :key="s.gameType"
-          class="relative rounded-2xl border border-white/5 bg-(--secondary)/20 p-4"
-        >
-          <div
-            class="relative text-center text-[10px] font-black uppercase tracking-widest text-gray-500"
-          >
-            {{ getGameLabel(s.gameType) }}
-          </div>
+      <div class="space-y-2">
+        <ProfileNavigationButton
+          v-if="isAdmin"
+          :title="'Кабинет админа'"
+          :subtitle="'Управление событиями'"
+          variant="admin"
+          @click="go('/admin/events')"
+        />
 
-          <div class="relative text-center mt-1 text-2xl font-black text-(--logo-bg)">
-            {{ s.points }}
-          </div>
-        </div>
+        <ProfileNavigationButton
+          v-for="btn in menu"
+          :key="btn.label"
+          :title="btn.label"
+          variant="default"
+          @click="go(btn.path)"
+        />
       </div>
-    </div>
 
-    <div class="space-y-3">
-      <p class="text-[10px] font-black uppercase tracking-[0.25em] text-gray-500">Навигация</p>
-
-      <button
-        v-if="isAdmin"
-        @click="go('/admin/events')"
-        class="flex w-full items-center justify-between rounded-3xl border border-white/5 bg-(--secondary)/20 px-5 py-4 transition hover:bg-white/5 hover:border-(--logo-bg)/30 active:scale-[0.98]"
-      >
-        <span class="text-xs font-black uppercase tracking-wider"> Кабинет админа </span>
-        <span class="text-(--logo-bg)">→</span>
-      </button>
-
-      <button
-        v-for="btn in menu"
-        :key="btn.label"
-        @click="go(btn.path)"
-        class="flex w-full items-center justify-between rounded-3xl border border-white/5 bg-(--secondary)/20 px-5 py-4 transition hover:bg-white/5 hover:border-(--logo-bg)/30 active:scale-[0.98]"
-      >
-        <span class="text-xs font-black uppercase tracking-wider">
-          {{ btn.label }}
-        </span>
-        <span class="text-(--logo-bg)">→</span>
-      </button>
-
-      <BaseButton @click="logout"> Выйти </BaseButton>
+      <BaseButton type="button" @click="logout"> Выйти </BaseButton>
     </div>
   </div>
 </template>
