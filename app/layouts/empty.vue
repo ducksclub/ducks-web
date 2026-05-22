@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-screen flex flex-col bg-(--bg) text-white font-sans"
+    class="min-h-screen relative bg-(--bg) text-white pb-20 w-full max-w-115 mx-auto pt-safe"
     :style="{ paddingTop: 'var(--safe-top)' }"
   >
     <slot />

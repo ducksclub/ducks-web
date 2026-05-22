@@ -3,7 +3,7 @@ import { Calendar, CalendarCheck, CornerDownLeft, Link2, MessageSquare } from '@
 </script>
 
 <template>
-  <div class="bg-(--bg) min-h-screen text-white pb-20" :style="{ paddingTop: 'var(--safe-top)' }">
+  <div class="min-h-screen relative bg-(--bg) text-white pb-20 w-full max-w-115 mx-auto pt-safe">
     <slot />
 
     <LayoutNavbar>
