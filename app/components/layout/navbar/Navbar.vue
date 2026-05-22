@@ -5,11 +5,13 @@ provide('activeRoute', route)
 </script>
 
 <template>
-  <nav
-    class="fixed bottom-0 left-0 right-0 z-50 border-t border-x border-white/5 bg-(--bg)/60 backdrop-blur-2xl max-w-115 mx-auto pb-safe"
-  >
-    <div class="mx-auto flex items-center px-2 py-2">
-      <slot />
+  <nav class="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-115 px-3 pb-safe">
+    <div
+      class="mb-2 rounded-3xl border border-white/5 bg-(--bg)/85 p-1 shadow-[0_10px_40px_rgba(0,0,0,0.35)] backdrop-blur-xl"
+    >
+      <div class="flex items-center gap-1">
+        <slot />
+      </div>
     </div>
   </nav>
 </template>
