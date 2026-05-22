@@ -10,6 +10,10 @@ definePageMeta({
   middleware: 'guest',
 })
 
+useHead({
+  title: "Duck's | Вход",
+})
+
 const notify = useNotify()
 const telegram = useTelegramWebApp()
 const { errors, validate } = useZodValidation<LoginSchema>(loginSchema)

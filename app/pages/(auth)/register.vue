@@ -8,6 +8,10 @@ definePageMeta({
   middleware: 'guest',
 })
 
+useHead({
+  title: "Duck's | Регистрация",
+})
+
 const form = ref<RegisterSchema>({
   username: '',
   email: '',
