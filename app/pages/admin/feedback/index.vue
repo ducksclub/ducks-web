@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useFeedbackApi } from '~/api/feedback.api'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
+import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderMenu from '~/components/layout/header/HeaderMenu.vue'
 import HeaderMenuItem from '~/components/layout/header/HeaderMenuItem.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
@@ -51,7 +52,9 @@ onMounted(loadFeedbacks)
 
 <template>
   <BaseHeader>
-    <template #left> </template>
+    <template #left>
+      <HeaderBackButton />
+    </template>
 
     <template #default>
       <HeaderTitle title="Список отзывов" />
@@ -91,14 +94,14 @@ onMounted(loadFeedbacks)
         <div
           class="size-10 flex items-center justify-center rounded-2xl bg-(--logo-bg)/10 text-(--logo-bg) font-black"
         >
-          {{ getInitial(f.user?.name) }}
+          {{ getInitial(f.user.username) }}
         </div>
 
         <!-- CONTENT -->
         <div class="flex-1 min-w-0">
           <div class="flex items-center justify-between">
             <p class="text-sm font-semibold truncate">
-              {{ f.user?.name || 'Unknown' }}
+              {{ f.user.username || 'Unknown' }}
             </p>
 
             <span class="text-[10px] text-gray-500">

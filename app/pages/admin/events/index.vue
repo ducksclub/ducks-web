@@ -15,7 +15,7 @@ definePageMeta({
 
 const router = useRouter()
 const notify = useNotify()
-
+const { impact } = useTelegramHaptics()
 const { getEvents, deleteEvent } = useEventsApi()
 
 const selectedCategory = ref()
@@ -53,8 +53,9 @@ const handleDeleteEvent = async (eventId: string) => {
   await fetchEvents()
 }
 
-const goToCreate = () => {
-  router.push('/admin/events/create')
+const go = (to: string) => {
+  router.push(to)
+  impact('light')
 }
 
 watch([selectedCategory, selectedStatus], fetchEvents, {
@@ -72,7 +73,8 @@ watch([selectedCategory, selectedStatus], fetchEvents, {
 
     <template #right>
       <HeaderMenu>
-        <HeaderMenuItem @click="goToCreate"> Создать </HeaderMenuItem>
+        <HeaderMenuItem @click="go('/admin/events/create')"> Создать </HeaderMenuItem>
+        <HeaderMenuItem @click="go('/admin/active-events')"> Активные события </HeaderMenuItem>
       </HeaderMenu>
     </template>
   </BaseHeader>
@@ -108,7 +110,7 @@ watch([selectedCategory, selectedStatus], fetchEvents, {
 
       <button
         class="mt-5 rounded-2xl bg-(--primary) px-5 py-3 text-sm font-medium text-white transition hover:opacity-90"
-        @click="goToCreate"
+        @click="go('/admin/events/create')"
       >
         Создать событие
       </button>

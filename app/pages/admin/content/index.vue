@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useContentApi } from '~/api/content.api'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
+import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderMenu from '~/components/layout/header/HeaderMenu.vue'
 import HeaderMenuItem from '~/components/layout/header/HeaderMenuItem.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
@@ -81,7 +82,9 @@ watch(selectedContentType, fetchContent, {
 
 <template>
   <BaseHeader>
-    <template #left> </template>
+    <template #left>
+      <HeaderBackButton />
+    </template>
 
     <template #default>
       <HeaderTitle title="Контент" />

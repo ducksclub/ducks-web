@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Calendar, CalendarCheck, CornerDownLeft, Link2, MessageSquare } from '@lucide/vue'
+import { Calendar, CalendarCheck, CornerDownLeft, Link2, Menu, MessageSquare } from '@lucide/vue'
 </script>
 
 <template>
@@ -21,20 +21,6 @@ import { Calendar, CalendarCheck, CornerDownLeft, Link2, MessageSquare } from '@
         <template #default> События </template>
       </LayoutNavbarButton>
 
-      <LayoutNavbarButton path="/admin/active-events">
-        <template #icon>
-          <CalendarCheck />
-        </template>
-        <template #default> Активные </template>
-      </LayoutNavbarButton>
-
-      <LayoutNavbarButton path="/admin/feedback">
-        <template #icon>
-          <MessageSquare />
-        </template>
-        <template #default> Feedback </template>
-      </LayoutNavbarButton>
-
       <LayoutNavbarButton path="/admin/promo-links">
         <template #icon>
           <Link2 />
@@ -42,11 +28,11 @@ import { Calendar, CalendarCheck, CornerDownLeft, Link2, MessageSquare } from '@
         <template #default>Промо </template>
       </LayoutNavbarButton>
 
-      <LayoutNavbarButton path="/admin/content">
+      <LayoutNavbarButton path="/admin/menu">
         <template #icon>
-          <MessageSquare />
+          <Menu />
         </template>
-        <template #default>Контент </template>
+        <template #default>Меню</template>
       </LayoutNavbarButton>
     </LayoutNavbar>
   </div>

@@ -2,6 +2,7 @@
 import { useEventsApi } from '~/api/events.api'
 import ActiveEventsList from '~/components/admin/events/ActiveEventsList.vue'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
+import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 
 definePageMeta({
@@ -37,6 +38,10 @@ const openEvent = (id: string) => {
 
 <template>
   <BaseHeader>
+    <template #left>
+      <HeaderBackButton />
+    </template>
+
     <template #default>
       <HeaderTitle title="Активные события" />
     </template>
