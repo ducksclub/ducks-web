@@ -7,7 +7,7 @@ import { Calendar, CalendarCheck, CornerDownLeft, Link2, Menu, MessageSquare } f
     <slot />
 
     <LayoutNavbar>
-      <LayoutNavbarButton path="/events">
+      <LayoutNavbarButton path="/">
         <template #icon>
           <CornerDownLeft />
         </template>
