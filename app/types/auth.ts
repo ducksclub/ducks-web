@@ -1,11 +1,8 @@
-import type { ProfileForm } from '~/validation/profile'
-
 export type AuthUser = {
   id: string
   email: string
   avatarUrl: null
   avatarHash: null
-  name: string
   phone: string | null
   username: string
   role: 'user' | 'admin'
@@ -29,8 +26,8 @@ export type LoginResponse = {
 }
 
 export type RegisterPayload = {
-  name: string
   email: string
+  username: string
   password: string
   initData?: string
   promoCode?: string
@@ -57,10 +54,10 @@ export type TelegramAuthPaylaod = {
 }
 
 export type UpdateProfilePayload = {
-  name: string
   phone: string
   username: string
   avatarUrl: string
   avatarHash: string
 }
+
 export type UpdateProfileResponse = {}
