@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { User, AtSign, Phone } from '@lucide/vue'
+import { AtSign, Phone } from '@lucide/vue'
 import { useUploadApi } from '~/api/upload.api'
 
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
@@ -23,10 +23,8 @@ const { validate, errors } = useZodValidation(profileSchema)
 const isSaving = ref(false)
 
 const form = reactive({
-  name: '',
   username: '',
   phone: '',
-
   avatar: '',
   file: null as File | null,
 })
@@ -38,7 +36,6 @@ const loadProfile = async () => {
     error: 'Не удалось загрузить профиль',
   })
 
-  form.name = me?.name ?? ''
   form.phone = me?.phone ?? ''
   form.avatar = me?.avatarUrl ?? ''
   form.username = me?.username ?? ''
@@ -67,7 +64,6 @@ const saveProfile = async () => {
     }
 
     await authStore.updateProfile({
-      name: form.name,
       username: form.username,
       phone: form.phone,
       avatarUrl: imageUrl,
@@ -101,14 +97,6 @@ const saveProfile = async () => {
       :loading="isUploading"
       label="Аватар"
       @change="(file) => (form.file = file)"
-    />
-
-    <BaseInput
-      v-model="form.name"
-      label="Имя"
-      placeholder="Введите имя"
-      :icon="User"
-      :error="errors.name"
     />
 
     <BaseInput
