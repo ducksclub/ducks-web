@@ -1,3 +1,5 @@
+import type { AuthUser } from './auth'
+
 export type Rating = {
   id: string
   userId: string
@@ -5,12 +7,7 @@ export type Rating = {
   points: number
   createdAt: string
   updatedAt: string
-  user: {
-    id: string
-    email: string
-    name: string
-    username: string
-  }
+  user: AuthUser
 }
 
 export type RatingResponse = {

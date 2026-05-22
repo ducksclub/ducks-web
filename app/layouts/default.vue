@@ -3,7 +3,7 @@ import { Calendar, Info, List, Star, User } from '@lucide/vue'
 </script>
 
 <template>
-  <div class="min-h-screen bg-(--bg) text-white font-sans pb-20" :style="{ paddingTop: 'var(--safe-top)' }">
+  <div class="min-h-screen relative bg-(--bg) text-white pb-20 w-full max-w-100 mx-auto pt-safe">
     <slot />
 
     <LayoutNavbar>

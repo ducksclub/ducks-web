@@ -7,6 +7,10 @@ definePageMeta({
   middleware: 'auth',
 })
 
+useHead({
+  title: "Duck's | Рейтинг игроков",
+})
+
 const activeTab = ref(EventGameType.POKER)
 
 const tabs = [
@@ -32,9 +36,11 @@ const { rating, isLoading, error } = useRatingQuery(activeTab)
       <div v-if="isLoading" class="space-y-2">
         <div v-for="i in 5" :key="i" class="h-16 animate-pulse rounded-2xl bg-(--secondary)/20" />
       </div>
+
       <div v-else-if="error" class="text-center text-sm text-(--warning)">
         {{ error }}
       </div>
+
       <div v-else-if="!rating.length" class="text-center text-sm text-gray-500">Нет данных</div>
 
       <RatingLeaderboard v-else :rating="rating" />

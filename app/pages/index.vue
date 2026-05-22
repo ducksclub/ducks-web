@@ -9,6 +9,10 @@ definePageMeta({
   middleware: 'auth',
 })
 
+useHead({
+  title: "Duck's | Главная",
+})
+
 const api = useEventsApi()
 
 const topEvents = ref<Event[]>([])
@@ -36,7 +40,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <main class="relative z-10 space-y-5 px-4 pb-6 pt-4">
+  <main class="space-y-5 px-4 pb-6 pt-4">
     <HomeHero />
 
     <section v-if="topEvents.length" class="space-y-4">
