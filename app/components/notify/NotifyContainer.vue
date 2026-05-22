@@ -5,7 +5,7 @@ const { list, remove } = useNotify()
 </script>
 
 <template>
-  <div class="fixed top-4 right-4 z-999 space-y-2 w-80">
+  <div class="fixed top-4 right-4 z-999 space-y-2 w-80 pt-safe">
     <TransitionGroup name="toast">
       <div
         v-for="n in list"
