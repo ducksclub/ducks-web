@@ -1,7 +1,12 @@
 <script setup lang="ts">
+import { Send, Phone, HelpCircle } from '@lucide/vue'
+
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
-import { Send, Phone, HelpCircle } from '@lucide/vue'
+
+useHead({
+  title: "Duck's | Поддержка",
+})
 
 const contacts = [
   {
@@ -32,33 +37,36 @@ const contacts = [
     </template>
   </BaseHeader>
 
-  <div class="space-y-3 p-6">
-    <NuxtLink
-      v-for="contact in contacts"
-      :key="contact.label"
-      :to="contact.link"
-      class="group flex items-center gap-4 rounded-2xl border border-white/5 bg-(--secondary)/20 p-5 transition-all active:scale-[0.98] hover:border-(--logo-bg)/30 hover:bg-white/5"
-    >
-      <!-- ICON -->
-      <div
-        class="flex size-10 items-center justify-center rounded-xl border border-white/10 bg-black/40 text-(--logo-bg) transition group-hover:border-(--logo-bg)/40"
+  <main class="p-6">
+    <div class="space-y-2">
+      <NuxtLink
+        v-for="contact in contacts"
+        :key="contact.label"
+        :to="contact.link"
+        class="group flex items-center gap-4 rounded-3xl border border-white/5 bg-(--secondary)/20 p-4 transition-all duration-200 hover:border-(--logo-bg)/20 hover:bg-white/4 active:scale-[0.98]"
       >
-        <component :is="contact.icon" :size="18" />
-      </div>
+        <div
+          class="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-(--logo-bg) transition group-hover:border-(--logo-bg)/30"
+        >
+          <component :is="contact.icon" :size="18" />
+        </div>
 
-      <!-- TEXT -->
-      <div class="flex-1 text-left min-w-0">
-        <p class="text-sm font-bold uppercase leading-tight truncate">
-          {{ contact.label }}
-        </p>
+        <div class="min-w-0 flex-1">
+          <p class="truncate text-sm font-bold text-white">
+            {{ contact.label }}
+          </p>
 
-        <p class="text-[10px] font-bold uppercase tracking-widest text-gray-500">
-          {{ contact.sub }}
-        </p>
-      </div>
+          <p class="mt-1 truncate text-xs text-gray-500">
+            {{ contact.sub }}
+          </p>
+        </div>
 
-      <!-- ARROW -->
-      <span class="text-(--logo-bg) transition group-hover:translate-x-1"> → </span>
-    </NuxtLink>
-  </div>
+        <span
+          class="flex size-8 shrink-0 items-center justify-center rounded-2xl bg-white/5 text-(--logo-bg) transition group-hover:translate-x-0.5"
+        >
+          →
+        </span>
+      </NuxtLink>
+    </div>
+  </main>
 </template>

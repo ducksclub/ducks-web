@@ -49,6 +49,15 @@ const faq = [
     answer: 'Вы можете написать нам через раздел "Help" в приложении или связаться через Telegram.',
   },
 ]
+
+const { impact } = useTelegramHaptics()
+
+const openedKey = ref<string | null>(null)
+
+const toggleStep = (key: string) => {
+  openedKey.value = openedKey.value === key ? null : key
+  impact('light')
+}
 </script>
 
 <template>
@@ -63,6 +72,14 @@ const faq = [
   </BaseHeader>
 
   <div class="p-4 space-y-3">
-    <FaqItem v-for="(item, i) in faq" :key="i" :faq="item" />
+    <UiAccordion
+      v-for="(item, index) in faq"
+      :key="index"
+      :index="index"
+      :title="item.question"
+      :is-open="openedKey === `step-${index}`"
+      :description="item.answer"
+      @toggle="toggleStep(`step-${index}`)"
+    />
   </div>
 </template>
