@@ -64,27 +64,27 @@ const styles = computed(() => {
   <NuxtLink
     :to="`/events/${props.event.id}`"
     class="relative overflow-hidden rounded-2xl border bg-white/3 p-4 backdrop-blur-xl transition active:scale-[0.98]"
-    :class="styles.ring"
+    :class="styles?.ring"
   >
     <div
       class="absolute -top-10 -right-10 h-32 w-32 rounded-full blur-3xl opacity-70"
-      :class="styles.glow"
+      :class="styles?.glow"
     />
 
-    <div class="absolute inset-0 bg-linear-to-br" :class="styles.gradient" />
+    <div class="absolute inset-0 bg-linear-to-br" :class="styles?.gradient" />
 
     <div class="absolute inset-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]" />
 
     <div class="relative z-10">
       <div class="flex items-center justify-between">
         <span class="text-lg">
-          {{ styles.icon }}
+          {{ styles?.icon }}
         </span>
 
         <span class="text-[10px] text-white/30 tracking-wider"> LIVE </span>
       </div>
 
-      <p class="mt-3 text-sm font-semibold tracking-[-0.01em]" :class="styles.text">
+      <p class="mt-3 text-sm font-semibold tracking-[-0.01em]" :class="styles?.text">
         {{ event.title }}
       </p>
 
