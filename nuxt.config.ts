@@ -1,6 +1,9 @@
 import tailwindcss from '@tailwindcss/vite'
 import process from 'node:process'
 
+const backendApiUrl = process.env.API_URL?.replace(/\/$/, '') || ''
+const publicApiBaseUrl = process.env.NUXT_PUBLIC_API_BASE_URL || (backendApiUrl ? '/api' : '')
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -18,17 +21,19 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBaseUrl: process.env.API_URL,
+      apiBaseUrl: publicApiBaseUrl,
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL,
     },
   },
+  routeRules: backendApiUrl
+    ? {
+        '/api/**': {
+          proxy: `${backendApiUrl}/**`,
+        },
+      }
+    : {},
   app: {
     head: {
-      // script: [
-      //   {
-      //     src: 'https://telegram.org/js/telegram-web-app.js',
-      //   },
-      // ],
       meta: [
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
         { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },

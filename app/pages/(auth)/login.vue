@@ -21,6 +21,12 @@ const isLoading = ref(false)
 const notify = useNotify()
 const { errors, validate } = useZodValidation<LoginSchema>(loginSchema)
 const { login, loginViaTelegram } = useAuthStore()
+const telegram = useTelegramWebApp()
+const isTelegramAuthAvailable = ref(false)
+
+onMounted(() => {
+  isTelegramAuthAvailable.value = telegram.hasInitData()
+})
 
 const submit = async () => {
   if (!validate(formData.value)) return
@@ -46,6 +52,11 @@ const authSocial = () => {
 }
 
 const authByTelegram = async () => {
+  if (!isTelegramAuthAvailable.value) {
+    notify.error('Вход через Telegram доступен только внутри Telegram Mini App')
+    return
+  }
+
   try {
     isLoading.value = true
     await notify.promise(loginViaTelegram(), {
@@ -53,9 +64,7 @@ const authByTelegram = async () => {
       success: 'Вы усепешно вошли в аккаунт!',
       error: 'Произошла ошибка при входе в аккаунт',
     })
-    console.log('Before navigate')
     await navigateTo('/')
-    console.log('After navigate')
   } finally {
     isLoading.value = false
   }
@@ -129,8 +138,10 @@ const authByTelegram = async () => {
 
       <div class="flex justify-center gap-4">
         <button
+          v-if="isTelegramAuthAvailable"
           @click="authByTelegram"
           type="button"
+          :disabled="isLoading"
           class="w-14 h-14 bg-(--secondary)/20 border border-white/5 rounded-2xl flex items-center justify-center active:scale-90 transition"
         >
           <Telegram class="w-6 h-6" />

@@ -153,7 +153,9 @@ const registerHandler = async () => {
       </CheckboxAgreement>
 
       <!-- Кнопка регистрации -->
-      <BaseButton type="submit"> ЗАРЕГИСТРИРОВАТЬСЯ </BaseButton>
+      <BaseButton type="submit" :disabled="isLoading" :loading="isLoading">
+        ЗАРЕГИСТРИРОВАТЬСЯ
+      </BaseButton>
 
       <div class="text-center pt-4">
         <p class="text-center text-sm text-gray-500 mt-8">

@@ -1,8 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
 
 * {
-  font-family: "Montserrat", sans-serif;
+  font-family: var(--font-montserrat);
 }
 
 html, body {
@@ -23,8 +22,8 @@ html, body {
     --warning: #DB5227;
     --logo-bg: #dd1814;
 
-    --font-anton: "Anton", sans-serif;
-    --font-montserrat: "Montserrat", sans-serif;
+    --font-anton: Impact, "Arial Narrow", sans-serif;
+    --font-montserrat: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
 
   .font-anton {

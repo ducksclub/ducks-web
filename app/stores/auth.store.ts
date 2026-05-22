@@ -13,6 +13,7 @@ export const useAuthStore = defineStore(
   () => {
     const api = useApi()
     const promo = usePromoCode()
+    const telegram = useTelegramWebApp()
 
     const token = ref<string | null>(null)
     const user = ref<MeResponse | null>(null)
@@ -45,10 +46,10 @@ export const useAuthStore = defineStore(
     }
 
     async function loginViaTelegram() {
-      const initData = window.Telegram?.WebApp?.initData
+      const initData = telegram.getInitData()
 
       if (!initData) {
-        throw new Error('Telegram initData missing')
+        throw new Error('Telegram authorization is available only inside Telegram Mini App')
       }
 
       const promoCode = promo.getSavedPromoCode()
@@ -95,7 +96,7 @@ export const useAuthStore = defineStore(
     }
 
     async function register(payload: RegisterPayload) {
-      const initData = window.Telegram?.WebApp?.initData
+      const initData = telegram.getInitData()
       const promoCode = promo.getSavedPromoCode()
 
       const response = await api.request<RegisterResponse, RegisterPayload>('/auth/register', {

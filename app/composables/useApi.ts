@@ -7,9 +7,22 @@ type ApiOptions<TBody = unknown> = {
   auth?: boolean
 }
 
-function buildUrl(baseUrl: string, path: string, query?: Record<string, QueryValue>) {
+function buildUrl(
+  baseUrl: string,
+  path: string,
+  query?: Record<string, QueryValue>,
+  origin = 'http://localhost',
+) {
   const normalizedPath = path.startsWith('/') ? path : `/${path}`
-  const url = new URL(`${baseUrl}${normalizedPath}`)
+  const normalizedBaseUrl = baseUrl.trim().replace(/\/$/, '')
+
+  if (!normalizedBaseUrl) {
+    throw new Error('API base URL is not configured')
+  }
+
+  const url = normalizedBaseUrl.startsWith('http')
+    ? new URL(`${normalizedBaseUrl}${normalizedPath}`)
+    : new URL(`${normalizedBaseUrl}${normalizedPath}`, origin)
 
   if (query) {
     Object.entries(query).forEach(([key, value]) => {
@@ -25,12 +38,14 @@ function buildUrl(baseUrl: string, path: string, query?: Record<string, QueryVal
 export function useApi() {
   const config = useRuntimeConfig()
   const auth = useAuthStore()
+  const requestUrl = process.server ? useRequestURL() : null
 
   async function request<TResponse, TBody = unknown>(
     path: string,
     options: ApiOptions<TBody> = {},
   ) {
-    const url = buildUrl(config.public.apiBaseUrl, path, options.query)
+    const origin = process.client ? window.location.origin : requestUrl?.origin
+    const url = buildUrl(config.public.apiBaseUrl, path, options.query, origin)
 
     return await $fetch<TResponse>(url, {
       method: options.method || 'GET',
