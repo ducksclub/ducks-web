@@ -7,6 +7,7 @@ type Props = {
   description: string
   isOpen: boolean
   disabled?: boolean
+  wrap?: boolean
 }
 
 defineProps<Props>()
@@ -33,7 +34,8 @@ const emit = defineEmits<{
 
       <div class="min-w-0 flex-1">
         <h3
-          class="truncate text-sm font-semibold text-white transition-colors group-hover:text-red-100"
+          class="text-sm font-semibold text-white transition-colors group-hover:text-red-100"
+          :class="wrap ? '' : 'truncate'"
         >
           {{ title }}
         </h3>

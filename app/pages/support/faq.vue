@@ -75,6 +75,7 @@ const toggleStep = (key: string) => {
     <UiAccordion
       v-for="(item, index) in faq"
       :key="index"
+      :wrap="true"
       :index="index"
       :title="item.question"
       :is-open="openedKey === `step-${index}`"
