@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MapPinPlus, User } from '@lucide/vue'
+import { ChevronDown, MapPinPlus, User } from '@lucide/vue'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
@@ -13,6 +13,32 @@ const router = useRouter()
 
 const goToEvents = () => {
   router.push('/events')
+}
+
+const values = [
+  {
+    title: 'Принадлежность',
+    description: 'место, где вы всегда «свой».',
+  },
+  {
+    title: 'Дофамин',
+    description: 'качественный отдых через интеллектуальный вызов.',
+  },
+  {
+    title: 'Реализация',
+    description: 'пространство для вашего проявления и роста.',
+  },
+  {
+    title: 'Атмосфера',
+    description:
+      'интеллектуальный досуг (покер, дартс, пул, мафия, квизы), который помогает разгрузить мысли и вернуть ясность.',
+  },
+]
+
+const openedValue = ref<string | null>(null)
+
+const toggleValue = (title: string) => {
+  openedValue.value = openedValue.value === title ? null : title
 }
 </script>
 
@@ -38,13 +64,19 @@ const goToEvents = () => {
         </div>
 
         <div>
-          <h2 class="text-lg font-semibold">DUCK’S GameClub</h2>
+          <h2 class="text-lg font-semibold">DUCK’S Game Space</h2>
           <p class="text-xs text-gray-500 tracking-widest">Gaming community</p>
         </div>
       </div>
 
       <p class="mt-4 text-sm text-gray-300 leading-relaxed">
-        Игровое сообщество, созданное для общения, эмоций и соревновательной среды.
+        Первое в мегаполисе игровое пространство, где можно выдохнуть, перезагрузиться и проявить
+        себя . Мы соединили интеллектуальную игру с качественным отдыхом, создав место, где каждый
+        обретает собственную значимость и находит возможности для реализации.
+      </p>
+
+      <p class="mt-4 text-sm text-gray-300 leading-relaxed italic">
+        Тренируйся умом — отдыхай телом
       </p>
     </div>
 
@@ -58,8 +90,16 @@ const goToEvents = () => {
         </div>
 
         <p class="text-sm text-gray-300 leading-relaxed">
-          Начинали как встречи друзей, выросли в платформу с турнирами и системой событий.
+          Мы прошли десятки покерных клубов столицы и поняли: гостю не хватает главного. Не просто
+          столов и фишек, а чувства, что ты пришёл к «своим». <br />
+          Так родилась идея DUCK’S. Мы не хотим открывать «ещё один покерный клуб» — нам важно
+          закрыть настоящую потребность в пространстве, где человек становится не просто игроком за
+          столом, а частью круга, с которым делит и игру, и жизнь. <br />
+          Здесь нет рамок одного формата. Покер, мафия, дартс, пул, квизы — интеллектуальный досуг
+          без границ, в котором каждый находит себя и своих.
         </p>
+
+        <p class="mt-4 text-sm text-gray-300 leading-relaxed italic">DUCK’S — клуб для своих.</p>
       </div>
 
       <!-- MISSION -->
@@ -70,7 +110,9 @@ const goToEvents = () => {
         </div>
 
         <p class="text-sm text-gray-300 leading-relaxed">
-          Объединять людей через игры и создавать живое комьюнити.
+          Дать нашим гостям возможность восстановить силы и получить здоровый дофамин, даже находясь
+          в ритме большого города. Мы создаём среду, где игра становится инструментом для
+          самореализации и глубокого, настоящего общения.
         </p>
       </div>
 
@@ -81,11 +123,40 @@ const goToEvents = () => {
           <span class="text-xs font-bold uppercase tracking-widest">Ценности</span>
         </div>
 
-        <div class="grid grid-cols-2 gap-3 text-sm">
-          <div class="rounded-2xl bg-white/5 p-3">Комьюнити</div>
-          <div class="rounded-2xl bg-white/5 p-3">Соревнование</div>
-          <div class="rounded-2xl bg-white/5 p-3">Развитие</div>
-          <div class="rounded-2xl bg-white/5 p-3">Эмоции</div>
+        <div class="grid gap-3 text-sm sm:grid-cols-2">
+          <button
+            v-for="value in values"
+            :key="value.title"
+            type="button"
+            class="rounded-2xl bg-white/5 p-3 text-left transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--logo-bg)/60"
+            :aria-expanded="openedValue === value.title"
+            @click="toggleValue(value.title)"
+          >
+            <span class="flex items-center justify-between gap-3">
+              <span class="font-medium text-white">{{ value.title }}</span>
+              <ChevronDown
+                :size="16"
+                class="shrink-0 text-gray-400 transition-transform duration-200"
+                :class="{ 'rotate-180': openedValue === value.title }"
+              />
+            </span>
+
+            <Transition
+              enter-active-class="transition-all duration-200 ease-out overflow-hidden"
+              enter-from-class="max-h-0 opacity-0"
+              enter-to-class="max-h-24 opacity-100"
+              leave-active-class="transition-all duration-150 ease-in overflow-hidden"
+              leave-from-class="max-h-24 opacity-100"
+              leave-to-class="max-h-0 opacity-0"
+            >
+              <p
+                v-if="openedValue === value.title"
+                class="mt-2 text-xs leading-relaxed text-gray-300"
+              >
+                {{ value.description }}
+              </p>
+            </Transition>
+          </button>
         </div>
       </div>
     </div>
