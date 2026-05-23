@@ -10,7 +10,7 @@ definePageMeta({
   middleware: 'auth',
 })
 
-const phone = '+70000000000'
+const phone = '+7 (915) 276-92-69'
 const metroRouteImage = '/assets/images/location-metro.jpg'
 const isMetroRouteOpen = ref(false)
 const isMetroRouteImageMissing = ref(false)
@@ -113,17 +113,17 @@ const toggleMetroRoute = () => {
             <img
               v-if="!isMetroRouteImageMissing"
               :src="metroRouteImage"
-              alt="Маршрут от метро Алексеевская до DUCK’S GameClub"
-              class="aspect-[4/3] w-full object-cover"
+              alt="Маршрут от метро Алексеевская до DUCK'S GameClub"
+              class="aspect-4/3 w-full object-cover"
               loading="lazy"
               @error="isMetroRouteImageMissing = true"
             />
 
             <div
               v-else
-              class="flex aspect-[4/3] items-center justify-center px-5 text-center text-sm leading-relaxed text-gray-400"
+              class="flex aspect-4/3 items-center justify-center px-5 text-center text-sm leading-relaxed text-gray-400"
             >
-              Добавьте фото маршрута в public/assets/images/location-metro.jpg
+              <NuxtImg src="/assets/images/way.jpg" />
             </div>
           </div>
 
