@@ -13,13 +13,13 @@ const contacts = [
     label: 'Написать в Telegram',
     sub: 'Ответ за 5 минут',
     icon: Send,
-    link: 'https://t.me/ducks_club_support',
+    link: 'https://t.me/adm_ducks',
   },
   {
     label: 'Позвонить в клуб',
-    sub: '+7 (999) 123-45-67',
+    sub: '+7 (915) 276-92-69',
     icon: Phone,
-    link: 'tel:+79991234567',
+    link: 'tel:+79152769269',
   },
   {
     label: 'Часто задаваемые вопросы',

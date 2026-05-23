@@ -72,9 +72,9 @@ const sendForm = async () => {
   <div class="p-4 space-y-4 pb-24">
     <!-- HERO -->
     <div class="rounded-3xl border border-white/5 bg-(--secondary)/20 p-6">
-      <h2 class="text-lg font-semibold">Оставить заявку</h2>
+      <h2 class="text-lg font-semibold">Заполните форму-мы свяжемся с Вами и обсудим детали!</h2>
       <p class="mt-2 text-sm text-gray-400 leading-relaxed">
-        Заполните форму — мы свяжемся с вами и добавим в ближайшие события DUCK’S GameClub.
+        После отправки заявки, в течении дня, с вами свяжется специалист и детально прокунсультирует
       </p>
     </div>
 

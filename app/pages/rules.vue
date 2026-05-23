@@ -63,6 +63,10 @@ const documents: DocumentItem[] = [
     subtitle: 'PDF документ',
   },
 ]
+
+const go = (url: string) => {
+  window.open(url, '_blank')
+}
 </script>
 
 <template>
@@ -95,6 +99,6 @@ const documents: DocumentItem[] = [
     </div>
 
     <!-- CTA -->
-    <BaseButton class="mt-6 w-full"> Связаться с администрацией </BaseButton>
+    <BaseButton @click="go('https://t.me/adm_ducks')" class="mt-6 w-full"> Написать </BaseButton>
   </div>
 </template>
