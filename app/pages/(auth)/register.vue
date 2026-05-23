@@ -18,6 +18,7 @@ const form = ref<RegisterSchema>({
   password: '',
   confirmPassword: '',
   agree: false,
+  agreeDuck: false,
 })
 
 const isLoading = ref(false)
@@ -110,14 +111,37 @@ const registerHandler = async () => {
         </AuthInput>
       </div>
 
-      <CheckboxAgreement v-model="form.agree">
+      <CheckboxAgreement v-model="form.agree" :error="!!errors.agree" :error-message="errors.agree">
         Ставя галочку, я подтверждаю свое согласие с условиями
-        <NuxtLink to="/docs/agreement.pdf" class="text-(--logo-bg) font-bold underline">
+        <NuxtLink
+          target="_blank"
+          to="/docs/ПОЛИТИКА_ОБРАБОТКИ_ПЕРСОНАЛЬНЫХ_ДАННЫХ_клуба_Duck.docx"
+          class="text-(--logo-bg) font-bold underline"
+        >
           пользовательского соглашения
         </NuxtLink>
         и
-        <NuxtLink to="/docs/oferta.pdf" class="text-(--logo-bg) font-bold underline">
+        <NuxtLink
+          target="_blank"
+          to="/docs/Политика_Утки.pdf"
+          class="text-(--logo-bg) font-bold underline"
+        >
           публичной оферты.
+        </NuxtLink>
+      </CheckboxAgreement>
+
+      <CheckboxAgreement
+        v-model="form.agreeDuck"
+        :error="!!errors.agreeDuck"
+        :error-message="errors.agreeDuck"
+      >
+        Ставя галочку, я даю свое согласие на
+        <NuxtLink
+          target="_blank"
+          to="/docs/СОГЛАСИЕ_НА_ОБРАБОТКУ_ПЕРСОНАЛЬНЫХ_ДАННЫХ.docx"
+          class="text-(--logo-bg) font-bold underline"
+        >
+          обработку моих персональных данных.
         </NuxtLink>
       </CheckboxAgreement>
 

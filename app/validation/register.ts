@@ -9,6 +9,9 @@ export const registerSchema = z
     agree: z.boolean().refine((v) => v === true, {
       message: 'Необходимо принять условия',
     }),
+    agreeDuck: z.boolean().refine((v) => v === true, {
+      message: 'Необходимо принять условия',
+    }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Пароли не совпадают',
