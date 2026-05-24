@@ -169,7 +169,7 @@ const updateEvent = async () => {
     />
 
     <BaseInput
-      v-model="form.participantLimit"
+      v-model.number="form.participantLimit"
       type="text"
       inputmode="numeric"
       label="Лимит участников"
