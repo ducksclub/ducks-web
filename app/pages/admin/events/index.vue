@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { Plus } from '@lucide/vue'
 import { useEventsApi } from '~/api/events.api'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
+import HeaderButton from '~/components/layout/header/HeaderButton.vue'
 import HeaderMenu from '~/components/layout/header/HeaderMenu.vue'
 import HeaderMenuItem from '~/components/layout/header/HeaderMenuItem.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
@@ -72,8 +74,11 @@ watch([selectedCategory, selectedStatus], fetchEvents, {
     </template>
 
     <template #right>
+      <HeaderButton path="/admin/events/create">
+        <Plus class="w-4 h-4" />
+      </HeaderButton>
+
       <HeaderMenu>
-        <HeaderMenuItem @click="go('/admin/events/create')"> Создать </HeaderMenuItem>
         <HeaderMenuItem @click="go('/admin/active-events')"> Активные события </HeaderMenuItem>
       </HeaderMenu>
     </template>

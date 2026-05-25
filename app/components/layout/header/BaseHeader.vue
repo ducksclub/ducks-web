@@ -34,7 +34,7 @@ const gridClass = computed(() => {
         <slot />
       </div>
 
-      <div v-if="$slots.right" class="flex justify-end">
+      <div v-if="$slots.right" class="flex justify-end items-center gap-x-2">
         <slot name="right" />
       </div>
     </div>
