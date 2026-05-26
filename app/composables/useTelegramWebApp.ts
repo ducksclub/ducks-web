@@ -1,7 +1,6 @@
 export const useTelegramWebApp = () => {
   const getWebApp = () => {
     if (!process.client) return null
-
     return window.Telegram?.WebApp ?? null
   }
 
