@@ -177,7 +177,7 @@ const updateEvent = async () => {
       :icon="Users"
     />
 
-    <BaseInput
+    <UiBaseTextarea
       v-model="form.gameRules"
       type="text"
       label="Правила игры"
@@ -185,7 +185,7 @@ const updateEvent = async () => {
       :icon="Map"
     />
 
-    <BaseInput
+    <UiBaseTextarea
       v-model="form.features"
       type="text"
       label="Особенности"

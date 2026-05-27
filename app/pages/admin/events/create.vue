@@ -7,6 +7,7 @@ import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 import BaseInput from '~/components/ui/BaseInput.vue'
 import BaseSelect from '~/components/ui/BaseSelect.vue'
+import BaseTextarea from '~/components/ui/BaseTextarea.vue'
 import ImageUpload from '~/components/ui/ImageUpload.vue'
 
 import { categories } from '~/constants/categories'
@@ -198,17 +199,15 @@ onMounted(() => {
       :icon="Users"
     />
 
-    <BaseInput
+    <UiBaseTextarea
       v-model="form.gameRules"
-      type="text"
       label="Правила игры"
       placeholder="1 правило игры, 2 правило игры ..."
       :icon="Map"
     />
 
-    <BaseInput
+    <UiBaseTextarea
       v-model="form.features"
-      type="text"
       label="Особенности"
       placeholder="1 особенность, 2 особенность ..."
       :icon="Map"
