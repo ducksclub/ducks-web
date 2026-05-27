@@ -26,14 +26,8 @@ const error = ref<string | null>(null)
 const { isRegistered, register, unregister, fetchStatus, isLoading } =
   useEventRegistrationApi(eventId)
 
-const {
-  seatInfo,
-  isSeatLoading,
-  seatError,
-  isSeatModalOpen,
-  openSeatModal,
-  closeSeatModal,
-} = useEventSeat(eventId)
+const { seatInfo, isSeatLoading, seatError, isSeatModalOpen, openSeatModal, closeSeatModal } =
+  useEventSeat(eventId)
 
 const isPokerEvent = computed(() => event.value?.gameType === EventGameType.POKER)
 
@@ -183,25 +177,13 @@ onMounted(async () => {
       <!-- RULES -->
       <div class="rounded-2xl border border-white/5 bg-(--secondary)/20 p-5 space-y-3">
         <p class="text-[10px] text-gray-500 uppercase tracking-widest">Общие правила</p>
-
-        <ul class="space-y-1 text-sm text-gray-200">
-          <li v-for="(rule, i) in toList(event.gameRules)" :key="i" class="flex gap-2">
-            <span class="text-gray-500">•</span>
-            <span>{{ rule }}</span>
-          </li>
-        </ul>
+        <p class="text-sm text-gray-200 whitespace-pre-wrap">{{ event.gameRules }}</p>
       </div>
 
       <!-- FEATURES -->
       <div class="rounded-2xl border border-white/5 bg-(--secondary)/20 p-5 space-y-3">
         <p class="text-[10px] text-gray-500 uppercase tracking-widest">Особенности</p>
-
-        <ul class="space-y-1 text-sm text-gray-200">
-          <li v-for="(feature, i) in toList(event.features)" :key="i" class="flex gap-2">
-            <span class="text-gray-500">•</span>
-            <span>{{ feature }}</span>
-          </li>
-        </ul>
+        <p class="text-sm text-gray-200 whitespace-pre-wrap">{{ event.features }}</p>
       </div>
 
       <!-- INFO GRID -->
