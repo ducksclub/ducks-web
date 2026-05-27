@@ -10,11 +10,15 @@ import BaseSelect from '~/components/ui/BaseSelect.vue'
 import ImageUpload from '~/components/ui/ImageUpload.vue'
 
 import { categories } from '~/constants/categories'
-import type { EventGameType } from '~/types/event'
+import type { Event, EventGameType } from '~/types/event'
 
 definePageMeta({
   layout: 'empty',
   middleware: 'admin',
+})
+
+useHead({
+  title: "Duck's | Создание события",
 })
 
 const router = useRouter()
@@ -25,6 +29,8 @@ const { uploadImage, isUploading } = useUploadApi()
 const isSaving = ref(false)
 const errorMessage = ref('')
 
+const templates = ref<Event[]>([])
+const isTemplateLoading = ref<boolean>(false)
 const form = reactive({
   title: '',
   city: '',
@@ -34,11 +40,32 @@ const form = reactive({
   gameType: '',
   startsAt: '',
   participantLimit: 10,
+  template: '',
+  isTemplate: false,
 
   imageUrl: '',
   imageHash: '',
   file: null as File | null,
 })
+
+watch(
+  () => form.template,
+  (templateId) => {
+    const template = templates.value.find((t) => t.id === templateId)
+
+    if (!template) return
+
+    form.title = template.title
+    form.city = template.city
+    form.gameRules = template.gameRules
+    form.features = template.features
+    form.address = template.address
+    form.gameType = template.gameType
+    form.participantLimit = template.participantLimit
+    form.imageUrl = template.imageUrl
+    form.imageHash = template.imageHash
+  },
+)
 
 /**
  * Create event
@@ -73,6 +100,7 @@ const createEvent = async () => {
       gameType: form.gameType as EventGameType,
       startsAt: form.startsAt,
       participantLimit: form.participantLimit,
+      isTemplate: form.isTemplate,
       imageUrl,
       imageHash,
     })
@@ -86,6 +114,22 @@ const createEvent = async () => {
     isSaving.value = false
   }
 }
+
+const fetchTemplates = async () => {
+  try {
+    isTemplateLoading.value = true
+    const res = await api.getTemplates()
+    templates.value = res.data
+  } catch (e) {
+    console.error('Failed to fetch templates', e)
+  } finally {
+    isTemplateLoading.value = false
+  }
+}
+
+onMounted(() => {
+  fetchTemplates()
+})
 </script>
 
 <template>
@@ -104,6 +148,18 @@ const createEvent = async () => {
       v-model="form.imageUrl"
       :loading="isUploading"
       @change="(file) => (form.file = file)"
+    />
+
+    <BaseSelect
+      v-if="!form.template"
+      v-model="form.template"
+      label="Шаблоны"
+      placeholder="Выберите шаблон для создания события"
+      :options="
+        isTemplateLoading
+          ? [{ label: 'Загрузка...', value: '' }]
+          : templates.map((t) => ({ label: t.title, value: t.id }))
+      "
     />
 
     <BaseInput
@@ -157,6 +213,12 @@ const createEvent = async () => {
       placeholder="1 особенность, 2 особенность ..."
       :icon="Map"
     />
+
+    <CheckboxAgreement v-model="form.isTemplate">
+      <template #default>
+        <p class="text-sm text-gray-500">Сохранить как шаблон</p>
+      </template>
+    </CheckboxAgreement>
 
     <div
       v-if="errorMessage"

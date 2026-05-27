@@ -5,6 +5,7 @@ import type {
   FinalizeEventResponse,
   GetEventParticipantsResponse,
   ReorderParticipantsPayload,
+  TemplatesResponse,
   UpdateEventParams,
   UpdateEventPayload,
 } from '~/types/event'
@@ -51,6 +52,12 @@ export function useEventsApi() {
     })
   }
 
+  const getTemplates = () => {
+    return api.request<TemplatesResponse>(`/events/templates`, {
+      method: 'GET',
+    })
+  }
+
   const getMyEventSeat = (eventId: string) => {
     return api.request<MySeatResponse>(`/events/${eventId}/my-seat`, {
       method: 'GET',
@@ -91,6 +98,7 @@ export function useEventsApi() {
 
   return {
     getEvent,
+    getTemplates,
     getMyEventSeat,
     getEvents,
     getMyEvents,

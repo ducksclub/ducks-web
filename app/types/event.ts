@@ -50,6 +50,7 @@ export type Event = {
 
 export type EventsResponse = PaginatedResponse<Event>
 export type EventResponse = Event
+export type TemplatesResponse = PaginatedResponse<Event>
 
 export type UpdateEventParams = { id: Event['id'] }
 
@@ -77,6 +78,8 @@ export type CreateEventPayload = {
   participantLimit: Event['participantLimit']
   imageUrl: Event['imageUrl']
   imageHash: Event['imageHash']
+
+  isTemplate?: boolean
 }
 
 export type ReorderParticipantsPayload = {
