@@ -54,12 +54,12 @@ const documents: DocumentItem[] = [
   },
   {
     title: 'Пользовательское соглашение',
-    url: '/docs/agreement.pdf',
+    url: '/docs/ПОЛИТИКА_ОБРАБОТКИ_ПЕРСОНАЛЬНЫХ_ДАННЫХ_клуба_Duck.docx',
     subtitle: 'PDF документ',
   },
   {
     title: 'Оферта',
-    url: '/docs/oferta.pdf',
+    url: '/docs/Политика_Утки.pdf',
     subtitle: 'PDF документ',
   },
 ]
