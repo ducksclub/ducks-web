@@ -95,6 +95,7 @@ const saveProfile = async () => {
     <ImageUpload
       v-model="form.avatar"
       :loading="isUploading"
+      :crop-shape="'circle'"
       label="Аватар"
       @change="(file) => (form.file = file)"
     />

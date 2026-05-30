@@ -11,13 +11,13 @@ const props = defineProps<{
   <div class="rounded-2xl border border-white/5 bg-(--secondary)/20 p-8 text-center">
     <NuxtImg
       v-if="props.photoUrl"
-      class="mx-auto flex size-24 items-center justify-center rounded-3xl border border-(--logo-bg)/30 bg-black select-none"
+      class="mx-auto flex size-32 items-center justify-center rounded-full border border-(--logo-bg)/30 bg-black select-none"
       :src="renderPicture(props.photoUrl)"
     />
 
     <div
       v-else
-      class="mx-auto flex size-24 items-center justify-center rounded-3xl border border-(--logo-bg)/30 bg-black text-4xl font-black"
+      class="mx-auto flex size-32 items-center justify-center rounded-full border border-(--logo-bg)/30 bg-black text-4xl font-black"
     >
       {{ getInitial(props.username) }}
     </div>

@@ -76,7 +76,7 @@ const showMeBadge = (item: Rating) => isMe(item.user.id)
       <div class="col-span-7 flex items-center gap-3 min-w-0">
         <NuxtImg
           v-if="item.user?.avatarUrl"
-          class="w-9 h-9 rounded-xl flex items-center justify-center border text-xs font-black tracking-wide"
+          class="w-9 h-9 rounded-full flex items-center justify-center border text-xs font-black tracking-wide"
           :class="avatarClass(item)"
           :src="renderPicture(item.user.avatarUrl)"
           alt="Avatar"
@@ -84,7 +84,7 @@ const showMeBadge = (item: Rating) => isMe(item.user.id)
 
         <div
           v-else
-          class="w-9 h-9 rounded-xl flex items-center justify-center border text-xs font-black tracking-wide"
+          class="w-9 h-9 rounded-full flex items-center justify-center border text-xs font-black tracking-wide"
           :class="avatarClass(item)"
         >
           {{ getInitial(item.user.username) }}
