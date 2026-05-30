@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Send, Phone, HelpCircle } from '@lucide/vue'
+import { Send, Phone, HelpCircle, MessageCircle } from '@lucide/vue'
 
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
@@ -14,6 +14,12 @@ const contacts = [
     sub: 'Ответ за 5 минут',
     icon: Send,
     link: 'https://t.me/adm_ducks',
+  },
+  {
+    label: 'Написать в MAX',
+    sub: 'Уточнить детали',
+    icon: MessageCircle,
+    link: 'https://web.max.ru/+79152769269',
   },
   {
     label: 'Позвонить в клуб',
