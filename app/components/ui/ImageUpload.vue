@@ -41,17 +41,11 @@ const stencilProps = computed(() => {
   if (props.cropShape === 'circle') {
     return {
       aspectRatio: 1,
-      handlers: {},
-      movable: false,
-      resizable: false,
     }
   }
 
   return {
     aspectRatio: props.aspectRatio,
-    handlers: {},
-    movable: false,
-    resizable: false,
   }
 })
 
@@ -231,7 +225,6 @@ onBeforeUnmount(() => {
                 wheel: true,
               }"
               :move-image="true"
-              image-restriction="none"
             />
           </ClientOnly>
 
