@@ -28,8 +28,8 @@ const emit = defineEmits<{
         :index="index"
         :title="step.title"
         :description="step.body"
-        :is-open="openedKey === step.key"
-        @toggle="emit('toggle', step.key)"
+        :is-open="openedKey === `level-${index}`"
+        @toggle="emit('toggle', `level-${index}`)"
       />
     </div>
 
