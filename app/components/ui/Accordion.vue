@@ -59,7 +59,7 @@ const emit = defineEmits<{
       leave-to-class="opacity-0 max-h-0"
     >
       <div v-if="isOpen" class="border-t border-white/5 px-4 pb-4 pt-3">
-        <p class="text-sm leading-relaxed text-gray-300">
+        <p class="text-sm leading-relaxed text-gray-300" :class="wrap ? 'whitespace-pre-wrap' : ''">
           {{ description }}
         </p>
       </div>

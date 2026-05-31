@@ -49,7 +49,7 @@ const rules: Rule[] = [
 const documents: DocumentItem[] = [
   {
     title: 'Полные правила PDF',
-    url: '/docs/rules.pdf',
+    url: '/rules/full',
     subtitle: 'PDF документ',
   },
   {
