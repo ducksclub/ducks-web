@@ -149,12 +149,12 @@ const toggleMetroRoute = () => {
 
         <div class="rounded-2xl bg-white/5 p-3">
           <p class="text-xs text-gray-500 uppercase">Автобусы</p>
-          <p class="mt-2 text-gray-200">М2 · М9 · 85</p>
+          <p class="mt-2 text-gray-200">М2 · С585 · 604 · 714 · 33</p>
         </div>
       </div>
 
       <div class="mt-4 rounded-2xl bg-white/5 p-3 text-sm text-gray-300">
-        🚏 Остановка «Улица Павла Корчагина»
+        🚏 Остановка «КРЕСТОВСКИЙ МОСТ»
       </div>
     </div>
 
