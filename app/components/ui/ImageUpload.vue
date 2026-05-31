@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CircleStencil, RectangleStencil, type Cropper } from 'vue-advanced-cropper'
+import { CircleStencil, RectangleStencil, Cropper } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
 
 const props = withDefaults(
