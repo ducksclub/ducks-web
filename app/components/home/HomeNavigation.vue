@@ -25,7 +25,7 @@
           <p class="text-sm font-bold text-white">Как нас найти</p>
           <p class="text-[11px] text-gray-400">Локация клуба</p>
         </div>
-        <div class="text-sky-300 text-lg">📍</div>
+        <div class="text-sky-300 text-lg">🎯</div>
       </div>
     </NuxtLink>
 
@@ -39,7 +39,7 @@
           <p class="text-sm font-bold text-white">Поддержка</p>
           <p class="text-[11px] text-gray-400">Связь с админом</p>
         </div>
-        <span class="text-red-300 text-lg">⚡</span>
+        <span class="text-red-300 text-lg">🛎️</span>
       </div>
     </NuxtLink>
 
@@ -53,7 +53,7 @@
           <p class="text-sm font-black text-red-200 uppercase tracking-wide">Обучение</p>
           <p class="text-[11px] text-gray-400">Гайды, правила, стратегия</p>
         </div>
-        <span class="text-red-300 text-lg">📘</span>
+        <span class="text-red-300 text-lg">🎓</span>
       </div>
     </NuxtLink>
   </section>

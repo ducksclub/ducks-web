@@ -38,7 +38,7 @@ const toggleMetroRoute = () => {
         <div
           class="flex size-12 items-center justify-center rounded-2xl bg-(--logo-bg)/10 text-(--logo-bg)"
         >
-          📍
+          🎯
         </div>
 
         <div>
