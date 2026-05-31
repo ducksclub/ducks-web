@@ -223,14 +223,15 @@ onBeforeUnmount(() => {
             <Cropper
               ref="cropperRef"
               :src="tempImage"
-              class="h-105 bg-black"
+              class="h-105 w-full bg-black"
               :stencil-component="stencilComponent"
               :stencil-props="stencilProps"
               :resize-image="{
                 touch: true,
                 wheel: true,
               }"
-              image-restriction="stencil"
+              :move-image="true"
+              image-restriction="none"
             />
           </ClientOnly>
 
