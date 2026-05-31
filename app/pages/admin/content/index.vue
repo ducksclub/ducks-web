@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { Plus } from '@lucide/vue'
 import { useContentApi } from '~/api/content.api'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
+import HeaderButton from '~/components/layout/header/HeaderButton.vue'
 import HeaderMenu from '~/components/layout/header/HeaderMenu.vue'
 import HeaderMenuItem from '~/components/layout/header/HeaderMenuItem.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
@@ -61,14 +63,10 @@ const fetchContent = async () => {
 
     content.value = response
   } catch (error: any) {
-    notify.error(error?.error || 'Ошибка загрузки')
+    console.error('Ошибка загрузки контента:', error)
   } finally {
     isLoading.value = false
   }
-}
-
-const goToCreate = () => {
-  router.push('/admin/content/create')
 }
 
 const goToUpdate = (contentId: string) => {
@@ -91,9 +89,9 @@ watch(selectedContentType, fetchContent, {
     </template>
 
     <template #right>
-      <HeaderMenu>
-        <HeaderMenuItem @click="goToCreate"> Создать </HeaderMenuItem>
-      </HeaderMenu>
+      <HeaderButton path="/admin/content/create">
+        <Plus class="w-4 h-4" />
+      </HeaderButton>
     </template>
   </BaseHeader>
 
