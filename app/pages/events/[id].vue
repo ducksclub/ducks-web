@@ -7,7 +7,9 @@ import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 import EventSeatModal from '~/components/events/EventSeatModal.vue'
 import { gameTypeColors } from '~/constants/categories'
-import { Calendar, Map } from '@lucide/vue'
+import { Calendar, Map, Plus, ShareIcon } from '@lucide/vue'
+import HeaderButton from '~/components/layout/header/HeaderButton.vue'
+import { useShare } from '~/composables/helpers/useShare'
 
 definePageMeta({
   layout: 'empty',
@@ -78,6 +80,14 @@ const unregisterFromEvent = async () => {
   }
 }
 
+const onShare = () => {
+  useShare().share({
+    title: event.value?.title || 'Событие в Ducks Game Club',
+    text: `Присоединяйся к событию "${event.value?.title}" в Ducks Game Club!\n ${window.location.href}`,
+    url: window.location.href,
+  })
+}
+
 onMounted(async () => {
   await Promise.all([fetchEvent(), fetchStatus()])
 })
@@ -91,6 +101,12 @@ onMounted(async () => {
 
     <template #default>
       <HeaderTitle title="Событие" />
+    </template>
+
+    <template #right>
+      <HeaderButton @click="onShare">
+        <ShareIcon class="size-4" />
+      </HeaderButton>
     </template>
   </BaseHeader>
 
