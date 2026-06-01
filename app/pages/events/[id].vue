@@ -11,13 +11,12 @@ import { Calendar, Map } from '@lucide/vue'
 
 definePageMeta({
   layout: 'empty',
-  middleware: 'auth',
 })
 
 const route = useRoute()
 const eventId = computed(() => route.params.id as string)
-
 const eventsApi = useEventsApi()
+const { isAuthenticated } = useAuthStore()
 
 const event = ref<Event>()
 const isLoadingEvent = ref(false)
@@ -58,14 +57,6 @@ const fetchEvent = async () => {
   } finally {
     isLoadingEvent.value = false
   }
-}
-
-const toList = (value?: string) => {
-  if (!value) return []
-  return value
-    .split(',')
-    .map((i) => i.trim())
-    .filter(Boolean)
 }
 
 const registerForEvent = async () => {
@@ -209,65 +200,73 @@ onMounted(async () => {
         </div>
       </div>
 
-      <!-- CTA -->
-      <div v-if="event.status === 'published'" class="pt-2">
-        <BaseButton
-          v-if="!isRegistered"
-          :loading="isLoading"
-          :disabled="isLoading"
-          class="w-full"
-          @click="registerForEvent"
-        >
-          Участвовать
-        </BaseButton>
-
-        <div v-else-if="isPokerEvent" class="space-y-3">
+      <template v-if="isAuthenticated">
+        <!-- CTA -->
+        <div v-if="event.status === 'published'" class="pt-2">
           <BaseButton
-            :loading="isSeatLoading"
-            :disabled="isSeatLoading || isLoading"
-            class="w-full mt-0"
-            @click="openSeatModal"
+            v-if="!isRegistered"
+            :loading="isLoading"
+            :disabled="isLoading"
+            class="w-full"
+            @click="registerForEvent"
           >
-            Узнать место
+            Участвовать
           </BaseButton>
 
+          <div v-else-if="isPokerEvent" class="space-y-3">
+            <BaseButton
+              :loading="isSeatLoading"
+              :disabled="isSeatLoading || isLoading"
+              class="w-full mt-0"
+              @click="openSeatModal"
+            >
+              Узнать место
+            </BaseButton>
+
+            <BaseButton
+              variant="secondary"
+              :loading="isLoading"
+              :disabled="isLoading || isSeatLoading"
+              class="w-full mt-0"
+              @click="unregisterFromEvent"
+            >
+              Отменить запись
+            </BaseButton>
+          </div>
+
           <BaseButton
+            v-else
             variant="secondary"
             :loading="isLoading"
-            :disabled="isLoading || isSeatLoading"
-            class="w-full mt-0"
+            :disabled="isLoading"
+            class="w-full"
             @click="unregisterFromEvent"
           >
             Отменить запись
           </BaseButton>
         </div>
 
-        <BaseButton
+        <!-- FINISHED STATE -->
+        <div
           v-else
-          variant="secondary"
-          :loading="isLoading"
-          :disabled="isLoading"
-          class="w-full"
-          @click="unregisterFromEvent"
+          class="rounded-2xl border border-white/5 bg-white/5 p-4 text-center text-sm text-gray-400"
         >
-          Отменить запись
+          Событие недоступно
+        </div>
+
+        <EventSeatModal
+          :open="isSeatModalOpen"
+          :seat-info="seatInfo"
+          :error="seatError"
+          @close="closeSeatModal"
+        />
+      </template>
+
+      <template v-else>
+        <BaseButton class="w-full" @click="navigateTo(`/register`)">
+          Зарегистрироваться
         </BaseButton>
-      </div>
-
-      <!-- FINISHED STATE -->
-      <div
-        v-else
-        class="rounded-2xl border border-white/5 bg-white/5 p-4 text-center text-sm text-gray-400"
-      >
-        Событие недоступно
-      </div>
-
-      <EventSeatModal
-        :open="isSeatModalOpen"
-        :seat-info="seatInfo"
-        :error="seatError"
-        @close="closeSeatModal"
-      />
+      </template>
     </div>
   </div>
 </template>
