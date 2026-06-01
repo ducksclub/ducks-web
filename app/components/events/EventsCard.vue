@@ -58,8 +58,8 @@ const statusConfig = computed(() => {
           <span class="truncate">
             {{
               formatDate(event.startsAt, {
-                dateStyle: 'medium',
-                timeStyle: 'short',
+                dateStyle: 'long',
+                timeStyle: 'long',
               })
             }}
           </span>

@@ -168,7 +168,7 @@ onMounted(async () => {
           <div class="flex items-center gap-2">
             <Calendar class="size-4 text-gray-400" />
             <span>
-              {{ formatDate(event.startsAt, { dateStyle: 'medium', timeStyle: 'short' }) }}
+              {{ formatDate(event.startsAt, { dateStyle: 'long', timeStyle: 'long' }) }}
             </span>
           </div>
         </div>

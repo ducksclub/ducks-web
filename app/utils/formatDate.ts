@@ -1,30 +1,68 @@
-export type DateInput = string | number | Date
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+import 'dayjs/locale/ru'
 
-export type FormatOptions = {
+dayjs.extend(utc)
+dayjs.extend(timezone)
+dayjs.locale('ru')
+
+type DateInput = string | number | Date
+
+type FormatOptions = {
   locale?: string
-  dateStyle?: Intl.DateTimeFormatOptions['dateStyle']
-  timeStyle?: Intl.DateTimeFormatOptions['timeStyle']
-  custom?: Intl.DateTimeFormatOptions
+  dateStyle?: 'full' | 'long' | 'medium' | 'short'
+  timeStyle?: 'full' | 'long' | 'medium' | 'short'
+  format?: string
+  timezone?: string
 }
 
 /**
- * Универсальный форматтер даты/времени
+ * Универсальный форматтер даты/времени через dayjs
+ * По умолчанию отображает время в МСК
  */
 export function formatDate(input: DateInput, options: FormatOptions = {}): string {
-  const { locale = 'ru-RU', dateStyle = 'medium', timeStyle, custom } = options
+  const { format, timezone = 'Europe/Moscow', dateStyle, timeStyle } = options
 
-  const date = new Date(input)
+  const date = dayjs(input)
 
-  if (isNaN(date.getTime())) {
+  if (!date.isValid()) {
     return ''
   }
 
-  const formatter = new Intl.DateTimeFormat(locale, {
-    ...(custom || {
-      dateStyle,
-      ...(timeStyle && { timeStyle }),
-    }),
-  })
+  const mskDate = date.tz(timezone)
 
-  return formatter.format(date)
+  if (format) {
+    return mskDate.format(format)
+  }
+
+  if (dateStyle === 'short' && timeStyle) {
+    return mskDate.format('DD.MM.YYYY HH:mm')
+  }
+
+  if (dateStyle === 'short') {
+    return mskDate.format('DD.MM.YYYY')
+  }
+
+  if (dateStyle === 'long' && timeStyle) {
+    return mskDate.format('D MMMM YYYY, HH:mm')
+  }
+
+  if (dateStyle === 'long') {
+    return mskDate.format('D MMMM YYYY')
+  }
+
+  if (dateStyle === 'full' && timeStyle) {
+    return mskDate.format('dddd, D MMMM YYYY, HH:mm')
+  }
+
+  if (dateStyle === 'full') {
+    return mskDate.format('dddd, D MMMM YYYY')
+  }
+
+  if (timeStyle) {
+    return mskDate.format('DD.MM.YYYY HH:mm')
+  }
+
+  return mskDate.format('D MMM YYYY')
 }

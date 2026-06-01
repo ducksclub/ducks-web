@@ -91,8 +91,8 @@ const styles = computed(() => {
       <p class="text-[11px] text-gray-400">
         {{
           formatDate(event.startsAt, {
-            dateStyle: 'medium',
-            timeStyle: 'short',
+            dateStyle: 'long',
+            timeStyle: 'long',
           })
         }}
       </p>

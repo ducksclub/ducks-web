@@ -30,8 +30,8 @@ const progressPercent = computed(() => {
 
 const formattedDate = computed(() => {
   return formatDate(props.event.startsAt, {
-    dateStyle: 'medium',
-    timeStyle: 'short',
+    dateStyle: 'long',
+    timeStyle: 'long',
   })
 })
 </script>

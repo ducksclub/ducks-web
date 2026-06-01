@@ -35,8 +35,8 @@ const formattedAvailableAt = computed(() => {
   if (props.seatInfo?.status !== 'HIDDEN_UNTIL_15_MIN' || !props.seatInfo.availableAt) return ''
 
   return formatDate(props.seatInfo.availableAt, {
-    dateStyle: 'medium',
-    timeStyle: 'short',
+    dateStyle: 'long',
+    timeStyle: 'long',
   })
 })
 
@@ -58,7 +58,10 @@ onBeforeUnmount(() => {
 <template>
   <Teleport to="body">
     <Transition name="seat-modal">
-      <div v-if="open" class="fixed inset-0 z-100 flex items-end justify-center p-4 sm:items-center">
+      <div
+        v-if="open"
+        class="fixed inset-0 z-100 flex items-end justify-center p-4 sm:items-center"
+      >
         <button
           class="absolute inset-0 bg-black/70 backdrop-blur-sm"
           type="button"
@@ -71,9 +74,7 @@ onBeforeUnmount(() => {
         >
           <div class="flex items-start justify-between gap-4">
             <div>
-              <p class="text-[10px] font-black uppercase tracking-[0.25em] text-gray-500">
-                Покер
-              </p>
+              <p class="text-[10px] font-black uppercase tracking-[0.25em] text-gray-500">Покер</p>
               <h2 class="mt-2 text-xl font-black text-white">{{ title }}</h2>
             </div>
 
