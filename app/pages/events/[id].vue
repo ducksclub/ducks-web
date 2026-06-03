@@ -82,8 +82,8 @@ const unregisterFromEvent = async () => {
 
 const onShare = () => {
   useShare().share({
-    title: event.value?.title || 'Событие в Ducks Game Club',
-    text: `Присоединяйся к событию "${event.value?.title}" в Ducks Game Club!\n ${window.location.href}`,
+    title: event.value?.title || 'Событие в Duck’S GameClub',
+    text: `Встречаемся в Duck’S! 🦆\nЯ уже зарегистрирован 💪\n\nЗаходи тоже на событие "${event.value?.title || 'Duck’S GameClub'}"`,
     url: window.location.href,
   })
 }

@@ -23,15 +23,18 @@ export function useShare() {
       const text = options.text || 'Посмотри это'
       const url = options.url || `${window.location.origin}${route.fullPath}`
 
+      /**
+       * Один общий текст для всех способов поделиться
+       */
+      const message = `${text}\n\n${url}`
+
       const shareData: ShareData = {
         title,
-        text,
-        url,
+        text: message,
       }
 
       /**
        * Нативное меню "Поделиться"
-       * Работает на телефонах и некоторых desktop-браузерах
        */
       if (navigator.share) {
         await navigator.share(shareData)
@@ -40,17 +43,23 @@ export function useShare() {
       }
 
       /**
-       * Fallback: копируем ссылку
+       * Fallback: копируем тот же самый текст
        */
       if (navigator.clipboard) {
-        await navigator.clipboard.writeText(url)
-        notify.success('Ссылка скопирована в буфер обмена')
+        await navigator.clipboard.writeText(message)
+        notify.success('Текст со ссылкой скопирован')
         return
       }
 
       notify.error('Ваш браузер не поддерживает функцию поделиться')
     } catch (err) {
       if (err instanceof Error) {
+        /**
+         * Если пользователь сам закрыл меню поделиться,
+         * лучше не показывать ошибку
+         */
+        if (err.name === 'AbortError') return
+
         error.value = err.message
       } else {
         error.value = 'Не удалось поделиться'
