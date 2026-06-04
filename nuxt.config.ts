@@ -1,9 +1,4 @@
 import tailwindcss from '@tailwindcss/vite'
-import process from 'node:process'
-
-const apiUrl = process.env.API_URL
-const backendApiUrl = process.env.API_URL?.replace(/\/$/, '') || ''
-const publicApiBaseUrl = process.env.NUXT_PUBLIC_API_BASE_URL || (backendApiUrl ? '/api' : '')
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -22,18 +17,9 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBaseUrl: publicApiBaseUrl,
-      backendBaseUrl: apiUrl,
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL,
+      apiUrl: process.env.API_URL,
     },
   },
-  routeRules: backendApiUrl
-    ? {
-        '/api/**': {
-          proxy: `${backendApiUrl}/**`,
-        },
-      }
-    : {},
   app: {
     head: {
       meta: [

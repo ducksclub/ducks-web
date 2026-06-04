@@ -40,12 +40,16 @@ export function useApi() {
   const auth = useAuthStore()
   const requestUrl = process.server ? useRequestURL() : null
 
+  if (!config.public.apiUrl) {
+    throw Error('API_URL not found!')
+  }
+
   async function request<TResponse, TBody = unknown>(
     path: string,
     options: ApiOptions<TBody> = {},
   ) {
     const origin = process.client ? window.location.origin : requestUrl?.origin
-    const url = buildUrl(config.public.apiBaseUrl, path, options.query, origin)
+    const url = buildUrl(config.public.apiUrl, path, options.query, origin)
 
     return await $fetch<TResponse>(url, {
       method: options.method || 'GET',
