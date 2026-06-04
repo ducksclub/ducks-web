@@ -19,7 +19,6 @@ export function useShare() {
 
       const route = useRoute()
 
-      const title = options.title || document.title
       const text = options.text || 'Посмотри это'
       const url = options.url || `${window.location.origin}${route.fullPath}`
 
@@ -29,7 +28,6 @@ export function useShare() {
       const message = `${text}\n\n${url}`
 
       const shareData: ShareData = {
-        title,
         text: message,
       }
 
