@@ -34,7 +34,7 @@ export const useAuthStore = defineStore(
     }
 
     async function login(payload: LoginPayload) {
-      const response = await api.request<LoginResponse, LoginPayload>('/auth/login', {
+      const response = await api.request<LoginResponse, LoginPayload>('/auth/signin', {
         method: 'POST',
         body: payload,
         auth: false,
@@ -54,14 +54,17 @@ export const useAuthStore = defineStore(
 
       const promoCode = promo.getSavedPromoCode()
 
-      const response = await api.request<LoginResponse, LoginViaTelegramPayload>('/auth/telegram', {
-        method: 'POST',
-        body: {
-          initData,
-          ...(promoCode ? { promoCode } : {}),
+      const response = await api.request<LoginResponse, LoginViaTelegramPayload>(
+        '/auth/signin-with-telegram',
+        {
+          method: 'POST',
+          body: {
+            initData,
+            ...(promoCode ? { promoCode } : {}),
+          },
+          auth: false,
         },
-        auth: false,
-      })
+      )
 
       token.value = response.token
 
@@ -99,7 +102,7 @@ export const useAuthStore = defineStore(
       const initData = telegram.getInitData()
       const promoCode = promo.getSavedPromoCode()
 
-      const response = await api.request<RegisterResponse, RegisterPayload>('/auth/register', {
+      const response = await api.request<RegisterResponse, RegisterPayload>('/auth/signup', {
         method: 'POST',
         body: {
           ...payload,
