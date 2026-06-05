@@ -7,6 +7,8 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 dayjs.locale('ru')
 
+export const MOSCOW_TIMEZONE = 'Europe/Moscow'
+
 type DateInput = string | number | Date
 
 type FormatOptions = {
@@ -22,7 +24,7 @@ type FormatOptions = {
  * По умолчанию отображает время в МСК
  */
 export function formatDate(input: DateInput, options: FormatOptions = {}): string {
-  const { format, timezone = 'Europe/Moscow', dateStyle, timeStyle } = options
+  const { format, timezone = MOSCOW_TIMEZONE, dateStyle, timeStyle } = options
 
   const date = dayjs(input)
 
@@ -65,4 +67,10 @@ export function formatDate(input: DateInput, options: FormatOptions = {}): strin
   }
 
   return mskDate.format('D MMM YYYY')
+}
+
+export function fromMoscowDatetimeLocalToISOString(value: string): string {
+  if (!value) return ''
+
+  return dayjs.tz(value, MOSCOW_TIMEZONE).toISOString()
 }

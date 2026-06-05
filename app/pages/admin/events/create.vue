@@ -7,7 +7,6 @@ import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 import BaseInput from '~/components/ui/BaseInput.vue'
 import BaseSelect from '~/components/ui/BaseSelect.vue'
-import BaseTextarea from '~/components/ui/BaseTextarea.vue'
 import ImageUpload from '~/components/ui/ImageUpload.vue'
 
 import { categories } from '~/constants/categories'
@@ -99,7 +98,7 @@ const createEvent = async () => {
       gameRules: form.gameRules,
       address: form.address,
       gameType: form.gameType as EventGameType,
-      startsAt: form.startsAt,
+      startsAt: fromMoscowDatetimeLocalToISOString(form.startsAt),
       participantLimit: form.participantLimit,
       isTemplate: form.isTemplate,
       imageUrl,

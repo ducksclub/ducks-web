@@ -100,7 +100,7 @@ const updateEvent = async () => {
         gameRules: form.gameRules,
         address: form.address,
         gameType: form.gameType as EventGameType,
-        startsAt: form.startsAt,
+        startsAt: fromMoscowDatetimeLocalToISOString(form.startsAt),
         participantLimit: form.participantLimit,
 
         imageUrl,
