@@ -51,29 +51,33 @@ export const useAuthStore = defineStore(
     }
 
     async function loginViaTelegram() {
-      const initData = telegram.getInitData()
+      try {
+        const initData = telegram.getInitData()
 
-      if (!initData) {
-        throw new Error('Telegram authorization is available only inside Telegram Mini App')
-      }
+        if (!initData) {
+          throw new Error('Telegram authorization is available only inside Telegram Mini App')
+        }
 
-      const promoCode = promo.getSavedPromoCode()
+        const promoCode = promo.getSavedPromoCode()
 
-      const response = await api.request<LoginResponse, LoginViaTelegramPayload>(
-        '/auth/signin-with-telegram',
-        {
-          method: 'POST',
-          body: {
-            initData,
-            ...(promoCode ? { promoCode } : {}),
+        const response = await api.request<LoginResponse, LoginViaTelegramPayload>(
+          '/auth/signin-with-telegram',
+          {
+            method: 'POST',
+            body: {
+              initData,
+              ...(promoCode ? { promoCode } : {}),
+            },
+            auth: false,
           },
-          auth: false,
-        },
-      )
+        )
 
-      token.value = response.token
+        token.value = response.token
 
-      return response
+        return response
+      } catch (error) {
+        document.body.innerHTML = String(error)
+      }
     }
 
     async function fetchMe() {
