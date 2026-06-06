@@ -34,9 +34,14 @@ export const useAuthStore = defineStore(
     }
 
     async function login(payload: LoginPayload) {
+      const initData = telegram.getInitData()
+
       const response = await api.request<LoginResponse, LoginPayload>('/auth/signin', {
         method: 'POST',
-        body: payload,
+        body: {
+          ...payload,
+          ...(initData ? { initData } : {}),
+        },
         auth: false,
       })
 
