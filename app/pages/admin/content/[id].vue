@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { FileText } from '@lucide/vue'
-import { uuid } from 'zod'
 
 import { useContentApi } from '~/api/content.api'
 
