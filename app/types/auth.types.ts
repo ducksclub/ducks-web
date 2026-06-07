@@ -26,6 +26,10 @@ export type SignInPayload = {
   password: string
 }
 
+export type SignInWithTelegramPayload = {
+  initData: string
+}
+
 export type SignUpPayload = {
   email: string
   password: string

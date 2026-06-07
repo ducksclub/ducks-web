@@ -1,4 +1,10 @@
-import type { AuthResponse, MeResponse, SignInPayload, SignUpPayload } from '~/types/auth.types'
+import type {
+  AuthResponse,
+  MeResponse,
+  SignInPayload,
+  SignInWithTelegramPayload,
+  SignUpPayload,
+} from '~/types/auth.types'
 
 export function useAuthProvider() {
   const auth = useAuthStore()
@@ -18,6 +24,31 @@ export function useAuthProvider() {
         body: payload,
         auth: false,
       })
+
+      auth.setSession({
+        token: response.token,
+        user: response.user,
+      })
+
+      return response
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  async function signInWithTelegram(payload: SignInWithTelegramPayload) {
+    try {
+      isLoading.value = true
+      errorMessage.value = null
+
+      const response = await request<AuthResponse, SignInWithTelegramPayload>(
+        '/auth/signin-with-telegram',
+        {
+          method: 'POST',
+          body: payload,
+          auth: false,
+        },
+      )
 
       auth.setSession({
         token: response.token,
@@ -93,6 +124,7 @@ export function useAuthProvider() {
     errorMessage: readonly(errorMessage),
 
     signIn,
+    signInWithTelegram,
     signUp,
     signOut,
     restoreSession,

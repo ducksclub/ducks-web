@@ -16,7 +16,7 @@ useHead({
 
 const notify = useNotify()
 const telegram = useTelegramWebApp()
-const { signIn } = useAuthProvider()
+const auth = useAuthProvider()
 const { errors, validate } = useZodValidation<LoginSchema>(loginSchema)
 
 const formData = ref<LoginSchema>({
@@ -33,7 +33,7 @@ const submit = async () => {
 
   try {
     isLoading.value = true
-    await signIn({ email: formData.value.email, password: formData.value.password })
+    await auth.signIn({ email: formData.value.email, password: formData.value.password })
     notify.success('Вы усепешно вошли в аккаунт!')
     await navigateTo('/')
   } catch (err) {
@@ -44,24 +44,26 @@ const submit = async () => {
   }
 }
 
-// const authByTelegram = async () => {
-//   if (!isTelegramAuthAvailable.value) {
-//     notify.error('Вход через Telegram доступен только внутри Telegram Mini App')
-//     return
-//   }
+const authByTelegram = async () => {
+  if (!isTelegramAuthAvailable.value) {
+    notify.error('Вход через Telegram доступен только внутри Telegram Mini App')
+    return
+  }
 
-//   try {
-//     isLoading.value = true
-//     await notify.promise(loginViaTelegram(), {
-//       loading: 'Входим в аккаунт...',
-//       success: 'Вы усепешно вошли в аккаунт!',
-//       error: 'Произошла ошибка при входе в аккаунт',
-//     })
-//     await navigateTo('/')
-//   } finally {
-//     isLoading.value = false
-//   }
-// }
+  try {
+    isLoading.value = true
+    await auth.signInWithTelegram({ initData: telegram.getInitData() })
+
+    notify.success('Вы усепешно вошли в аккаунт!')
+    await navigateTo('/')
+  } catch (err) {
+    const message =
+      (err as any)?.response?.data?.error.message ?? 'Произошла ошибка при входе в аккаунт'
+    notify.error(message)
+  } finally {
+    isLoading.value = false
+  }
+}
 
 onMounted(() => {
   isTelegramAuthAvailable.value = telegram.hasInitData()
@@ -119,7 +121,7 @@ onMounted(() => {
         <BaseButton type="submit" :disabled="isLoading" :loading="isLoading">Войти</BaseButton>
       </form>
 
-      <!-- <template v-if="isTelegramAuthAvailable">
+      <template v-if="isTelegramAuthAvailable">
         <AuthDivider text="или войти через" />
 
         <div class="flex justify-center gap-4">
@@ -132,7 +134,7 @@ onMounted(() => {
             <Telegram class="w-6 h-6" />
           </button>
         </div>
-      </template> -->
+      </template>
 
       <p class="text-center text-sm text-gray-500 mt-8">
         Ещё нет аккаунта?
