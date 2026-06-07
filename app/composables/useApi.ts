@@ -49,8 +49,6 @@ export function useApi() {
       data: options.body,
       timeout: 10000,
       headers: {
-        'Content-Type': 'application/json',
-
         ...(options.auth !== false && auth.token
           ? {
               Authorization: `Bearer ${auth.token}`,
