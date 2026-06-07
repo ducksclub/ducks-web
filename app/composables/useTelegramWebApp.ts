@@ -7,6 +7,12 @@ export function useTelegramWebApp() {
     return window.Telegram?.WebApp ?? null
   }
 
+  function getStorage() {
+    if (!import.meta.client) return null
+
+    return window.localStorage
+  }
+
   function isValidInitData(initData: string) {
     const params = new URLSearchParams(initData)
 
@@ -30,28 +36,32 @@ export function useTelegramWebApp() {
     return ''
   }
 
-  function getSavedInitData() {
-    if (!import.meta.client) return ''
+  function getStoredInitData() {
+    const storage = getStorage()
 
-    const initData = window.sessionStorage.getItem(initDataStorageKey) || ''
+    if (!storage) return ''
+
+    const initData = storage.getItem(initDataStorageKey) || ''
 
     if (initData && isValidInitData(initData)) {
       return initData
     }
 
-    window.sessionStorage.removeItem(initDataStorageKey)
+    storage.removeItem(initDataStorageKey)
 
     return ''
   }
 
   function saveInitData(initData: string) {
-    if (!import.meta.client || !isValidInitData(initData)) return
+    const storage = getStorage()
 
-    window.sessionStorage.setItem(initDataStorageKey, initData)
+    if (!storage || !isValidInitData(initData)) return
+
+    storage.setItem(initDataStorageKey, initData)
   }
 
-  function getInitData() {
-    const initData = getWebApp()?.initData || getInitDataFromUrl() || getSavedInitData()
+  function syncInitDataFromTelegram() {
+    const initData = getWebApp()?.initData || getInitDataFromUrl()
 
     if (initData) {
       saveInitData(initData)
@@ -60,12 +70,21 @@ export function useTelegramWebApp() {
     return initData
   }
 
+  function getInitData() {
+    syncInitDataFromTelegram()
+
+    return getStoredInitData()
+  }
+
   function hasInitData() {
     return Boolean(getInitData())
   }
 
   return {
     getWebApp,
+    getStoredInitData,
+    saveInitData,
+    syncInitDataFromTelegram,
     getInitData,
     hasInitData,
   }

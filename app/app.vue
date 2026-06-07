@@ -1,7 +1,12 @@
 <script setup lang="ts">
 onMounted(() => {
-  window.Telegram?.WebApp.ready()
-  window.Telegram?.WebApp.expand()
+  const telegram = useTelegramWebApp()
+  const webApp = telegram.getWebApp()
+
+  telegram.syncInitDataFromTelegram()
+
+  webApp?.ready()
+  webApp?.expand()
 })
 </script>
 
