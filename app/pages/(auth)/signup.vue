@@ -39,7 +39,7 @@ const registerHandler = async () => {
     })
 
     notify.success('Аккаунт создан!')
-    await navigateTo('/login')
+    await navigateTo('/signin')
   } catch (e) {
     const message =
       (e as any)?.response?.data?.error.message ?? 'Произошла ошибка при созданий аккаунта'
@@ -150,7 +150,7 @@ const registerHandler = async () => {
       <div class="text-center pt-4">
         <p class="text-center text-sm text-gray-500 mt-8">
           Уже в клубе?
-          <NuxtLink to="/login" class="text-(--logo-bg) font-semibold">Войти</NuxtLink>
+          <NuxtLink to="/signin" class="text-(--logo-bg) font-semibold">Войти</NuxtLink>
         </p>
       </div>
     </form>

@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios'
 import type { AuthResponse, MeResponse, SignInPayload, SignUpPayload } from '~/types/auth.types'
 
 export function useAuthProvider() {
@@ -77,7 +76,7 @@ export function useAuthProvider() {
   async function signOut() {
     auth.expireSession()
 
-    await navigateTo('/login')
+    await navigateTo('/signin')
   }
 
   function clearError() {

@@ -279,7 +279,7 @@ onMounted(async () => {
       </template>
 
       <template v-else>
-        <BaseButton class="w-full" @click="navigateTo(`/register`)">
+        <BaseButton class="w-full" @click="navigateTo(`/signup`)">
           Зарегистрироваться
         </BaseButton>
       </template>

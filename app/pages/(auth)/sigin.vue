@@ -136,7 +136,7 @@ onMounted(() => {
 
       <p class="text-center text-sm text-gray-500 mt-8">
         Ещё нет аккаунта?
-        <NuxtLink to="/register" class="text-(--logo-bg) font-semibold">Регистрация</NuxtLink>
+        <NuxtLink to="/signup" class="text-(--logo-bg) font-semibold">Регистрация</NuxtLink>
       </p>
     </div>
   </div>
