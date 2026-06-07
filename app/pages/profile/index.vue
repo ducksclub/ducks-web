@@ -10,7 +10,7 @@ useHead({
   title: "Duck's | Профиль",
 })
 
-const { user, logout, isAdmin } = useAuthStore()
+const auth = useAuthProvider()
 const router = useRouter()
 
 const menu = [
@@ -24,10 +24,6 @@ const go = (path: string) => {
   if (!path || path === '#') return
   router.push(path)
 }
-
-onMounted(async () => {
-  await useAuthStore().fetchMe()
-})
 </script>
 
 <template>
@@ -38,20 +34,20 @@ onMounted(async () => {
   </BaseHeader>
 
   <div class="p-6 space-y-8">
-    <ProfileCard :username="user?.username!" :photo-url="user?.avatarUrl" />
-    <ProfileRating :ratings="user?.ratings ?? []" />
+    <ProfileCard :username="auth.user.value?.username!" :photo-url="auth.user.value?.avatarUrl" />
+    <ProfileRating :ratings="auth.user.value?.ratings ?? []" />
 
     <div class="space-y-3">
       <p class="px-1 text-[10px] font-black uppercase tracking-[0.25em] text-gray-500">Навигация</p>
 
       <div class="space-y-2">
-        <ProfileNavigationButton
+        <!-- <ProfileNavigationButton
           v-if="isAdmin"
           :title="'Кабинет админа'"
           :subtitle="'Управление событиями'"
           variant="admin"
           @click="go('/admin/events')"
-        />
+        /> -->
 
         <ProfileNavigationButton
           v-for="btn in menu"
@@ -62,7 +58,7 @@ onMounted(async () => {
         />
       </div>
 
-      <BaseButton type="button" @click="logout"> Выйти </BaseButton>
+      <BaseButton type="button" @click="auth.signOut"> Выйти </BaseButton>
     </div>
   </div>
 </template>

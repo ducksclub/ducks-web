@@ -1,4 +1,4 @@
-import type { AuthUser } from './auth'
+import type { AuthUser } from './auth.types'
 
 export type Feedback = {
   id: string

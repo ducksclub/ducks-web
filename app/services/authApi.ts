@@ -8,7 +8,7 @@ import type {
   TelegramAuthResponse,
   UpdateProfilePayload,
   UpdateProfileResponse,
-} from '~/types/auth'
+} from '~/types/auth.types'
 
 type AuthApiOptions<TBody = unknown> = {
   method?: 'GET' | 'POST' | 'PATCH'
@@ -19,7 +19,9 @@ type AuthApiOptions<TBody = unknown> = {
 function buildAuthApiUrl(path: string) {
   const config = useRuntimeConfig()
   const requestUrl = import.meta.server ? useRequestURL() : null
-  const origin = import.meta.client ? window.location.origin : requestUrl?.origin || 'http://localhost'
+  const origin = import.meta.client
+    ? window.location.origin
+    : requestUrl?.origin || 'http://localhost'
   const baseUrl = config.public.apiUrl?.trim().replace(/\/$/, '')
 
   if (!baseUrl) {

@@ -25,27 +25,25 @@ const isLoading = ref(false)
 
 const notify = useNotify()
 const { errors, validate } = useZodValidation<RegisterSchema>(registerSchema)
-const { register } = useAuthStore()
+const auth = useAuthProvider()
 
 const registerHandler = async () => {
   if (!validate(form.value)) return
   isLoading.value = true
 
   try {
-    await notify.promise(
-      register({
-        email: form.value.email,
-        username: form.value.username,
-        password: form.value.password,
-      }),
-      {
-        loading: 'Создаем аккаунт...',
-        success: 'Аккаунт создан!',
-        error: 'Произошла ошибка при созданий аккаунта',
-      },
-    )
+    await auth.signUp({
+      email: form.value.email,
+      username: form.value.username,
+      password: form.value.password,
+    })
 
+    notify.success('Аккаунт создан!')
     await navigateTo('/login')
+  } catch (e) {
+    const message =
+      (e as any)?.response?.data?.error.message ?? 'Произошла ошибка при созданий аккаунта'
+    notify.error(message)
   } finally {
     isLoading.value = false
   }

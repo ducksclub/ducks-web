@@ -1,5 +1,5 @@
 import type { PaginatedResponse } from './api'
-import type { AuthUser } from './auth'
+import type { AuthUser } from './auth.types'
 
 export type EventStatus = keyof typeof statusMap // delete
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AuthUser } from '~/types/auth'
+import type { AuthUser } from '~/types/auth.types'
 
 const props = defineProps<{
   photoUrl?: Pick<AuthUser, 'avatarUrl'>['avatarUrl']

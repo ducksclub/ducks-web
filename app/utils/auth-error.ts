@@ -1,4 +1,4 @@
-import type { AuthErrorCode } from '~/types/auth'
+import type { AuthErrorCode } from '~/types/auth.types'
 
 const defaultAuthErrorMessages: Record<AuthErrorCode, string> = {
   TELEGRAM_WEBAPP_UNAVAILABLE: 'Telegram WebApp недоступен в текущем окружении.',
@@ -32,7 +32,11 @@ export class AuthError extends Error {
 export function toAuthError(error: unknown, fallbackCode: AuthErrorCode = 'AUTH_REQUEST_FAILED') {
   if (error instanceof AuthError) return error
 
-  return new AuthError(fallbackCode, getResponseMessage(error) || defaultAuthErrorMessages[fallbackCode], error)
+  return new AuthError(
+    fallbackCode,
+    getResponseMessage(error) || defaultAuthErrorMessages[fallbackCode],
+    error,
+  )
 }
 
 export function getResponseStatus(error: unknown) {
@@ -47,7 +51,12 @@ export function getResponseStatus(error: unknown) {
     }
   }
 
-  return maybeError.statusCode || maybeError.status || maybeError.response?.statusCode || maybeError.response?.status
+  return (
+    maybeError.statusCode ||
+    maybeError.status ||
+    maybeError.response?.statusCode ||
+    maybeError.response?.status
+  )
 }
 
 function getResponseMessage(error: unknown) {

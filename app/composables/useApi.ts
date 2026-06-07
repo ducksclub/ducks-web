@@ -1,73 +1,66 @@
+import axios, { AxiosError, type AxiosRequestConfig, type Method } from 'axios'
+
 type QueryValue = string | number | boolean | null | undefined
 
-type ApiOptions<TBody = unknown> = {
-  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
+type ApiRequestOptions<TBody = unknown> = {
+  method?: Method
   body?: TBody
   query?: Record<string, QueryValue>
   auth?: boolean
 }
 
-function buildUrl(
-  baseUrl: string,
-  path: string,
-  query?: Record<string, QueryValue>,
-  origin = 'http://localhost',
-) {
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`
-  const normalizedBaseUrl = baseUrl.trim().replace(/\/$/, '')
+function buildQuery(query?: Record<string, QueryValue>) {
+  const params = new URLSearchParams()
 
-  if (!normalizedBaseUrl) {
-    throw new Error('API base URL is not configured')
-  }
+  if (!query) return ''
 
-  const url = normalizedBaseUrl.startsWith('http')
-    ? new URL(`${normalizedBaseUrl}${normalizedPath}`)
-    : new URL(`${normalizedBaseUrl}${normalizedPath}`, origin)
+  Object.entries(query).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      params.set(key, String(value))
+    }
+  })
 
-  if (query) {
-    Object.entries(query).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== '') {
-        url.searchParams.set(key, String(value))
-      }
-    })
-  }
+  const queryString = params.toString()
 
-  return url.toString()
+  return queryString ? `?${queryString}` : ''
 }
 
 export function useApi() {
   const config = useRuntimeConfig()
-  const requestUrl = process.server ? useRequestURL() : null
+  const auth = useAuthStore()
 
-  if (!config.public.apiUrl) {
-    throw Error('API_URL not found!')
+  const apiUrl = config.public.apiUrl
+
+  if (!apiUrl) {
+    throw new Error('NUXT_PUBLIC_API_URL не найден')
   }
 
   async function request<TResponse, TBody = unknown>(
     path: string,
-    options: ApiOptions<TBody> = {},
-  ) {
-    const auth = useAuthStore()
-    const origin = process.client ? window.location.origin : requestUrl?.origin
-    const url = buildUrl(config.public.apiUrl, path, options.query, origin)
+    options: ApiRequestOptions<TBody> = {},
+  ): Promise<TResponse> {
+    const normalizedApiUrl = apiUrl.replace(/\/$/, '')
+    const normalizedPath = path.startsWith('/') ? path : `/${path}`
+    const url = `${normalizedApiUrl}${normalizedPath}${buildQuery(options.query)}`
 
-    return await $fetch<TResponse>(url, {
+    const axiosConfig: AxiosRequestConfig<TBody> = {
+      url,
       method: options.method || 'GET',
-      body: options.body,
+      data: options.body,
       timeout: 10000,
       headers: {
+        'Content-Type': 'application/json',
+
         ...(options.auth !== false && auth.token
           ? {
               Authorization: `Bearer ${auth.token}`,
             }
           : {}),
       },
-      onResponseError({ response }) {
-        if (options.auth !== false && response.status === 401) {
-          auth.expireSession()
-        }
-      },
-    })
+    }
+
+    const response = await axios.request<TResponse>(axiosConfig)
+    return response.data
   }
 
   return {
