@@ -55,14 +55,12 @@ const authByTelegram = async () => {
 
   try {
     isLoading.value = true
-    notify.loading('Входим в аккаунт...')
-
-    await loginViaTelegram()
-
-    notify.success('Вы усепешно вошли в аккаунт!')
+    await notify.promise(loginViaTelegram(), {
+      loading: 'Входим в аккаунт...',
+      success: 'Вы усепешно вошли в аккаунт!',
+      error: 'Произошла ошибка при входе в аккаунт',
+    })
     await navigateTo('/')
-  } catch (error) {
-    notify.error((error as any).message ?? (error as any))
   } finally {
     isLoading.value = false
   }
