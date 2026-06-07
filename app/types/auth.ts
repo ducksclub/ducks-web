@@ -1,8 +1,8 @@
 export type AuthUser = {
   id: string
   email: string
-  avatarUrl: null
-  avatarHash: null
+  avatarUrl: string | null
+  avatarHash: string | null
   phone: string | null
   username: string
   role: 'user' | 'admin'
@@ -13,16 +13,7 @@ export type AuthUser = {
 export type LoginPayload = {
   email: string
   password: string
-}
-
-export type LoginViaTelegramPayload = {
-  initData: string
-  promoCode?: string
-}
-
-export type LoginResponse = {
-  token: string
-  user: AuthUser
+  initData?: string
 }
 
 export type RegisterPayload = {
@@ -33,25 +24,27 @@ export type RegisterPayload = {
   promoCode?: string
 }
 
-export type RegisterResponse = {
-  token: string
-  user: AuthUser
+export type LoginViaTelegramPayload = {
+  initData: string
+  promoCode?: string
 }
+
+export type AuthResponse = {
+  token: string
+  user?: AuthUser
+}
+
+export type LoginResponse = AuthResponse
+
+export type RegisterResponse = AuthResponse
+
+export type TelegramAuthResponse = AuthResponse
 
 export type MeResponse = AuthUser & {
   ratings: {
     gameType: string
     points: number
   }[]
-}
-
-export type TelegramAuthResponse = {
-  token: string
-  user?: AuthUser
-}
-
-export type TelegramAuthPayload = {
-  initData: string
 }
 
 export type UpdateProfilePayload = {
@@ -63,9 +56,9 @@ export type UpdateProfilePayload = {
 
 export type UpdateProfileResponse = {}
 
-export type AuthMode = 'telegram' | 'web' | 'unknown' | 'error'
-
 export type AuthStatus = 'idle' | 'loading' | 'authenticated' | 'unauthenticated' | 'error'
+
+export type AuthMode = 'web' | 'telegram'
 
 export type AuthErrorCode =
   | 'TELEGRAM_WEBAPP_UNAVAILABLE'

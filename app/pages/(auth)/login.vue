@@ -16,8 +16,8 @@ useHead({
 
 const notify = useNotify()
 const telegram = useTelegramWebApp()
-const { errors, validate } = useZodValidation<LoginSchema>(loginSchema)
 const { login, loginViaTelegram } = useAuthStore()
+const { errors, validate } = useZodValidation<LoginSchema>(loginSchema)
 
 const formData = ref<LoginSchema>({
   email: '',
