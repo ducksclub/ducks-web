@@ -30,6 +30,14 @@ export type SignInWithTelegramPayload = {
   initData: string
 }
 
+export type UpdateProfilePayload = {
+  email: string
+  phone: string
+  username: string
+  avatarUrl: string
+  avatarHash: string
+}
+
 export type SignUpPayload = {
   email: string
   password: string
@@ -41,6 +49,4 @@ export type AuthResponse = {
   user: AuthUser
 }
 
-export type MeResponse = {
-  user: AuthUser
-}
+export type MeResponse = AuthUser

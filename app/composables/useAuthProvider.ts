@@ -4,6 +4,7 @@ import type {
   SignInPayload,
   SignInWithTelegramPayload,
   SignUpPayload,
+  UpdateProfilePayload,
 } from '~/types/auth.types'
 
 export function useAuthProvider() {
@@ -88,19 +89,33 @@ export function useAuthProvider() {
       isLoading.value = true
       errorMessage.value = null
 
-      const response = await request<MeResponse>('/users/me', {
+      const user = await request<MeResponse>('/users/me', {
         method: 'GET',
       })
 
-      auth.setUser(response.user)
+      auth.setUser(user)
 
-      return response.user
+      return user
     } catch {
       auth.expireSession()
       return null
     } finally {
       isLoading.value = false
       isInitialized.value = true
+    }
+  }
+
+  async function updateProfile(payload: UpdateProfilePayload) {
+    try {
+      isLoading.value = true
+      errorMessage.value = null
+
+      await request<null, UpdateProfilePayload>('/users/me', {
+        method: 'PATCH',
+        body: payload,
+      })
+    } finally {
+      isLoading.value = false
     }
   }
 
@@ -128,6 +143,7 @@ export function useAuthProvider() {
     signUp,
     signOut,
     restoreSession,
+    updateProfile,
     clearError,
   }
 }

@@ -3,7 +3,11 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   const auth = useAuthProvider()
 
-  if (!auth.token) {
+  if (!auth.token.value) {
+    await auth.signOut()
+  }
+
+  if (!auth?.user.value) {
     await auth.restoreSession()
   }
 })

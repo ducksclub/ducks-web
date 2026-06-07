@@ -16,32 +16,19 @@ definePageMeta({
 })
 
 const notify = useNotify()
-const authStore = useAuthStore()
 const { uploadImage, isUploading } = useUploadApi()
 const { validate, errors } = useZodValidation(profileSchema)
 
 const isSaving = ref(false)
+const auth = useAuthProvider()
 
 const form = reactive({
-  username: '',
-  phone: '',
-  avatar: '',
+  email: auth.user.value?.email ?? '',
+  username: auth.user.value?.username ?? '',
+  phone: auth.user.value?.phone ?? '',
+  avatar: auth.user.value?.avatarUrl ?? '',
   file: null as File | null,
 })
-
-const loadProfile = async () => {
-  const me = await notify.promise(authStore.fetchMe(), {
-    loading: 'Загрузка профиля...',
-    success: 'Профиль загружен',
-    error: 'Не удалось загрузить профиль',
-  })
-
-  form.phone = me?.phone ?? ''
-  form.avatar = me?.avatarUrl ?? ''
-  form.username = me?.username ?? ''
-}
-
-onMounted(loadProfile)
 
 const saveProfile = async () => {
   if (!validate(form)) return
@@ -63,14 +50,15 @@ const saveProfile = async () => {
       imageHash = uploaded.hash
     }
 
-    await authStore.updateProfile({
+    await auth.updateProfile({
+      email: form.email,
       username: form.username,
       phone: form.phone,
       avatarUrl: imageUrl,
       avatarHash: imageHash,
     })
     notify.success('Профиль сохранен')
-    await authStore.fetchMe()
+    await auth.restoreSession()
   } catch (e: any) {
     console.error(e)
     notify.error('Не удалось сохранить профиль')
@@ -98,6 +86,15 @@ const saveProfile = async () => {
       :crop-shape="'circle'"
       label="Аватар"
       @change="(file) => (form.file = file)"
+    />
+
+    <BaseInput
+      v-model="form.email"
+      label="Ваша почта"
+      placeholder="email"
+      :icon="AtSign"
+      :disabled="true"
+      :error="errors.email"
     />
 
     <BaseInput

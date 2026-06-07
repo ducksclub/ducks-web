@@ -41,13 +41,13 @@ const go = (path: string) => {
       <p class="px-1 text-[10px] font-black uppercase tracking-[0.25em] text-gray-500">Навигация</p>
 
       <div class="space-y-2">
-        <!-- <ProfileNavigationButton
-          v-if="isAdmin"
+        <ProfileNavigationButton
+          v-if="auth.user.value?.role && auth.user.value.role === 'admin'"
           :title="'Кабинет админа'"
           :subtitle="'Управление событиями'"
           variant="admin"
           @click="go('/admin/events')"
-        /> -->
+        />
 
         <ProfileNavigationButton
           v-for="btn in menu"
