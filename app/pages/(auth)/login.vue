@@ -24,7 +24,6 @@ const formData = ref<LoginSchema>({
   password: '',
   remember: false,
 })
-const err = ref<string>('')
 
 const isLoading = ref(false)
 const isTelegramAuthAvailable = ref(false)
@@ -63,8 +62,7 @@ const authByTelegram = async () => {
     notify.success('Вы усепешно вошли в аккаунт!')
     await navigateTo('/')
   } catch (error) {
-    err.value = error as any
-    notify.error(error as any)
+    notify.error((error as any).message ?? (error as any))
   } finally {
     isLoading.value = false
   }
@@ -83,8 +81,6 @@ onMounted(() => {
       <AuthLogo />
 
       <h2 class="text-center text-lg font-bold uppercase mb-6">Вход</h2>
-
-      {{ err }}
 
       <form @submit.prevent="submit">
         <div class="space-y-3">
