@@ -9,12 +9,14 @@ export const useTelegramWebApp = () => {
   ]
 
   const getWebApp = () => {
-    if (!process.client) return null
+    if (!import.meta.client) return null
     return window.Telegram?.WebApp ?? null
   }
 
+  const isWebAppAvailable = () => Boolean(getWebApp())
+
   const getInitDataFromUrl = () => {
-    if (!process.client) return ''
+    if (!import.meta.client) return ''
 
     const sources = [window.location.hash.replace(/^#/, ''), window.location.search.replace(/^\?/, '')]
 
@@ -65,7 +67,7 @@ export const useTelegramWebApp = () => {
   }
 
   const getSavedInitData = () => {
-    if (!process.client) return ''
+    if (!import.meta.client) return ''
 
     const initData = window.sessionStorage.getItem(initDataStorageKey) || ''
 
@@ -78,7 +80,7 @@ export const useTelegramWebApp = () => {
   }
 
   const saveInitData = (initData: string) => {
-    if (!process.client || !isValidInitData(initData)) return
+    if (!import.meta.client || !isValidInitData(initData)) return
 
     window.sessionStorage.setItem(initDataStorageKey, initData)
   }
@@ -93,9 +95,49 @@ export const useTelegramWebApp = () => {
 
   const hasInitData = () => Boolean(getInitData())
 
+  const getLaunchEnvironment = () => {
+    if (!import.meta.client) {
+      return {
+        mode: 'unknown' as const,
+        webApp: null,
+        initData: '',
+        errorCode: 'AUTH_ENVIRONMENT_UNKNOWN' as const,
+      }
+    }
+
+    const webApp = getWebApp()
+
+    if (!webApp) {
+      return {
+        mode: 'web' as const,
+        webApp: null,
+        initData: '',
+      }
+    }
+
+    const initData = getInitData()
+
+    if (!initData) {
+      return {
+        mode: 'error' as const,
+        webApp,
+        initData: '',
+        errorCode: 'TELEGRAM_INIT_DATA_MISSING' as const,
+      }
+    }
+
+    return {
+      mode: 'telegram' as const,
+      webApp,
+      initData,
+    }
+  }
+
   return {
     getWebApp,
+    isWebAppAvailable,
     getInitData,
     hasInitData,
+    getLaunchEnvironment,
   }
 }

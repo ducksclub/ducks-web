@@ -37,7 +37,6 @@ function buildUrl(
 
 export function useApi() {
   const config = useRuntimeConfig()
-  const auth = useAuthStore()
   const requestUrl = process.server ? useRequestURL() : null
 
   if (!config.public.apiUrl) {
@@ -48,6 +47,7 @@ export function useApi() {
     path: string,
     options: ApiOptions<TBody> = {},
   ) {
+    const auth = useAuthStore()
     const origin = process.client ? window.location.origin : requestUrl?.origin
     const url = buildUrl(config.public.apiUrl, path, options.query, origin)
 
@@ -61,6 +61,11 @@ export function useApi() {
               Authorization: `Bearer ${auth.token}`,
             }
           : {}),
+      },
+      onResponseError({ response }) {
+        if (options.auth !== false && response.status === 401) {
+          auth.expireSession()
+        }
       },
     })
   }

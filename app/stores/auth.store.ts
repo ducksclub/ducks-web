@@ -1,140 +1,288 @@
+import { AuthError, getResponseStatus, toAuthError } from '~/utils/auth-error'
+import { useAuthApi } from '~/services/authApi'
 import type {
+  AuthErrorCode,
+  AuthMode,
+  AuthStatus,
+  AuthUser,
   LoginPayload,
   LoginResponse,
+  LoginViaTelegramPayload,
+  MeResponse,
   RegisterPayload,
   RegisterResponse,
-  MeResponse,
-  LoginViaTelegramPayload,
+  TelegramAuthResponse,
   UpdateProfilePayload,
 } from '~/types/auth'
+
+type SessionResponse = LoginResponse | RegisterResponse | TelegramAuthResponse
 
 export const useAuthStore = defineStore(
   'auth-v2',
   () => {
-    const api = useApi()
+    const api = useAuthApi()
     const promo = usePromoCode()
     const telegram = useTelegramWebApp()
 
     const token = ref<string | null>(null)
-    const user = ref<MeResponse | null>(null)
+    const user = ref<MeResponse | AuthUser | null>(null)
+    const status = ref<AuthStatus>('idle')
+    const authMode = ref<AuthMode>('unknown')
+    const authError = shallowRef<AuthError | null>(null)
     const isLoadingUser = ref(false)
 
-    const isAuthenticated = computed(() => Boolean(token.value))
-    const isAdmin = computed(() => {
-      return user.value?.role === 'admin'
-    })
+    let initializePromise: Promise<MeResponse | AuthUser | null> | null = null
+    let fetchMePromise: Promise<MeResponse | null> | null = null
+    let telegramLoginPromise: Promise<TelegramAuthResponse> | null = null
+
+    const isAuthenticated = computed(() => status.value === 'authenticated' && Boolean(token.value))
+    const isAdmin = computed(() => user.value?.role === 'admin')
+
+    function setAuthError(error: unknown, fallbackCode: AuthErrorCode = 'AUTH_REQUEST_FAILED') {
+      authError.value = toAuthError(error, fallbackCode)
+      status.value = 'error'
+
+      return authError.value
+    }
+
+    function clearAuthError() {
+      authError.value = null
+    }
+
+    function setSession(response: SessionResponse) {
+      token.value = response.token
+
+      if ('user' in response && response.user) {
+        user.value = response.user
+      }
+
+      status.value = 'authenticated'
+      clearAuthError()
+    }
+
+    function clearSession(nextStatus: AuthStatus = 'unauthenticated') {
+      token.value = null
+      user.value = null
+      status.value = nextStatus
+    }
+
+    function expireSession() {
+      clearSession()
+      setAuthError(new AuthError('TOKEN_EXPIRED'))
+    }
 
     async function updateProfile(payload: UpdateProfilePayload) {
-      const response = await api.request<UpdateProfilePayload, UpdateProfilePayload>('/users/me', {
-        method: 'PATCH',
-        body: payload,
-      })
+      if (!token.value) {
+        throw new AuthError('PROTECTED_ROUTE_UNAUTHENTICATED')
+      }
 
-      return response
+      return await api.updateProfile(token.value, payload)
     }
 
     async function login(payload: LoginPayload) {
-      const initData = telegram.getInitData()
-
-      const response = await api.request<LoginResponse, LoginPayload>('/auth/signin', {
-        method: 'POST',
-        body: {
-          ...payload,
-          ...(initData ? { initData } : {}),
-        },
-        auth: false,
-      })
-
-      token.value = response.token
-
-      return response
-    }
-
-    async function loginViaTelegram() {
-      const initData = telegram.getInitData()
-
-      if (!initData) {
-        throw new Error('Telegram authorization is available only inside Telegram Mini App')
-      }
-
-      const promoCode = promo.getSavedPromoCode()
-
-      const response = await api.request<LoginResponse, LoginViaTelegramPayload>(
-        '/auth/signin-with-telegram',
-        {
-          method: 'POST',
-          body: {
-            initData,
-            ...(promoCode ? { promoCode } : {}),
-          },
-          auth: false,
-        },
-      )
-
-      token.value = response.token
-
-      return response
-    }
-
-    async function fetchMe() {
-      if (!token.value) {
-        user.value = null
-
-        return null
-      }
-
-      isLoadingUser.value = true
+      status.value = 'loading'
+      clearAuthError()
 
       try {
-        const response = await api.request<MeResponse>('/users/me', {
-          method: 'GET',
+        const environment = telegram.getLaunchEnvironment()
+        const initData = environment.mode === 'telegram' ? environment.initData : ''
+        const response = await api.signIn({
+          ...payload,
+          ...(initData ? { initData } : {}),
         })
 
-        user.value = response
+        authMode.value = environment.mode === 'telegram' ? 'telegram' : 'web'
+        setSession(response)
 
         return response
       } catch (error) {
-        token.value = null
-        user.value = null
-
-        return null
-      } finally {
-        isLoadingUser.value = false
+        setAuthError(error)
+        throw error
       }
     }
 
+    async function loginViaTelegram(initDataOverride?: string) {
+      if (telegramLoginPromise) return telegramLoginPromise
+
+      telegramLoginPromise = (async () => {
+        status.value = 'loading'
+        clearAuthError()
+
+        const environment = telegram.getLaunchEnvironment()
+        authMode.value = environment.mode
+
+        if (environment.mode === 'web') {
+          throw setAuthError(new AuthError('TELEGRAM_WEBAPP_UNAVAILABLE'))
+        }
+
+        const initData = initDataOverride || environment.initData
+
+        if (!initData) {
+          throw setAuthError(new AuthError('TELEGRAM_INIT_DATA_MISSING'))
+        }
+
+        try {
+          const promoCode = promo.getSavedPromoCode()
+          const body: LoginViaTelegramPayload = {
+            initData,
+            ...(promoCode ? { promoCode } : {}),
+          }
+          const response = await api.signInWithTelegram(body)
+
+          setSession(response)
+          promo.clearPromoCode()
+
+          if (!user.value) {
+            await fetchMe()
+          }
+
+          return response
+        } catch (error) {
+          const code =
+            getResponseStatus(error) === 401 ? 'TELEGRAM_AUTH_REJECTED' : 'AUTH_REQUEST_FAILED'
+          setAuthError(error, code)
+          throw error
+        }
+      })()
+
+      try {
+        return await telegramLoginPromise
+      } finally {
+        telegramLoginPromise = null
+      }
+    }
+
+    async function fetchMe() {
+      if (fetchMePromise) return fetchMePromise
+
+      fetchMePromise = (async () => {
+        if (!token.value) {
+          user.value = null
+          status.value = 'unauthenticated'
+
+          return null
+        }
+
+        isLoadingUser.value = true
+
+        try {
+          const response = await api.me(token.value)
+
+          user.value = response
+          status.value = 'authenticated'
+          clearAuthError()
+
+          return response
+        } catch (error) {
+          if (getResponseStatus(error) === 401) {
+            expireSession()
+          } else {
+            clearSession()
+            setAuthError(error)
+          }
+
+          return null
+        } finally {
+          isLoadingUser.value = false
+          fetchMePromise = null
+        }
+      })()
+
+      return fetchMePromise
+    }
+
     async function register(payload: RegisterPayload) {
-      const initData = telegram.getInitData()
-      const promoCode = promo.getSavedPromoCode()
+      status.value = 'loading'
+      clearAuthError()
 
-      const response = await api.request<RegisterResponse, RegisterPayload>('/auth/signup', {
-        method: 'POST',
-        body: {
+      try {
+        const environment = telegram.getLaunchEnvironment()
+        const promoCode = promo.getSavedPromoCode()
+        const response = await api.signUp({
           ...payload,
-          ...(initData ? { initData } : {}),
+          ...(environment.mode === 'telegram' ? { initData: environment.initData } : {}),
           ...(promoCode ? { promoCode } : {}),
-        },
-        auth: false,
-      })
+        })
 
-      token.value = response.token
+        authMode.value = environment.mode === 'telegram' ? 'telegram' : 'web'
+        setSession(response)
+        await fetchMe()
+        promo.clearPromoCode()
 
-      await fetchMe()
-      promo.clearPromoCode()
+        return response
+      } catch (error) {
+        setAuthError(error)
+        throw error
+      }
+    }
 
-      return response
+    async function initializeAuth() {
+      if (!import.meta.client) return null
+      if (initializePromise) return initializePromise
+
+      initializePromise = (async () => {
+        status.value = 'loading'
+        clearAuthError()
+
+        const environment = telegram.getLaunchEnvironment()
+        authMode.value = environment.mode
+
+        if (token.value) {
+          const me = await fetchMe()
+
+          if (me) return me
+        }
+
+        if (environment.mode === 'telegram') {
+          await loginViaTelegram(environment.initData)
+
+          return user.value
+        }
+
+        if (environment.mode === 'error') {
+          setAuthError(new AuthError(environment.errorCode || 'AUTH_ENVIRONMENT_UNKNOWN'))
+
+          return null
+        }
+
+        status.value = 'unauthenticated'
+
+        return null
+      })()
+
+      try {
+        return await initializePromise
+      } finally {
+        initializePromise = null
+      }
+    }
+
+    async function requireAuth() {
+      if (isAuthenticated.value && user.value) return true
+
+      await initializeAuth()
+
+      if (isAuthenticated.value && user.value) return true
+
+      setAuthError(new AuthError('PROTECTED_ROUTE_UNAUTHENTICATED'))
+
+      return false
     }
 
     function logout() {
-      token.value = null
-      user.value = null
+      clearSession()
 
-      navigateTo('/login')
+      if (import.meta.client) {
+        navigateTo('/login')
+      }
     }
 
     return {
       token,
       user,
+      status,
+      authMode,
+      authError,
       isLoadingUser,
       isAuthenticated,
       isAdmin,
@@ -142,14 +290,19 @@ export const useAuthStore = defineStore(
       updateProfile,
       loginViaTelegram,
       fetchMe,
+      initializeAuth,
+      requireAuth,
       register,
       logout,
+      expireSession,
+      clearAuthError,
     }
   },
 
   {
     persist: {
       storage: piniaPluginPersistedstate.localStorage(),
+      pick: ['token'],
     },
   },
 )

@@ -47,9 +47,10 @@ export type MeResponse = AuthUser & {
 
 export type TelegramAuthResponse = {
   token: string
+  user?: AuthUser
 }
 
-export type TelegramAuthPaylaod = {
+export type TelegramAuthPayload = {
   initData: string
 }
 
@@ -61,3 +62,16 @@ export type UpdateProfilePayload = {
 }
 
 export type UpdateProfileResponse = {}
+
+export type AuthMode = 'telegram' | 'web' | 'unknown' | 'error'
+
+export type AuthStatus = 'idle' | 'loading' | 'authenticated' | 'unauthenticated' | 'error'
+
+export type AuthErrorCode =
+  | 'TELEGRAM_WEBAPP_UNAVAILABLE'
+  | 'TELEGRAM_INIT_DATA_MISSING'
+  | 'TELEGRAM_AUTH_REJECTED'
+  | 'TOKEN_EXPIRED'
+  | 'PROTECTED_ROUTE_UNAUTHENTICATED'
+  | 'AUTH_ENVIRONMENT_UNKNOWN'
+  | 'AUTH_REQUEST_FAILED'

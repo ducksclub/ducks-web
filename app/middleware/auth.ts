@@ -10,19 +10,9 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   if (to.path === '/login') return
 
-  if (!auth.token) {
-    return navigateTo(loginRoute)
-  }
+  const isAllowed = await auth.requireAuth()
 
-  if (!auth.user) {
-    try {
-      await auth.fetchMe()
-    } catch {
-      return navigateTo(loginRoute)
-    }
-  }
-
-  if (!auth.user) {
+  if (!isAllowed) {
     return navigateTo(loginRoute)
   }
 })

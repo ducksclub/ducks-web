@@ -8,16 +8,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
     hash: to.hash,
   }
 
-  if (!auth.token) {
-    return navigateTo(loginRoute)
-  }
+  const isAllowed = await auth.requireAuth()
 
-  if (!auth.user) {
-    try {
-      await auth.fetchMe()
-    } catch {
-      return navigateTo(loginRoute)
-    }
+  if (!isAllowed) {
+    return navigateTo(loginRoute)
   }
 
   if (!auth.isAdmin) {
