@@ -9,7 +9,7 @@ import type {
 } from '~/types/auth'
 
 export const useAuthStore = defineStore(
-  'auth',
+  'auth-v2',
   () => {
     const api = useApi()
     const promo = usePromoCode()
