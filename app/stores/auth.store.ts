@@ -234,7 +234,11 @@ export const useAuthStore = defineStore(
         }
 
         if (environment.mode === 'telegram') {
-          await loginViaTelegram(environment.initData)
+          try {
+            await loginViaTelegram(environment.initData)
+          } catch {
+            return null
+          }
 
           return user.value
         }
@@ -260,7 +264,11 @@ export const useAuthStore = defineStore(
     async function requireAuth() {
       if (isAuthenticated.value && user.value) return true
 
-      await initializeAuth()
+      try {
+        await initializeAuth()
+      } catch {
+        return false
+      }
 
       if (isAuthenticated.value && user.value) return true
 
