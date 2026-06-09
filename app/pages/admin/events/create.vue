@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Calendar, Map, Users } from '@lucide/vue'
+import dayjs from 'dayjs'
 import { useEventsApi } from '~/api/events.api'
 import { useUploadApi } from '~/api/upload.api'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
@@ -98,7 +99,7 @@ const createEvent = async () => {
       gameRules: form.gameRules,
       address: form.address,
       gameType: form.gameType as EventGameType,
-      startsAt: fromMoscowDatetimeLocalToISOString(form.startsAt),
+      startsAt: dayjs(form.startsAt).format('DD.MM.YYYY HH:mm:ss'),
       participantLimit: form.participantLimit,
       isTemplate: form.isTemplate,
       imageUrl,
