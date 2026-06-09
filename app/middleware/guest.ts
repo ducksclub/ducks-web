@@ -1,9 +1,8 @@
 export default defineNuxtRouteMiddleware(async (to) => {
-  if (import.meta.server) return
-
+  const router = useRouter()
   const auth = useAuthStore()
 
   if (auth.token) {
-    return navigateTo('/')
+    return router.push('/')
   }
 })
