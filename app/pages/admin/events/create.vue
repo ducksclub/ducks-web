@@ -6,6 +6,7 @@ import { useUploadApi } from '~/api/upload.api'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
+import BaseDatetime from '~/components/ui/BaseDatetime.vue'
 import BaseInput from '~/components/ui/BaseInput.vue'
 import BaseSelect from '~/components/ui/BaseSelect.vue'
 import ImageUpload from '~/components/ui/ImageUpload.vue'
@@ -99,7 +100,7 @@ const createEvent = async () => {
       gameRules: form.gameRules,
       address: form.address,
       gameType: form.gameType as EventGameType,
-      startsAt: dayjs(form.startsAt).format('DD.MM.YYYY HH:mm:ss'),
+      startsAt: form.startsAt,
       participantLimit: form.participantLimit,
       isTemplate: form.isTemplate,
       imageUrl,
@@ -183,12 +184,7 @@ onMounted(() => {
       :icon="Map"
     />
 
-    <BaseInput
-      v-model="form.startsAt"
-      type="datetime-local"
-      label="Дата и время"
-      :icon="Calendar"
-    />
+    <BaseDatetime v-model="form.startsAt" label="Дата и время" :icon="Calendar" />
 
     <BaseInput
       v-model.number="form.participantLimit"
