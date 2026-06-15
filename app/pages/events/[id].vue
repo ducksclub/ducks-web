@@ -7,7 +7,7 @@ import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 import EventSeatModal from '~/components/events/EventSeatModal.vue'
 import { gameTypeColors } from '~/constants/categories'
-import { Calendar, Map, Plus, ShareIcon } from '@lucide/vue'
+import { Calendar, ChevronDown, Map, ShareIcon, Users } from '@lucide/vue'
 import HeaderButton from '~/components/layout/header/HeaderButton.vue'
 import { useShare } from '~/composables/helpers/useShare'
 
@@ -18,11 +18,16 @@ definePageMeta({
 const route = useRoute()
 const eventId = computed(() => route.params.id as string)
 const eventsApi = useEventsApi()
-const { isAuthenticated } = useAuthStore()
+const auth = useAuthStore()
+const { isAuthenticated, user } = storeToRefs(auth)
 
 const event = ref<Event>()
 const isLoadingEvent = ref(false)
 const error = ref<string | null>(null)
+const registeredPlayersOpen = ref(false)
+const registeredPlayerNicknames = ref<string[]>([])
+const isLoadingRegisteredPlayers = ref(false)
+const registeredPlayersError = ref<string | null>(null)
 
 const { isRegistered, register, unregister, fetchStatus, isLoading } =
   useEventRegistrationApi(eventId)
@@ -48,6 +53,12 @@ const hasSeatingInfo = computed(() => {
   return Boolean(isPokerEvent.value && seatingTableCount.value && event.value?.seatsPerTable)
 })
 
+const isAdmin = computed(() => user.value?.role === 'admin')
+
+const registeredPlayersCount = computed(() => {
+  return event.value?._count?.registrations ?? registeredPlayerNicknames.value.length
+})
+
 const fetchEvent = async () => {
   try {
     isLoadingEvent.value = true
@@ -61,10 +72,28 @@ const fetchEvent = async () => {
   }
 }
 
+const fetchRegisteredPlayers = async () => {
+  if (!isAdmin.value) return
+
+  try {
+    isLoadingRegisteredPlayers.value = true
+    registeredPlayersError.value = null
+
+    const response = await eventsApi.getEventParticipants(eventId.value)
+    registeredPlayerNicknames.value = response.participants
+      .map((participant) => participant.user?.username)
+      .filter((nickname): nickname is string => Boolean(nickname))
+  } catch (e) {
+    registeredPlayersError.value = 'Не удалось загрузить список игроков'
+  } finally {
+    isLoadingRegisteredPlayers.value = false
+  }
+}
+
 const registerForEvent = async () => {
   try {
     await register()
-    await fetchEvent()
+    await Promise.all([fetchEvent(), fetchRegisteredPlayers()])
   } catch (e: any) {
     useNotify().error(e?.data?.message || e?.message || 'Не удалось записаться на событие')
   }
@@ -74,7 +103,7 @@ const unregisterFromEvent = async () => {
   try {
     await unregister()
     closeSeatModal()
-    await fetchEvent()
+    await Promise.all([fetchEvent(), fetchRegisteredPlayers()])
   } catch (e: any) {
     useNotify().error(e?.data?.message || e?.message || 'Не удалось отменить запись')
   }
@@ -89,7 +118,7 @@ const onShare = () => {
 }
 
 onMounted(async () => {
-  await Promise.all([fetchEvent(), fetchStatus()])
+  await Promise.all([fetchEvent(), fetchStatus(), fetchRegisteredPlayers()])
 })
 </script>
 
@@ -214,6 +243,68 @@ onMounted(async () => {
             Всего мест: {{ seatingTotalSeats }}
           </p>
         </div>
+      </div>
+
+      <!-- REGISTERED PLAYERS: ADMIN ONLY -->
+      <div v-if="isAdmin" class="rounded-2xl border border-white/5 bg-(--secondary)/20">
+        <button
+          type="button"
+          class="flex w-full items-center gap-3 p-4 text-left transition hover:bg-white/5"
+          :aria-expanded="registeredPlayersOpen"
+          @click="registeredPlayersOpen = !registeredPlayersOpen"
+        >
+          <span
+            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-red-500/20 bg-red-500/10 text-red-300"
+          >
+            <Users class="size-4" />
+          </span>
+
+          <span class="min-w-0 flex-1">
+            <span class="block text-[10px] font-medium uppercase tracking-widest text-gray-500">
+              Уже зарегистрированы
+            </span>
+            <span class="mt-1 block text-sm font-bold text-white">
+              {{ registeredPlayersCount }} игроков
+            </span>
+          </span>
+
+          <ChevronDown
+            class="size-4 shrink-0 text-gray-500 transition-transform duration-200"
+            :class="{ 'rotate-180 text-red-300': registeredPlayersOpen }"
+          />
+        </button>
+
+        <Transition
+          enter-active-class="transition-all duration-200 ease-out"
+          enter-from-class="max-h-0 opacity-0"
+          enter-to-class="max-h-80 opacity-100"
+          leave-active-class="transition-all duration-150 ease-in"
+          leave-from-class="max-h-80 opacity-100"
+          leave-to-class="max-h-0 opacity-0"
+        >
+          <div v-if="registeredPlayersOpen" class="overflow-hidden border-t border-white/5">
+            <div v-if="isLoadingRegisteredPlayers" class="space-y-2 p-4">
+              <div class="h-4 rounded bg-white/5" />
+              <div class="h-4 w-2/3 rounded bg-white/5" />
+            </div>
+
+            <div v-else-if="registeredPlayersError" class="p-4 text-sm text-red-300">
+              {{ registeredPlayersError }}
+            </div>
+
+            <div v-else-if="registeredPlayerNicknames.length" class="max-h-72 overflow-y-auto p-2">
+              <div
+                v-for="nickname in registeredPlayerNicknames"
+                :key="nickname"
+                class="rounded-xl px-3 py-2 text-sm font-semibold text-gray-200"
+              >
+                {{ nickname }}
+              </div>
+            </div>
+
+            <div v-else class="p-4 text-sm text-gray-400">Пока никто не зарегистрирован</div>
+          </div>
+        </Transition>
       </div>
 
       <template v-if="isAuthenticated">
