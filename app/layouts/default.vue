@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Calendar, Info, List, Star, User } from '@lucide/vue'
+import { Calendar, CalendarDays, ClipboardCheck, Info, List, Star, User } from '@lucide/vue'
 </script>
 
 <template>
@@ -14,13 +14,6 @@ import { Calendar, Info, List, Star, User } from '@lucide/vue'
         <template #default> Главная </template>
       </LayoutNavbarButton>
 
-      <LayoutNavbarButton path="/rating">
-        <template #icon>
-          <Star />
-        </template>
-        <template #default> Рейтинг </template>
-      </LayoutNavbarButton>
-
       <LayoutNavbarButton path="/profile">
         <template #icon>
           <User />
@@ -28,18 +21,25 @@ import { Calendar, Info, List, Star, User } from '@lucide/vue'
         <template #default> Профиль </template>
       </LayoutNavbarButton>
 
-      <LayoutNavbarButton path="/rules">
+      <LayoutNavbarButton path="/rating">
         <template #icon>
-          <List />
+          <Star />
         </template>
-        <template #default> Правила </template>
+        <template #default> Рейтинг </template>
       </LayoutNavbarButton>
 
-      <LayoutNavbarButton path="/support">
+      <LayoutNavbarButton path="/events">
         <template #icon>
-          <Info />
+          <CalendarDays />
         </template>
-        <template #default> Поддержка </template>
+        <template #default> Афиша </template>
+      </LayoutNavbarButton>
+
+      <LayoutNavbarButton path="/profile/events">
+        <template #icon>
+          <ClipboardCheck />
+        </template>
+        <template #default> Записи </template>
       </LayoutNavbarButton>
     </LayoutNavbar>
   </div>

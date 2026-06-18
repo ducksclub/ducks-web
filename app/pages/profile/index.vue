@@ -14,10 +14,10 @@ const auth = useAuthProvider()
 const router = useRouter()
 
 const menu = [
-  { label: 'Идеи и предложения', path: '/profile/feedback' },
-  { label: 'Мои записи', path: '/profile/events' },
-  { label: 'О клубе', path: '/about' },
+  { label: 'Мои турниры', path: '/profile/events' },
   { label: 'Настройки профиля', path: '/profile/settings' },
+  { label: 'Ближайшие турниры', path: '/events', variant: 'admin' },
+  { label: 'Идеи и предложения', path: '/profile/feedback' },
 ]
 
 const go = (path: string) => {
@@ -49,13 +49,13 @@ const go = (path: string) => {
           @click="go('/admin/events')"
         />
 
-        <ProfileNavigationButton
-          v-for="btn in menu"
-          :key="btn.label"
-          :title="btn.label"
-          variant="default"
-          @click="go(btn.path)"
-        />
+        <template v-for="btn in menu" :key="btn.label">
+          <ProfileNavigationButton
+            :title="btn.label"
+            :variant="btn.variant ?? 'default'"
+            @click="go(btn.path)"
+          />
+        </template>
       </div>
 
       <BaseButton type="button" @click="auth.signOut"> Выйти </BaseButton>
