@@ -19,6 +19,19 @@ export function useTelegramWebApp() {
     return Boolean(params.get('auth_date') && params.get('hash'))
   }
 
+  function normalizeInitData(initData: string) {
+    const params = new URLSearchParams(initData)
+    const normalizedParams = new URLSearchParams()
+
+    Array.from(params.entries())
+      .sort(([leftKey], [rightKey]) => leftKey.localeCompare(rightKey))
+      .forEach(([key, value]) => {
+        normalizedParams.append(key, value)
+      })
+
+    return normalizedParams.toString()
+  }
+
   function getInitDataFromUrl() {
     if (!import.meta.client) return ''
 
@@ -29,7 +42,7 @@ export function useTelegramWebApp() {
       const initData = params.get('tgWebAppData')
 
       if (initData && isValidInitData(initData)) {
-        return initData
+        return normalizeInitData(initData)
       }
     }
 
@@ -44,7 +57,7 @@ export function useTelegramWebApp() {
     const initData = storage.getItem(initDataStorageKey) || ''
 
     if (initData && isValidInitData(initData)) {
-      return initData
+      return normalizeInitData(initData)
     }
 
     storage.removeItem(initDataStorageKey)
@@ -57,7 +70,7 @@ export function useTelegramWebApp() {
 
     if (!storage || !isValidInitData(initData)) return
 
-    storage.setItem(initDataStorageKey, initData)
+    storage.setItem(initDataStorageKey, normalizeInitData(initData))
   }
 
   function syncInitDataFromTelegram() {
@@ -67,7 +80,7 @@ export function useTelegramWebApp() {
       saveInitData(initData)
     }
 
-    return initData
+    return initData ? normalizeInitData(initData) : ''
   }
 
   function getInitData() {
