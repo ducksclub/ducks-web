@@ -36,6 +36,7 @@ export type Event = {
   endsAt: string
   location: string
   participantLimit: number
+  initialDepositAmount: number
   maxParticipants?: number
   seatsPerTable?: number
   tableCount?: number
@@ -63,6 +64,7 @@ export type UpdateEventPayload = {
   startsAt: Event['startsAt']
   gameType: Event['gameType']
   participantLimit: Event['participantLimit']
+  initialDepositAmount: Event['initialDepositAmount']
   imageUrl: Event['imageUrl']
   imageHash: Event['imageHash']
 }
@@ -76,6 +78,7 @@ export type CreateEventPayload = {
   startsAt: Event['startsAt']
   gameType: Event['gameType']
   participantLimit: Event['participantLimit']
+  initialDepositAmount: Event['initialDepositAmount']
   imageUrl: Event['imageUrl']
   imageHash: Event['imageHash']
   seatsPerTable: Event['seatsPerTable']

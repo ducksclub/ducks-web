@@ -42,6 +42,7 @@ const form = reactive({
   gameType: '',
   startsAt: '',
   participantLimit: 10,
+  initialDepositAmount: 0,
   template: '',
   isTemplate: false,
   seatsPerTable: 9,
@@ -65,6 +66,7 @@ watch(
     form.address = template.address
     form.gameType = template.gameType
     form.participantLimit = template.participantLimit
+    form.initialDepositAmount = template.initialDepositAmount ?? 0
     form.imageUrl = template.imageUrl
     form.imageHash = template.imageHash
   },
@@ -103,6 +105,7 @@ const createEvent = async () => {
       gameType: form.gameType as EventGameType,
       startsAt: form.startsAt,
       participantLimit: form.participantLimit,
+      initialDepositAmount: form.initialDepositAmount,
       isTemplate: form.isTemplate,
       seatsPerTable: form.seatsPerTable,
       imageUrl,
@@ -194,6 +197,15 @@ onMounted(() => {
       inputmode="numeric"
       label="Лимит участников"
       placeholder="Количество мест"
+      :icon="Users"
+    />
+
+    <BaseInput
+      v-model.number="form.initialDepositAmount"
+      type="text"
+      inputmode="numeric"
+      label="Первоначальный депозит"
+      placeholder="Сумма депозита"
       :icon="Users"
     />
 
