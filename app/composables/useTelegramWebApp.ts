@@ -1,5 +1,5 @@
 export function useTelegramWebApp() {
-  const initDataStorageKey = 'telegram:init-data'
+  const initDataStorageKey = 'telegram:init-data-v2'
 
   function getWebApp() {
     if (!import.meta.client) return null
@@ -26,7 +26,10 @@ export function useTelegramWebApp() {
   function getInitDataFromUrl() {
     if (!import.meta.client) return ''
 
-    const sources = [window.location.hash.replace(/^#/, ''), window.location.search.replace(/^\?/, '')]
+    const sources = [
+      window.location.hash.replace(/^#/, ''),
+      window.location.search.replace(/^\?/, ''),
+    ]
 
     for (const source of sources) {
       const params = new URLSearchParams(source)
