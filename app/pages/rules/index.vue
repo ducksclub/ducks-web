@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import FileButton from '~/components/info/FileButton.vue'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
+import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 import Accordion from '~/components/ui/Accordion.vue'
 
 useHead({
   title: "Duck's | Правила",
+})
+
+definePageMeta({
+  layout: 'empty',
 })
 
 type Rule = {
@@ -71,6 +76,10 @@ const go = (url: string) => {
 
 <template>
   <BaseHeader>
+    <template #left>
+      <HeaderBackButton />
+    </template>
+
     <template #default>
       <HeaderTitle title="Правила" />
     </template>

@@ -28,18 +28,18 @@ import { Calendar, CalendarDays, ClipboardCheck, Info, List, Star, User } from '
         <template #default> Рейтинг </template>
       </LayoutNavbarButton>
 
+      <LayoutNavbarButton path="/profile/events">
+        <template #icon>
+          <ClipboardCheck />
+        </template>
+        <template #default> Турниры </template>
+      </LayoutNavbarButton>
+
       <LayoutNavbarButton path="/events">
         <template #icon>
           <CalendarDays />
         </template>
         <template #default> Афиша </template>
-      </LayoutNavbarButton>
-
-      <LayoutNavbarButton path="/profile/events">
-        <template #icon>
-          <ClipboardCheck />
-        </template>
-        <template #default> Записи </template>
       </LayoutNavbarButton>
     </LayoutNavbar>
   </div>

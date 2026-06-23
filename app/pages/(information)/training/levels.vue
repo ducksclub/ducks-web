@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { GraduationCap } from '@lucide/vue'
-
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 import Information from '~/components/ui/Information.vue'
+
+definePageMeta({
+  layout: 'empty',
+})
 
 import { useContentApi } from '~/api/content.api'
 import { ContentType, type Content } from '~/types/api/content.types'

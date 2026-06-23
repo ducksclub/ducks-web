@@ -2,10 +2,15 @@
 import { Send, Phone, HelpCircle, MessageCircle } from '@lucide/vue'
 
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
+import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 
 useHead({
   title: "Duck's | Поддержка",
+})
+
+definePageMeta({
+  layout: 'empty',
 })
 
 const contacts = [
@@ -38,6 +43,10 @@ const contacts = [
 
 <template>
   <BaseHeader>
+    <template #left>
+      <HeaderBackButton />
+    </template>
+
     <template #default>
       <HeaderTitle title="Поддержка" />
     </template>
