@@ -31,7 +31,9 @@
         <div>
           <p class="text-sm font-bold text-white">Как нас найти</p>
           <p class="text-[11px] text-gray-400">
-            БП «ПАРК МИРА» Проспект Мира 102 стр25 Ⓜ️Алексеевская
+            БП «ПАРК МИРА» <br />
+            Проспект Мира 102 стр25 <br />
+            Ⓜ️Алексеевская
           </p>
         </div>
         <div class="text-sky-300 text-lg">🎯</div>
