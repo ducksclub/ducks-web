@@ -245,8 +245,7 @@ onMounted(async () => {
         </div>
       </div>
 
-      <!-- REGISTERED PLAYERS: ADMIN ONLY -->
-      <div v-if="isAdmin" class="rounded-2xl border border-white/5 bg-(--secondary)/20">
+      <div class="rounded-2xl border border-white/5 bg-(--secondary)/20">
         <button
           type="button"
           class="flex w-full items-center gap-3 p-4 text-left transition hover:bg-white/5"
@@ -370,9 +369,7 @@ onMounted(async () => {
       </template>
 
       <template v-else>
-        <BaseButton class="w-full" @click="navigateTo(`/signup`)">
-          Зарегистрироваться
-        </BaseButton>
+        <BaseButton class="w-full" @click="navigateTo(`/signup`)"> Зарегистрироваться </BaseButton>
       </template>
     </div>
   </div>

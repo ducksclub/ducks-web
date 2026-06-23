@@ -78,7 +78,7 @@ export type CreateEventPayload = {
   participantLimit: Event['participantLimit']
   imageUrl: Event['imageUrl']
   imageHash: Event['imageHash']
-
+  seatsPerTable: Event['seatsPerTable']
   isTemplate?: boolean
 }
 

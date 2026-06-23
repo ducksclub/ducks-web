@@ -44,6 +44,7 @@ const form = reactive({
   participantLimit: 10,
   template: '',
   isTemplate: false,
+  seatsPerTable: 9,
 
   imageUrl: '',
   imageHash: '',
@@ -103,6 +104,7 @@ const createEvent = async () => {
       startsAt: form.startsAt,
       participantLimit: form.participantLimit,
       isTemplate: form.isTemplate,
+      seatsPerTable: form.seatsPerTable,
       imageUrl,
       imageHash,
     })
@@ -192,6 +194,15 @@ onMounted(() => {
       inputmode="numeric"
       label="Лимит участников"
       placeholder="Количество мест"
+      :icon="Users"
+    />
+
+    <BaseInput
+      v-model.number="form.seatsPerTable"
+      type="text"
+      inputmode="numeric"
+      label="Количество участников за столом"
+      placeholder="Количество участников за столом"
       :icon="Users"
     />
 
