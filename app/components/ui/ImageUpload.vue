@@ -175,7 +175,7 @@ onBeforeUnmount(() => {
         <div
           v-if="modelValue"
           class="absolute right-3 bottom-3 rounded-xl bg-black/60 px-3 py-1 text-xs backdrop-blur-md"
-          :class="cropShape === 'circle' ? 'right-1/2 translate-x-1/2' : ''"
+          :class="cropShape === 'circle' ? 'left-1/2 -translate-x-1/2 text-center' : ''"
         >
           Изменить
         </div>
