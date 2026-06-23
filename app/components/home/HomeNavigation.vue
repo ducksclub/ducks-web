@@ -4,13 +4,20 @@
   <section class="grid grid-cols-2 gap-3">
     <NuxtLink
       to="/about"
-      class="relative col-span-2 overflow-hidden rounded-2xl border border-white/5 bg-white/3 p-5 backdrop-blur-xl transition active:scale-[0.98]"
+      class="group relative col-span-2 overflow-hidden rounded-2xl border border-orange-400/20 bg-orange-500/8 p-5 backdrop-blur-xl transition active:scale-[0.98]"
     >
-      <div class="absolute inset-0 bg-linear-to-br from-white/10 via-white/5 to-transparent" />
+      <div class="absolute inset-0 bg-linear-to-br from-orange-400/20 via-white/5 to-transparent" />
+
+      <div
+        class="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-orange-400/20 blur-3xl transition group-hover:bg-orange-400/30"
+      />
 
       <div class="relative z-10">
         <h2 class="text-lg font-black tracking-[-0.02em] text-white">О клубе</h2>
-        <p class="mt-1 text-sm text-gray-400">Атмосфера, правила и игровые направления DUCK’S</p>
+
+        <p class="mt-1 text-sm text-orange-100/70">
+          Атмосфера, правила и игровые направления DUCK’S
+        </p>
       </div>
     </NuxtLink>
 
