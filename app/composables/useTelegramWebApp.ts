@@ -10,26 +10,17 @@ export function useTelegramWebApp() {
   function getStorage() {
     if (!import.meta.client) return null
 
-    return window.localStorage
+    try {
+      return window.localStorage
+    } catch {
+      return null
+    }
   }
 
   function isValidInitData(initData: string) {
     const params = new URLSearchParams(initData)
 
     return Boolean(params.get('auth_date') && params.get('hash'))
-  }
-
-  function normalizeInitData(initData: string) {
-    const params = new URLSearchParams(initData)
-    const normalizedParams = new URLSearchParams()
-
-    Array.from(params.entries())
-      .sort(([leftKey], [rightKey]) => leftKey.localeCompare(rightKey))
-      .forEach(([key, value]) => {
-        normalizedParams.append(key, value)
-      })
-
-    return normalizedParams.toString()
   }
 
   function getInitDataFromUrl() {
@@ -42,7 +33,7 @@ export function useTelegramWebApp() {
       const initData = params.get('tgWebAppData')
 
       if (initData && isValidInitData(initData)) {
-        return normalizeInitData(initData)
+        return initData
       }
     }
 
@@ -57,7 +48,7 @@ export function useTelegramWebApp() {
     const initData = storage.getItem(initDataStorageKey) || ''
 
     if (initData && isValidInitData(initData)) {
-      return normalizeInitData(initData)
+      return initData
     }
 
     storage.removeItem(initDataStorageKey)
@@ -70,7 +61,7 @@ export function useTelegramWebApp() {
 
     if (!storage || !isValidInitData(initData)) return
 
-    storage.setItem(initDataStorageKey, normalizeInitData(initData))
+    storage.setItem(initDataStorageKey, initData)
   }
 
   function syncInitDataFromTelegram() {
@@ -80,13 +71,13 @@ export function useTelegramWebApp() {
       saveInitData(initData)
     }
 
-    return initData ? normalizeInitData(initData) : ''
+    return initData || ''
   }
 
   function getInitData() {
-    syncInitDataFromTelegram()
+    const freshInitData = syncInitDataFromTelegram()
 
-    return getStoredInitData()
+    return freshInitData || getStoredInitData()
   }
 
   function hasInitData() {
