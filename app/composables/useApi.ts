@@ -28,6 +28,7 @@ function buildQuery(query?: Record<string, QueryValue>) {
 export function useApi() {
   const config = useRuntimeConfig()
   const auth = useAuthStore()
+  const route = useRoute()
 
   const apiUrl = config.public.apiUrl
 
@@ -57,8 +58,20 @@ export function useApi() {
       },
     }
 
-    const response = await axios.request<TResponse>(axiosConfig)
-    return response.data
+    try {
+      const response = await axios.request<TResponse>(axiosConfig)
+      return response.data
+    } catch (error) {
+      if (error instanceof AxiosError && error.response?.status === 401) {
+        auth.expireSession()
+
+        if (route.path !== '/signin') {
+          await navigateTo('/signin')
+        }
+      }
+
+      throw error
+    }
   }
 
   return {
