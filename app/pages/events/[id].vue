@@ -73,8 +73,6 @@ const fetchEvent = async () => {
 }
 
 const fetchRegisteredPlayers = async () => {
-  if (!isAdmin.value) return
-
   try {
     isLoadingRegisteredPlayers.value = true
     registeredPlayersError.value = null
