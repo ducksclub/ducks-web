@@ -15,6 +15,10 @@ definePageMeta({
   layout: 'empty',
 })
 
+useHead({
+  title: "Duck's | Событие",
+})
+
 const route = useRoute()
 const eventId = computed(() => route.params.id as string)
 const eventsApi = useEventsApi()
@@ -52,8 +56,6 @@ const seatingTableCount = computed(() => {
 const hasSeatingInfo = computed(() => {
   return Boolean(isPokerEvent.value && seatingTableCount.value && event.value?.seatsPerTable)
 })
-
-const isAdmin = computed(() => user.value?.role === 'admin')
 
 const registeredPlayersCount = computed(() => {
   return event.value?._count?.registrations ?? registeredPlayerNicknames.value.length
@@ -297,11 +299,13 @@ onMounted(async () => {
 
             <div v-else-if="registeredPlayerNicknames.length" class="max-h-72 overflow-y-auto p-2">
               <div
-                v-for="nickname in registeredPlayerNicknames"
+                v-for="(nickname, index) in registeredPlayerNicknames"
                 :key="nickname"
-                class="rounded-xl px-3 py-2 text-sm font-semibold text-gray-200"
+                class="rounded-xl px-3 py-2 text-sm font-semibold"
+                :class="user?.username === nickname ? 'text-(--logo-bg)' : 'text-gray-200'"
               >
-                {{ nickname }}
+                <b>{{ index + 1 }} - </b>
+                <span>{{ nickname }} {{ user?.username === nickname ? '(Вы)' : '' }}</span>
               </div>
             </div>
 
