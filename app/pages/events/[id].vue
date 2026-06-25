@@ -118,7 +118,13 @@ const onShare = () => {
 }
 
 onMounted(async () => {
-  await Promise.all([fetchEvent(), fetchStatus(), fetchRegisteredPlayers()])
+  const requests = [fetchEvent(), fetchRegisteredPlayers()]
+
+  if (isAuthenticated.value) {
+    requests.push(fetchStatus())
+  }
+
+  await Promise.all(requests)
 })
 </script>
 
@@ -369,7 +375,7 @@ onMounted(async () => {
       </template>
 
       <template v-else>
-        <BaseButton class="w-full" @click="navigateTo(`/signup`)"> Зарегистрироваться </BaseButton>
+        <BaseButton class="w-full" @click="navigateTo(`/signin`)"> Зарегистрироваться </BaseButton>
       </template>
     </div>
   </div>
