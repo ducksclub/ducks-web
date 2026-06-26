@@ -3,7 +3,7 @@ import type { AuthUser } from '~/types/auth.types'
 
 const props = defineProps<{
   photoUrl?: Pick<AuthUser, 'avatarUrl'>['avatarUrl']
-  username: Pick<AuthUser, 'username'>['username']
+  nickname: Pick<AuthUser, 'nickname'>['nickname']
 }>()
 </script>
 
@@ -19,11 +19,11 @@ const props = defineProps<{
       v-else
       class="mx-auto flex size-32 items-center justify-center rounded-full border border-(--logo-bg)/30 bg-black text-4xl font-black"
     >
-      {{ getInitial(props.username) }}
+      {{ getInitial(props.nickname) }}
     </div>
 
     <h2 class="mt-4 text-xl font-black tracking-wide">
-      {{ props.username }}
+      {{ props.nickname }}
     </h2>
   </div>
 </template>

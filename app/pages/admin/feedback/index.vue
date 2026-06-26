@@ -94,14 +94,14 @@ onMounted(loadFeedbacks)
         <div
           class="size-10 flex items-center justify-center rounded-2xl bg-(--logo-bg)/10 text-(--logo-bg) font-black"
         >
-          {{ getInitial(f.user.username) }}
+          {{ getInitial(f.user.nickname) }}
         </div>
 
         <!-- CONTENT -->
         <div class="flex-1 min-w-0">
           <div class="flex items-center justify-between">
             <p class="text-sm font-semibold truncate">
-              {{ f.user.username || 'Unknown' }}
+              {{ f.user.nickname || 'Unknown' }}
             </p>
 
             <span class="text-[10px] text-gray-500">

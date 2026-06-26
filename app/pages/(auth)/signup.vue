@@ -2,6 +2,7 @@
 import { registerSchema, type RegisterSchema } from '~/validation/register'
 import { useZodValidation } from '~/composables/useZodValidation'
 import { AtSign, LockKeyhole, User } from '@lucide/vue'
+import { useAuthApi } from '~/features/auth/auth.api'
 
 definePageMeta({
   layout: false,
@@ -13,7 +14,7 @@ useHead({
 })
 
 const form = ref<RegisterSchema>({
-  username: '',
+  nickname: '',
   email: '',
   password: '',
   confirmPassword: '',
@@ -26,15 +27,25 @@ const isLoading = ref(false)
 const notify = useNotify()
 const { errors, validate } = useZodValidation<RegisterSchema>(registerSchema)
 const auth = useAuthProvider()
+const authApi = useAuthApi()
 
 const registerHandler = async () => {
   if (!validate(form.value)) return
   isLoading.value = true
 
   try {
+    const { available } = await authApi.checkNicknameAvailability({
+      nickname: form.value.nickname,
+    })
+
+    if (!available) {
+      notify.error('Nickname уже зарегистрирован')
+      return
+    }
+
     await auth.signUp({
       email: form.value.email,
-      username: form.value.username,
+      nickname: form.value.nickname,
       password: form.value.password,
     })
 
@@ -61,11 +72,11 @@ const registerHandler = async () => {
 
       <div class="space-y-3">
         <AuthInput
-          v-model="form.username"
+          v-model="form.nickname"
           type="text"
           placeholder="Ваш никнейм"
-          :error="!!errors.username"
-          :error-message="errors.username"
+          :error="!!errors.nickname"
+          :error-message="errors.nickname"
         >
           <template #icon>
             <User class="w-5 h-5" />

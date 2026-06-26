@@ -13,16 +13,13 @@ const optionalString = <T extends z.ZodTypeAny>(schema: T) => {
 }
 
 export const profileSchema = z.object({
-  email: optionalString(z.string('Введите email').email('Некорректный email')),
-  username: optionalString(
+  nickname: optionalString(
     z
-      .string('Введите username')
-      .min(3, 'Username должен содержать минимум 3 символа')
-      .max(30, 'Username слишком длинный')
-      .regex(
-        /^[\p{L}0-9_.\-\s]+$/u,
-        'Username может содержать только буквы, цифры, "_", ".", "-" и пробел',
-      ),
+      .string('Введите nickname')
+      .trim()
+      .min(3, 'Nickname должен содержать минимум 3 символа')
+      .max(30, 'Nickname слишком длинный')
+      .regex(/^[a-zA-Z0-9_]+$/, 'Nickname может содержать только буквы, цифры и "_"'),
   ),
   phone: optionalString(
     z.string('Введите корректный номер телефона').min(6, 'Введите корректный номер телефона'),

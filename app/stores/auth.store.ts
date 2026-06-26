@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { AuthUser } from '~/types/auth.types'
+import type { AuthUser } from '~/features/auth/auth.types'
 
 type SetSessionPayload = {
   token: string

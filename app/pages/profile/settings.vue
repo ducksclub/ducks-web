@@ -24,7 +24,7 @@ const auth = useAuthProvider()
 
 const form = reactive({
   email: auth.user.value?.email ?? '',
-  username: auth.user.value?.username ?? '',
+  nickname: auth.user.value?.nickname ?? '',
   phone: auth.user.value?.phone ?? '',
   avatar: auth.user.value?.avatarUrl ?? '',
   file: null as File | null,
@@ -51,8 +51,7 @@ const saveProfile = async () => {
     }
 
     await auth.updateProfile({
-      email: form.email,
-      username: form.username,
+      nickname: form.nickname,
       phone: form.phone,
       avatarUrl: imageUrl,
       avatarHash: imageHash,
@@ -98,11 +97,11 @@ const saveProfile = async () => {
     />
 
     <BaseInput
-      v-model="form.username"
+      v-model="form.nickname"
       label="Ваш никнейм"
-      placeholder="username"
+      placeholder="nickname"
       :icon="AtSign"
-      :error="errors.username"
+      :error="errors.nickname"
       hint="имя которое используете в игре"
     />
 

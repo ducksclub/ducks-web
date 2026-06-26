@@ -1,52 +1,17 @@
-import type { EventGameType } from './event'
+export type {
+  AuthResponse,
+  AuthUser,
+  ForgotPasswordPayload,
+  MessageResponse,
+  NicknameAvailabilityParams,
+  NicknameAvailabilityResponse,
+  ResetPasswordPayload,
+  SignInPayload,
+  SignInWithTelegramPayload,
+  SignUpPayload,
+} from '~/features/auth/auth.types'
 
-export type AuthUser = {
-  id: string
-  telegramId: string | null
-  promoLinkId: string | null
-  avatarHash: string | null
-  avatarUrl: string | null
-  username: string
-  role: string
-  email: string
-  phone: string | null
-  sourceCode: string | null
-  sourceType: string | null
-  updatedAt: string | null
-  createdAt: string
-
-  ratings?: {
-    gameType: EventGameType
-    points: number
-  }[]
-}
-
-export type SignInPayload = {
-  email: string
-  password: string
-}
-
-export type SignInWithTelegramPayload = {
-  initData: string
-}
-
-export type UpdateProfilePayload = {
-  email: string
-  phone: string
-  username: string
-  avatarUrl: string
-  avatarHash: string
-}
-
-export type SignUpPayload = {
-  email: string
-  password: string
-  username: string
-}
-
-export type AuthResponse = {
-  token: string
-  user: AuthUser
-}
-
-export type MeResponse = AuthUser
+export type {
+  ProfileResponse as MeResponse,
+  UpdateProfilePayload,
+} from '~/features/profile/profile.types'

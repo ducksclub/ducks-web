@@ -1,15 +1,12 @@
-import type {
-  AuthResponse,
-  MeResponse,
-  SignInPayload,
-  SignInWithTelegramPayload,
-  SignUpPayload,
-  UpdateProfilePayload,
-} from '~/types/auth.types'
+import type { SignInPayload, SignInWithTelegramPayload, SignUpPayload } from '~/features/auth/auth.types'
+import type { UpdateProfilePayload } from '~/features/profile/profile.types'
+import { useAuthApi } from '~/features/auth/auth.api'
+import { useProfileApi } from '~/features/profile/profile.api'
 
 export function useAuthProvider() {
   const auth = useAuthStore()
-  const { request } = useApi()
+  const authApi = useAuthApi()
+  const profileApi = useProfileApi()
 
   const isLoading = ref(false)
   const isInitialized = ref(false)
@@ -20,11 +17,7 @@ export function useAuthProvider() {
       isLoading.value = true
       errorMessage.value = null
 
-      const response = await request<AuthResponse, SignInPayload>('/auth/signin', {
-        method: 'POST',
-        body: payload,
-        auth: false,
-      })
+      const response = await authApi.signIn(payload)
 
       auth.setSession({
         token: response.token,
@@ -42,14 +35,7 @@ export function useAuthProvider() {
       isLoading.value = true
       errorMessage.value = null
 
-      const response = await request<AuthResponse, SignInWithTelegramPayload>(
-        '/auth/signin-with-telegram',
-        {
-          method: 'POST',
-          body: payload,
-          auth: false,
-        },
-      )
+      const response = await authApi.signInWithTelegram(payload)
 
       auth.setSession({
         token: response.token,
@@ -67,11 +53,7 @@ export function useAuthProvider() {
       isLoading.value = true
       errorMessage.value = null
 
-      const response = await request<AuthResponse, SignUpPayload>('/auth/signup', {
-        method: 'POST',
-        body: payload,
-        auth: false,
-      })
+      const response = await authApi.signUp(payload)
 
       auth.setSession({
         token: response.token,
@@ -89,9 +71,7 @@ export function useAuthProvider() {
       isLoading.value = true
       errorMessage.value = null
 
-      const user = await request<MeResponse>('/users/me', {
-        method: 'GET',
-      })
+      const user = await profileApi.getMe()
 
       auth.setUser(user)
 
@@ -110,10 +90,8 @@ export function useAuthProvider() {
       isLoading.value = true
       errorMessage.value = null
 
-      await request<null, UpdateProfilePayload>('/users/me', {
-        method: 'PATCH',
-        body: payload,
-      })
+      const user = await profileApi.updateMe(payload)
+      auth.setUser(user)
     } finally {
       isLoading.value = false
     }

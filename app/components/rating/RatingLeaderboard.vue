@@ -87,12 +87,12 @@ const showMeBadge = (item: Rating) => isMe(item.user.id)
           class="w-9 h-9 rounded-full flex items-center justify-center border text-xs font-black tracking-wide"
           :class="avatarClass(item)"
         >
-          {{ getInitial(item.user.username) }}
+          {{ getInitial(item.user.nickname) }}
         </div>
 
         <div class="min-w-0">
           <div class="text-sm font-semibold truncate" :class="nameClass(item)">
-            {{ item.user.username }}
+            {{ item.user.nickname }}
           </div>
 
           <div
