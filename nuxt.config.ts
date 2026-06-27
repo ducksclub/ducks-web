@@ -3,23 +3,34 @@ import tailwindcss from '@tailwindcss/vite'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: true },
+
+  devtools: {
+    enabled: process.env.NODE_ENV !== 'production',
+  },
+
   css: ['~/assets/css/main.css'],
+
   modules: ['@nuxt/image', '@pinia/nuxt', 'pinia-plugin-persistedstate/nuxt', '@vite-pwa/nuxt'],
+
   typescript: {
     strict: true,
   },
+
   vite: {
     plugins: [tailwindcss()],
     server: {
       allowedHosts: true,
     },
   },
+
   runtimeConfig: {
+    apiBase: process.env.NUXT_PRIVATE_API_BASE || '',
     public: {
-      apiUrl: process.env.API_URL,
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || process.env.NUXT_PUBLIC_API_URL || '/api',
+      mediaBase: process.env.NUXT_PUBLIC_MEDIA_BASE || '',
     },
   },
+
   app: {
     head: {
       meta: [
@@ -67,12 +78,13 @@ export default defineNuxtConfig({
         },
       ],
     },
+
     workbox: {
       globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],
     },
 
     devOptions: {
-      enabled: true,
+      enabled: process.env.NODE_ENV === 'production',
       type: 'module',
     },
   },
