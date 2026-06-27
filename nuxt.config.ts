@@ -10,7 +10,7 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
-  modules: ['@nuxt/image', '@pinia/nuxt', 'pinia-plugin-persistedstate/nuxt', '@vite-pwa/nuxt'],
+  modules: ['@nuxt/image', '@vite-pwa/nuxt'],
 
   typescript: {
     strict: true,
