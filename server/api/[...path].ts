@@ -1,15 +1,14 @@
-import { env } from 'process'
 import { joinURL } from 'ufo'
 
 export default defineEventHandler(async (event) => {
-  const apiUrl = env.API_URL
-  console.log('backendUrl', apiUrl)
+  const runtimeConfig = useRuntimeConfig()
+  const apiBase = runtimeConfig.apiBase
 
-  if (!apiUrl) {
+  if (!apiBase) {
     throw createError({
       statusCode: 500,
-      statusMessage: 'Не указан BACKEND_URL',
-      message: 'Не указан BACKEND_URL для проксирования API',
+      statusMessage: 'Не указан NUXT_PRIVATE_API_BASE',
+      message: 'Не указан NUXT_PRIVATE_API_BASE для проксирования API',
     })
   }
 
@@ -23,18 +22,11 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const target = joinURL(apiUrl, path)
-
-  console.log('[API_PROXY]', {
-    from: getRequestURL(event).pathname,
-    to: target,
-  })
+  const target = joinURL(apiBase, path)
 
   try {
     return await proxyRequest(event, target)
-  } catch (error) {
-    console.error('[API_PROXY_ERROR]', error)
-
+  } catch {
     throw createError({
       statusCode: 502,
       statusMessage: 'Ошибка соединения с backend',
