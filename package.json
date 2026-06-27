@@ -1,5 +1,5 @@
 {
-  "name": "ducks-web-app",
+  "name": "ducks-web",
   "type": "module",
   "private": true,
   "scripts": {
@@ -7,29 +7,28 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck",
+    "check": "npm run build && npm run typecheck"
   },
   "dependencies": {
     "@lucide/vue": "^1.14.0",
     "@nuxt/image": "^2.0.0",
-    "@pinia/nuxt": "^0.11.3",
     "@tailwindcss/vite": "^4.2.4",
     "@vite-pwa/nuxt": "^1.1.1",
     "axios": "^1.17.0",
     "dayjs": "^1.11.21",
     "nuxt": "^4.4.4",
-    "pinia": "^3.0.4",
-    "pinia-plugin-persistedstate": "^4.7.1",
     "tailwindcss": "^4.2.4",
     "vue": "^3.5.33",
     "vue-advanced-cropper": "^2.8.9",
     "vue-router": "^5.0.6",
-    "vue-tg": "^0.10.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^25.6.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vue-tsc": "^3.3.5"
   },
   "volta": {
     "node": "v22.22.x"
