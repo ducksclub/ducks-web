@@ -113,10 +113,8 @@ const createEvent = async () => {
     })
 
     router.push('/admin/events')
-  } catch (e: any) {
-    console.error(e)
-
-    errorMessage.value = e?.error || 'Не удалось создать событие'
+  } catch (error) {
+    errorMessage.value = getApiErrorMessage(error, 'Не удалось создать событие')
   } finally {
     isSaving.value = false
   }
@@ -127,8 +125,8 @@ const fetchTemplates = async () => {
     isTemplateLoading.value = true
     const res = await api.getTemplates()
     templates.value = res.data
-  } catch (e) {
-    console.error('Failed to fetch templates', e)
+  } catch {
+    errorMessage.value = 'Не удалось загрузить шаблоны событий'
   } finally {
     isTemplateLoading.value = false
   }

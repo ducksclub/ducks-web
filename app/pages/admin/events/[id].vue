@@ -63,10 +63,8 @@ const loadEvent = async () => {
     form.initialDepositAmount = event.initialDepositAmount ?? 0
     form.imageUrl = event.imageUrl ?? ''
     form.imageHash = event.imageHash ?? ''
-  } catch (e: any) {
-    console.error(e)
-
-    errorMessage.value = e?.error || 'Не удалось загрузить событие'
+  } catch (error) {
+    errorMessage.value = getApiErrorMessage(error, 'Не удалось загрузить событие')
   } finally {
     isLoading.value = false
   }
@@ -114,10 +112,8 @@ const updateEvent = async () => {
     )
 
     router.push('/admin/events')
-  } catch (e: any) {
-    console.error(e)
-
-    errorMessage.value = e?.error || 'Не удалось обновить событие'
+  } catch (error) {
+    errorMessage.value = getApiErrorMessage(error, 'Не удалось обновить событие')
   } finally {
     isSaving.value = false
   }

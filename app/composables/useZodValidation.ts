@@ -1,9 +1,9 @@
 import { ref } from 'vue'
-import type { ZodSchema, ZodError } from 'zod'
+import type { ZodError, ZodType } from 'zod'
 
-type Errors<T> = Partial<Record<keyof T, string>>
+type Errors<T extends Record<string, unknown>> = Partial<Record<keyof T, string>>
 
-export const useZodValidation = <T extends Record<string, any>>(schema: ZodSchema<T>) => {
+export const useZodValidation = <T extends Record<string, unknown>>(schema: ZodType<T>) => {
   const errors = ref<Errors<T>>({})
 
   const validate = (data: T): boolean => {
@@ -18,19 +18,6 @@ export const useZodValidation = <T extends Record<string, any>>(schema: ZodSchem
     return true
   }
 
-  const validateField = (field: keyof T, value: any): boolean => {
-    const partial = schema.pick({ [field]: true } as any)
-    const result = partial.safeParse({ [field]: value })
-
-    if (!result.success) {
-      errors.value[field] = result.error.errors[0].message
-      return false
-    }
-
-    delete errors.value[field]
-    return true
-  }
-
   const resetErrors = () => {
     errors.value = {}
   }
@@ -38,7 +25,6 @@ export const useZodValidation = <T extends Record<string, any>>(schema: ZodSchem
   return {
     errors,
     validate,
-    validateField,
     resetErrors,
   }
 }

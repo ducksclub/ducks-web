@@ -13,7 +13,11 @@ useHead({
 const auth = useAuthProvider()
 const router = useRouter()
 
-const menu = [
+const menu: {
+  label: string
+  path: string
+  variant?: 'default' | 'admin'
+}[] = [
   { label: 'Мои турниры', path: '/profile/events' },
   { label: 'Настройки профиля', path: '/profile/settings' },
   { label: 'Ближайшие турниры', path: '/events', variant: 'admin' },

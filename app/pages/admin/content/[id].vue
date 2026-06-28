@@ -72,9 +72,7 @@ const loadContent = async () => {
       title: content.title ?? '',
       body: content.body ?? '',
     }
-  } catch (e: any) {
-    console.error(e)
-
+  } catch {
     isCreateMode.value = true
   } finally {
     isLoading.value = false
@@ -105,10 +103,8 @@ const saveContent = async () => {
     notify.success(isCreateMode.value ? 'Контент создан' : 'Контент обновлён')
 
     router.push('/admin/content')
-  } catch (e: any) {
-    console.error(e)
-
-    errorMessage.value = e?.error || 'Не удалось сохранить контент'
+  } catch (error) {
+    errorMessage.value = getApiErrorMessage(error, 'Не удалось сохранить контент')
   } finally {
     isSaving.value = false
   }

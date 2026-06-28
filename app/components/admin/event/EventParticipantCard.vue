@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ArrowDown, ArrowUp } from '@lucide/vue'
-import type { Event } from '~/types/event'
+import type { Event, Participant } from '~/types/event'
 
 const props = defineProps<{
-  participant: any
+  participant: Participant
   index: number
   event?: Event
 }>()
@@ -31,7 +31,7 @@ const move = (dir: 'up' | 'down') => emit('move', dir)
 
         <div class="min-w-0">
           <p class="text-sm font-semibold truncate">
-            {{ participant.user?.name }}
+            {{ participant.user?.nickname }}
           </p>
 
           <p class="text-xs text-gray-500 truncate">

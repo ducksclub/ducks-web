@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { registerSchema, type RegisterSchema } from '~/validation/register'
 import { useZodValidation } from '~/composables/useZodValidation'
 import { AtSign, LockKeyhole, User } from '@lucide/vue'
-import { useAuthApi } from '~/features/auth/auth.api'
+import { signUpSchema } from '~/validation/auth.validation'
+import type { SignUpSchema } from '~/validation/auth.validation'
+import { useAuthService } from '~/composables/services/useAuthService'
+import type { AxiosError } from 'axios'
+import type { ApiErrorResponse } from '~/services/client.types'
 
 definePageMeta({
   layout: false,
@@ -13,50 +16,40 @@ useHead({
   title: "Duck's | Регистрация",
 })
 
-const form = ref<RegisterSchema>({
-  nickname: '',
+const notify = useNotify()
+const { signUp } = useAuthService()
+const { errors, validate } = useZodValidation<SignUpSchema>(signUpSchema)
+
+const pending = ref(false)
+const form = ref<SignUpSchema>({
   email: '',
+  nickname: '',
   password: '',
   confirmPassword: '',
   agree: false,
   agreeDuck: false,
 })
 
-const isLoading = ref(false)
-
-const notify = useNotify()
-const { errors, validate } = useZodValidation<RegisterSchema>(registerSchema)
-const auth = useAuthProvider()
-const authApi = useAuthApi()
-
 const registerHandler = async () => {
   if (!validate(form.value)) return
-  isLoading.value = true
+  pending.value = true
 
   try {
-    const { available } = await authApi.checkNicknameAvailability({
-      nickname: form.value.nickname,
-    })
-
-    if (!available) {
-      notify.error('Nickname уже зарегистрирован')
-      return
-    }
-
-    await auth.signUp({
+    await signUp({
       email: form.value.email,
       nickname: form.value.nickname,
       password: form.value.password,
     })
 
     notify.success('Аккаунт создан!')
-    await navigateTo('/signin')
+    await navigateTo('/')
   } catch (e) {
-    const message =
-      (e as any)?.response?.data?.error.message ?? 'Произошла ошибка при созданий аккаунта'
-    notify.error(message)
+    const axiosError = e as AxiosError<ApiErrorResponse>
+    const errorMessage =
+      axiosError.response?.data?.error.message || 'Произошла ошибка при созданий аккаунта'
+    notify.error(errorMessage)
   } finally {
-    isLoading.value = false
+    pending.value = false
   }
 }
 </script>
@@ -154,7 +147,7 @@ const registerHandler = async () => {
         </NuxtLink>
       </CheckboxAgreement>
 
-      <BaseButton type="submit" :disabled="isLoading" :loading="isLoading">
+      <BaseButton type="submit" :disabled="pending" :loading="pending">
         ЗАРЕГИСТРИРОВАТЬСЯ
       </BaseButton>
 

@@ -45,11 +45,13 @@ const move = (from: number, direction: 'up' | 'down') => {
   if (event.value?.status === 'completed') return
 
   const to = direction === 'up' ? from - 1 : from + 1
-  if (to < 0 || to >= participants.value.length) return // @ts-ignore
-  ;[participants.value[from], participants.value[to]] = [
-    participants.value[to],
-    participants.value[from],
-  ]
+  const currentParticipant = participants.value[from]
+  const nextParticipant = participants.value[to]
+
+  if (!currentParticipant || !nextParticipant) return
+
+  participants.value[from] = nextParticipant
+  participants.value[to] = currentParticipant
 
   isDirty.value = true
 }
@@ -62,7 +64,7 @@ const save = async () => {
   try {
     await api.reorderParticipants(id, {
       participants: participants.value.map((p, i) => ({
-        userId: p.userId || p.user?.id,
+        userId: p.userId,
         position: i + 1,
       })),
     })

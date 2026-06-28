@@ -46,9 +46,7 @@ const submit = async () => {
     notify.success(response.message)
     await navigateTo('/signin')
   } catch (error) {
-    const message =
-      (error as any)?.response?.data?.error?.message ?? 'Не удалось изменить пароль'
-    notify.error(message)
+    notify.error(getApiErrorMessage(error, 'Не удалось изменить пароль'))
   } finally {
     isLoading.value = false
   }

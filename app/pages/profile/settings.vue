@@ -58,9 +58,8 @@ const saveProfile = async () => {
     })
     notify.success('Профиль сохранен')
     await auth.restoreSession()
-  } catch (e: any) {
-    console.error(e)
-    notify.error('Не удалось сохранить профиль')
+  } catch (error) {
+    notify.error(getApiErrorMessage(error, 'Не удалось сохранить профиль'))
   } finally {
     isSaving.value = false
   }
@@ -93,7 +92,6 @@ const saveProfile = async () => {
       placeholder="email"
       :icon="AtSign"
       :disabled="true"
-      :error="errors.email"
     />
 
     <BaseInput

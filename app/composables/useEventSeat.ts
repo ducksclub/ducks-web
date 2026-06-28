@@ -1,20 +1,6 @@
 import { useEventsApi } from '~/api/events.api'
 import type { MySeatResponse } from '~/types/event-seat'
 
-const getSeatErrorMessage = (error: unknown) => {
-  if (typeof error === 'object' && error !== null) {
-    const apiError = error as {
-      data?: { message?: string; error?: string }
-      message?: string
-      error?: string
-    }
-
-    return apiError.data?.message || apiError.data?.error || apiError.message || apiError.error
-  }
-
-  return ''
-}
-
 export function useEventSeat(eventId: Ref<string>) {
   const eventsApi = useEventsApi()
 
@@ -32,7 +18,7 @@ export function useEventSeat(eventId: Ref<string>) {
       seatInfo.value = await eventsApi.getMyEventSeat(eventId.value)
     } catch (error) {
       seatInfo.value = null
-      seatError.value = getSeatErrorMessage(error) || 'Не удалось узнать место. Попробуйте позже.'
+      seatError.value = getApiErrorMessage(error, 'Не удалось узнать место. Попробуйте позже.')
     } finally {
       isSeatLoading.value = false
     }

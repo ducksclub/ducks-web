@@ -27,7 +27,7 @@ const fetchEvents = async () => {
     const response = await getEvents({ gameType: selectedCategory.value, status: 'published' })
     events.value = response.data
   } catch (error) {
-    errorMessage.value = (error as any).error
+    errorMessage.value = getApiErrorMessage(error, 'Не удалось загрузить события')
   } finally {
     isLoading.value = false
   }

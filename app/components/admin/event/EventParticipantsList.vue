@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { Event } from '~/types/event'
+import type { Event, Participant } from '~/types/event'
 import EventParticipantCard from './EventParticipantCard.vue'
 import EventParticipantSkeleton from './EventParticipantSkeleton.vue'
 
 defineProps<{
-  participants: any[]
+  participants: Participant[]
   event?: Event
   loading: boolean
 }>()

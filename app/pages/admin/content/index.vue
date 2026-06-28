@@ -16,8 +16,6 @@ definePageMeta({
 })
 
 const router = useRouter()
-const notify = useNotify()
-
 const { getContents } = useContentApi()
 
 const selectedContentType = ref<ContentType>(ContentType.FAQ)
@@ -62,8 +60,8 @@ const fetchContent = async () => {
     })
 
     content.value = response
-  } catch (error: any) {
-    console.error('Ошибка загрузки контента:', error)
+  } catch (error) {
+    useNotify().error(getApiErrorMessage(error, 'Ошибка загрузки контента'))
   } finally {
     isLoading.value = false
   }

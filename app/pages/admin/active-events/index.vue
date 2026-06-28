@@ -4,6 +4,7 @@ import ActiveEventsList from '~/components/admin/events/ActiveEventsList.vue'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
+import type { Event } from '~/types/event'
 
 definePageMeta({
   layout: 'admin',
@@ -13,17 +14,19 @@ definePageMeta({
 const router = useRouter()
 const { getActiveEventsNow } = useEventsApi()
 
-const events = ref<any[]>([])
+const events = ref<Event[]>([])
 const isLoading = ref(true)
+const errorMessage = ref('')
 
 const load = async () => {
   isLoading.value = true
 
   try {
+    errorMessage.value = ''
     const res = await getActiveEventsNow()
     events.value = res.data
-  } catch (e) {
-    console.error(e)
+  } catch (error) {
+    errorMessage.value = getApiErrorMessage(error, 'Не удалось загрузить активные события')
   } finally {
     isLoading.value = false
   }
@@ -47,5 +50,12 @@ const openEvent = (id: string) => {
     </template>
   </BaseHeader>
 
-  <ActiveEventsList :events="events" :loading="isLoading" @open="openEvent" />
+  <div
+    v-if="errorMessage"
+    class="mx-4 mt-4 rounded-2xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-300"
+  >
+    {{ errorMessage }}
+  </div>
+
+  <ActiveEventsList v-else :events="events" :loading="isLoading" @open="openEvent" />
 </template>

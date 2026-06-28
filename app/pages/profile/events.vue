@@ -6,6 +6,7 @@ import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 import BaseSelect from '~/components/ui/BaseSelect.vue'
 import { statuses } from '~/constants/categories'
+import type { Event } from '~/types/event'
 
 definePageMeta({
   layout: 'empty',
@@ -16,18 +17,20 @@ const router = useRouter()
 
 const { getMyEvents } = useEventsApi()
 
-const events = ref<any[]>([])
+const events = ref<Event[]>([])
 const isLoading = ref(true)
 const selectedStatus = ref('')
+const errorMessage = ref('')
 
 const loadEvents = async () => {
   isLoading.value = true
 
   try {
+    errorMessage.value = ''
     const res = await getMyEvents({ status: selectedStatus.value })
     events.value = res.data
-  } catch (e) {
-    console.error(e)
+  } catch (error) {
+    errorMessage.value = getApiErrorMessage(error, 'Не удалось загрузить ваши записи')
   } finally {
     isLoading.value = false
   }
@@ -52,6 +55,13 @@ watch(selectedStatus, loadEvents, { immediate: true })
 
     <div v-if="isLoading" class="space-y-4">
       <div v-for="i in 4" :key="i" class="h-40 animate-pulse rounded-3xl bg-(--secondary)/20" />
+    </div>
+
+    <div
+      v-else-if="errorMessage"
+      class="rounded-2xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-300"
+    >
+      {{ errorMessage }}
     </div>
 
     <!-- EMPTY -->

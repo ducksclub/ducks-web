@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { AtSign, LockKeyhole } from '@lucide/vue'
+import type { AxiosError } from 'axios'
 import Telegram from '~/components/icons/Telegram.vue'
-
-import { loginSchema, type LoginSchema } from '~/validation/auth'
+import { useAuthService } from '~/composables/services/useAuthService'
 import { useZodValidation } from '~/composables/useZodValidation'
+import type { ApiErrorResponse } from '~/services/client.types'
+import { signInSchema } from '~/validation/auth.validation'
+import type { SignInSchema } from '~/validation/auth.validation'
 
 definePageMeta({
   layout: false,
@@ -15,59 +18,54 @@ useHead({
 })
 
 const notify = useNotify()
-const telegram = useTelegramWebApp()
-const auth = useAuthProvider()
-const { errors, validate } = useZodValidation<LoginSchema>(loginSchema)
+const { signIn } = useAuthService()
+const { errors, validate } = useZodValidation<SignInSchema>(signInSchema)
 
-const formData = ref<LoginSchema>({
+const pending = ref<boolean>(false)
+const formData = ref<SignInSchema>({
   email: '',
   password: '',
   remember: false,
 })
 
-const isLoading = ref(false)
-const isTelegramAuthAvailable = ref(false)
-
 const submit = async () => {
   if (!validate(formData.value)) return
 
+  pending.value = true
   try {
-    isLoading.value = true
-    await auth.signIn({ email: formData.value.email, password: formData.value.password })
-    notify.success('Вы усепешно вошли в аккаунт!')
+    await signIn({ email: formData.value.email, password: formData.value.password })
     await navigateTo('/')
-  } catch (err) {
-    const message = (err as any)?.response?.data?.error.message ?? 'Не удалось войти в аккаунт'
-    notify.error(message)
+  } catch (e) {
+    const axiosError = e as AxiosError<ApiErrorResponse>
+    const errorMessage = axiosError.response?.data?.error.message || 'Неверный email или пароль'
+    notify.error(errorMessage)
   } finally {
-    isLoading.value = false
+    pending.value = false
   }
 }
 
-const authByTelegram = async () => {
-  if (!isTelegramAuthAvailable.value) {
-    notify.error('Вход через Telegram доступен только внутри Telegram Mini App')
-    return
-  }
+// const authByTelegram = async () => {
+//   if (!isTelegramAuthAvailable.value) {
+//     notify.error('Вход через Telegram доступен только внутри Telegram Mini App')
+//     return
+//   }
 
-  try {
-    isLoading.value = true
-    await auth.signInWithTelegram({ initData: telegram.getInitData() })
+//   try {
+//     isLoading.value = true
+//     await auth.signInWithTelegram({ initData: telegram.getInitData() })
 
-    notify.success('Вы усепешно вошли в аккаунт!')
-    await navigateTo('/')
-  } catch (err) {
-    const message =
-      (err as any)?.response?.data?.error.message ?? 'Произошла ошибка при входе в аккаунт'
-    notify.error(message)
-  } finally {
-    isLoading.value = false
-  }
-}
+//     notify.success('Вы усепешно вошли в аккаунт!')
+//     await navigateTo('/')
+//   } catch (err) {
+//     notify.error(getApiErrorMessage(err, 'Произошла ошибка при входе в аккаунт'))
+//   } finally {
+//     isLoading.value = false
+//   }
+// }
 
-onMounted(() => {
-  isTelegramAuthAvailable.value = telegram.hasInitData()
-})
+// onMounted(() => {
+//   isTelegramAuthAvailable.value = telegram.hasInitData()
+// })
 </script>
 
 <template>
@@ -83,7 +81,7 @@ onMounted(() => {
         <div class="space-y-3">
           <AuthInput
             v-model="formData.email"
-            :disabled="isLoading"
+            :disabled="pending"
             type="email"
             placeholder="Email"
             :error="!!errors.email"
@@ -99,7 +97,7 @@ onMounted(() => {
             v-model="formData.password"
             :type="'password'"
             :error="!!errors.password"
-            :disabled="isLoading"
+            :disabled="pending"
             :placeholder="'Пароль'"
             :error-message="errors.password"
             :autocomplete="'current-password'"
@@ -118,10 +116,10 @@ onMounted(() => {
           <NuxtLink to="/forgot-password" class="text-(--logo-bg)">Забыли пароль?</NuxtLink>
         </div>
 
-        <BaseButton type="submit" :disabled="isLoading" :loading="isLoading">Войти</BaseButton>
+        <BaseButton type="submit" :disabled="pending" :loading="pending">Войти</BaseButton>
       </form>
 
-      <template v-if="isTelegramAuthAvailable">
+      <!-- <template v-if="isTelegramAuthAvailable">
         <AuthDivider text="или войти через" />
 
         <div class="flex justify-center gap-4">
@@ -134,7 +132,7 @@ onMounted(() => {
             <Telegram class="w-6 h-6" />
           </button>
         </div>
-      </template>
+      </template> -->
 
       <p class="text-center text-sm text-gray-500 mt-8">
         Ещё нет аккаунта?

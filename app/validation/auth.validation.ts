@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import z from 'zod'
 
 export const signInSchema = z.object({
   email: z.string('Введите email').min(1, 'Введите email').email('Некорректный email'),

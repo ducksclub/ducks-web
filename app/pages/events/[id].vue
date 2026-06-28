@@ -94,8 +94,8 @@ const registerForEvent = async () => {
   try {
     await register()
     await Promise.all([fetchEvent(), fetchRegisteredPlayers()])
-  } catch (e: any) {
-    useNotify().error(e?.data?.message || e?.message || 'Не удалось записаться на событие')
+  } catch (error) {
+    useNotify().error(getApiErrorMessage(error, 'Не удалось записаться на событие'))
   }
 }
 
@@ -104,8 +104,8 @@ const unregisterFromEvent = async () => {
     await unregister()
     closeSeatModal()
     await Promise.all([fetchEvent(), fetchRegisteredPlayers()])
-  } catch (e: any) {
-    useNotify().error(e?.data?.message || e?.message || 'Не удалось отменить запись')
+  } catch (error) {
+    useNotify().error(getApiErrorMessage(error, 'Не удалось отменить запись'))
   }
 }
 

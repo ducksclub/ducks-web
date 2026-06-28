@@ -38,8 +38,8 @@ const fetchEvents = async () => {
     })
 
     events.value = response.data
-  } catch (error: any) {
-    errorMessage.value = error?.error || 'Ошибка загрузки'
+  } catch (error) {
+    errorMessage.value = getApiErrorMessage(error, 'Ошибка загрузки')
   } finally {
     isLoading.value = false
   }

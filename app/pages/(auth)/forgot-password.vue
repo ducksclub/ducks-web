@@ -34,9 +34,7 @@ const submit = async () => {
     isSent.value = true
     notify.success(response.message)
   } catch (error) {
-    const message =
-      (error as any)?.response?.data?.error?.message ?? 'Не удалось отправить письмо'
-    notify.error(message)
+    notify.error(getApiErrorMessage(error, 'Не удалось отправить письмо'))
   } finally {
     isLoading.value = false
   }
