@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Event, EventGameType } from '~/types/event'
+import type { Event, EventGameType } from '~/types/event.types'
 
 type EventGameTypeStyle = {
   text: string

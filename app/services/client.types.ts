@@ -12,5 +12,6 @@ export type RequestOptions<TBody = unknown> = {
   url: string
   body?: TBody
   auth?: boolean
+  params?: Object
   config?: AxiosRequestConfig
 }

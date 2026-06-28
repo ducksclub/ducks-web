@@ -42,12 +42,14 @@ export async function apiRequest<TResponse, TBody = unknown>({
   url,
   body,
   auth = true,
+  params,
   config,
 }: RequestOptions<TBody>): Promise<TResponse> {
   const response = await axiosInstance.request<TResponse>({
     method,
     url,
     data: body,
+    params,
     ...config,
     headers: {
       ...config?.headers,

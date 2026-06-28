@@ -12,7 +12,7 @@ export type SessionData = {
 }
 
 export const useAuthService = () => {
-  const user = useState<User | null>('user:state', () => null)
+  const profile = useState<User | null>('profile:state', () => null)
   const accessToken = useState<string | null>('access_token:state', () => null)
 
   // general
@@ -39,11 +39,14 @@ export const useAuthService = () => {
 
   // helpers
   const setSession = (data: SessionData) => {
-    user.value = data.user
+    profile.value = data.user
     accessToken.value = data.token
   }
 
   return {
+    profile,
+    accessToken,
+
     signIn,
     signInWithTelegram,
     signUp,

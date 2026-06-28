@@ -1,8 +1,10 @@
-// export default defineNuxtRouteMiddleware(async (to) => {
-//   // const auth = useAuthStore()
-//   const router = useRouter()
+import { useAuthService } from '~/composables/services/useAuthService'
 
-//   if (!auth.token) {
-//     await router.push('/signin')
-//   }
-// })
+export default defineNuxtRouteMiddleware(async (to) => {
+  const router = useRouter()
+  const auth = useAuthService()
+
+  if (!auth.accessToken.value) {
+    await router.push('/signin')
+  }
+})
