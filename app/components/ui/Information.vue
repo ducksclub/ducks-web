@@ -1,9 +1,9 @@
 <script lang="ts" setup></script>
 
 <template>
-  <footer>
-    <div class="rounded-2xl border border-white/5 bg-white/5 p-4">
-      <p class="text-center text-[11px] leading-5 text-gray-500">
+  <footer class="pb-safe">
+    <div class="rounded-[22px] border border-white/8 bg-[#08090f] p-4">
+      <p class="text-center text-[11px] font-medium leading-5 text-white/45">
         <slot />
       </p>
     </div>
