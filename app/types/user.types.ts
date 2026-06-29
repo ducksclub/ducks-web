@@ -1,3 +1,5 @@
+import type { Rating } from './rating.types'
+
 export const Role = {
   ADMIN: 'admin',
   USER: 'user',
@@ -13,9 +15,10 @@ export type User = {
 
   phone: string | null
   avatarUrl: string | null
-  avatarHash: string | null
   telegramId: number | null
 
   createdAt: string
   updatedAt: string
+
+  ratings: Rating[]
 }

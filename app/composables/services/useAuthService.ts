@@ -7,13 +7,13 @@ import type {
 import type { User } from '~/types/user.types'
 
 export type SessionData = {
-  user: User
-  token: string
+  user: User | null
+  token: string | null
 }
 
 export const useAuthService = () => {
-  const profile = useState<User | null>('profile:state', () => null)
-  const accessToken = useState<string | null>('access_token:state', () => null)
+  const profile = useState<User | null>('profile', () => null)
+  const accessToken = useState<string | null>('access_token', () => null)
 
   // general
   const signIn = async (payload: SignInPayload) => {
@@ -37,6 +37,11 @@ export const useAuthService = () => {
     return response
   }
 
+  const signOut = () => {
+    profile.value = null
+    accessToken.value = null
+  }
+
   // helpers
   const setSession = (data: SessionData) => {
     profile.value = data.user
@@ -50,5 +55,6 @@ export const useAuthService = () => {
     signIn,
     signInWithTelegram,
     signUp,
+    signOut,
   }
 }

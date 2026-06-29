@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
+import { useAuthService } from '~/composables/services/useAuthService'
 
 definePageMeta({
   middleware: 'auth',
+  layout: 'default',
 })
 
 useHead({
   title: "Duck's | Профиль",
 })
 
-const auth = useAuthProvider()
 const router = useRouter()
+const auth = useAuthService()
 
 const menu: {
   label: string
@@ -28,6 +30,11 @@ const go = (path: string) => {
   if (!path || path === '#') return
   router.push(path)
 }
+
+const signOut = () => {
+  auth.signOut()
+  navigateTo('/signin')
+}
 </script>
 
 <template>
@@ -38,15 +45,18 @@ const go = (path: string) => {
   </BaseHeader>
 
   <div class="p-6 space-y-8">
-    <ProfileCard :nickname="auth.user.value?.nickname!" :photo-url="auth.user.value?.avatarUrl" />
-    <ProfileRating :ratings="auth.user.value?.ratings ?? []" />
+    <ProfileCard
+      :nickname="auth.profile.value?.nickname!"
+      :photo-url="auth.profile.value?.avatarUrl"
+    />
+    <ProfileRating :ratings="auth.profile.value?.ratings ?? []" />
 
     <div class="space-y-3">
       <p class="px-1 text-[10px] font-black uppercase tracking-[0.25em] text-gray-500">Навигация</p>
 
       <div class="space-y-2">
         <ProfileNavigationButton
-          v-if="auth.user.value?.role && auth.user.value.role === 'admin'"
+          v-if="auth.profile.value?.role && auth.profile.value.role === 'admin'"
           :title="'Кабинет админа'"
           :subtitle="'Управление событиями'"
           variant="admin"
@@ -62,7 +72,7 @@ const go = (path: string) => {
         </template>
       </div>
 
-      <BaseButton type="button" @click="auth.signOut"> Выйти </BaseButton>
+      <BaseButton type="button" @click="signOut"> Выйти </BaseButton>
     </div>
   </div>
 </template>
