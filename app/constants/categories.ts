@@ -1,12 +1,13 @@
 import { EventGameStatus } from '~/types/event'
+import { EventGameType } from '~/types/event.types'
 
 export const categories = [
   { label: 'Все', value: '' },
-  { label: 'Покер', value: 'poker' },
-  { label: 'Дартс', value: 'darts' },
-  { label: 'Бильярд', value: 'pool' },
-  { label: 'Квиз', value: 'quiz' },
-  { label: 'Мафия', value: 'mafia' },
+  { label: 'Покер', value: EventGameType.POKER },
+  { label: 'Дартс', value: EventGameType.DARTS },
+  { label: 'Бильярд', value: EventGameType.POOL },
+  { label: 'Квиз', value: EventGameType.QUIZ },
+  { label: 'Мафия', value: EventGameType.MAFIA },
 ]
 
 export const statuses = [
