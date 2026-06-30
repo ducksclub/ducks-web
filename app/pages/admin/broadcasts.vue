@@ -26,9 +26,6 @@ type BroadcastResponse = {
   }
 }
 
-const config = useRuntimeConfig()
-const authStore = useAuthStore()
-
 const message = ref('')
 const isSaving = ref(false)
 const errorMessage = ref('')

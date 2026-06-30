@@ -1,3 +1,4 @@
+import { apiRequest } from '~/services/client'
 import type {
   CreateEventPayload,
   EventResponse,
@@ -17,81 +18,91 @@ export type GetEventsParams = {
 }
 
 export function useEventsApi() {
-  const api = useApi()
-
   const getEvents = (params?: GetEventsParams) => {
-    return api.request<EventsResponse>('/events', {
+    return apiRequest<EventsResponse>({
+      url: '/events',
       method: 'GET',
-      query: params,
+      params,
     })
   }
 
   const getMyEvents = (params?: GetEventsParams) => {
-    return api.request<EventsResponse>('/events/me', {
+    return apiRequest<EventsResponse>({
+      url: '/events/me',
       method: 'GET',
-      query: params,
+      params,
     })
   }
 
   const getActiveEventsNow = (params?: GetEventsParams) => {
-    return api.request<EventsResponse>('/events/active-now', {
+    return apiRequest<EventsResponse>({
+      url: '/events/active-now',
       method: 'GET',
-      query: params,
+      params,
     })
   }
 
   const getEventParticipants = (eventId: string) => {
-    return api.request<GetEventParticipantsResponse>(`/events/${eventId}/participants`, {
+    return apiRequest<GetEventParticipantsResponse>({
+      url: `/events/${eventId}/participants`,
       method: 'GET',
     })
   }
 
   const getEvent = (id: string) => {
-    return api.request<EventResponse>(`/events/${id}`, {
+    return apiRequest<EventResponse>({
+      url: `/events/${id}`,
       method: 'GET',
     })
   }
 
   const getTemplates = () => {
-    return api.request<TemplatesResponse>(`/events/templates`, {
+    return apiRequest<TemplatesResponse>({
+      url: '/events/templates',
       method: 'GET',
     })
   }
 
   const getMyEventSeat = (eventId: string) => {
-    return api.request<MySeatResponse>(`/events/${eventId}/my-seat`, {
+    return apiRequest<MySeatResponse>({
+      url: `/events/${eventId}/my-seat`,
       method: 'GET',
     })
   }
 
   const updateEvent = (params: UpdateEventParams, payload: UpdateEventPayload) => {
-    return api.request<EventResponse>(`/events/${params.id}`, {
+    return apiRequest<EventResponse, UpdateEventPayload>({
+      url: `/events/${params.id}`,
       method: 'PATCH',
       body: payload,
     })
   }
   const deleteEvent = (params: UpdateEventParams) => {
-    return api.request<EventResponse>(`/events/${params.id}`, {
+    return apiRequest<EventResponse>({
+      url: `/events/${params.id}`,
       method: 'DELETE',
     })
   }
 
   const reorderParticipants = (eventId: string, payload: ReorderParticipantsPayload) => {
-    return api.request(`/events/${eventId}/participants/reorder`, {
+    return apiRequest<unknown, ReorderParticipantsPayload>({
+      url: `/events/${eventId}/participants/reorder`,
       method: 'PATCH',
       body: payload,
     })
   }
 
   const createEvent = (payload: CreateEventPayload) => {
-    return api.request<EventResponse>(`/events`, {
+    return apiRequest<EventResponse, CreateEventPayload>({
+      url: '/events',
       method: 'POST',
       body: payload,
     })
   }
 
   const finalizeEvent = (eventId: string) => {
-    return api.request<FinalizeEventResponse>(`/events/${eventId}/finalize`, {
+    return apiRequest<FinalizeEventResponse>({
+      url: `/events/${eventId}/finalize`,
       method: 'POST',
     })
   }

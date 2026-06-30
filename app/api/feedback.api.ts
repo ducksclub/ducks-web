@@ -1,3 +1,4 @@
+import { apiRequest } from '~/services/client'
 import type {
   CreateFeedbackPayload,
   CreateFeedbackResponse,
@@ -5,23 +6,24 @@ import type {
 } from '~/types/feedback'
 
 export function useFeedbackApi() {
-  const api = useApi()
-
   const getFeedback = () => {
-    return api.request<GetFeedbackResponse>('/feedback', {
+    return apiRequest<GetFeedbackResponse>({
+      url: '/feedback',
       method: 'GET',
     })
   }
 
   const createFeedback = (payload: CreateFeedbackPayload) => {
-    return api.request<CreateFeedbackResponse>(`/feedback`, {
+    return apiRequest<CreateFeedbackResponse, CreateFeedbackPayload>({
+      url: '/feedback',
       method: 'POST',
       body: payload,
     })
   }
 
   const deleteFeedback = (id: string) => {
-    return api.request(`/feedback/${id}`, {
+    return apiRequest<unknown>({
+      url: `/feedback/${id}`,
       method: 'DELETE',
     })
   }

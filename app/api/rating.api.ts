@@ -1,10 +1,12 @@
-import type { RatingResponse } from '~/types/rating'
+import { apiRequest } from '~/services/client'
+import type { Rating } from '~/types/rating.types'
+
+export type RatingResponse = Rating[]
 
 export function useRatingApi() {
-  const api = useApi()
-
   const getRating = (gameType: string) => {
-    return api.request<RatingResponse>(`/ratings/${gameType}`, {
+    return apiRequest<RatingResponse>({
+      url: `/ratings/${gameType}`,
       method: 'GET',
     })
   }

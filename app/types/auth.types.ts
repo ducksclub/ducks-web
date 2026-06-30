@@ -1,17 +1,39 @@
-export type {
-  AuthResponse,
-  AuthUser,
+import type {
   ForgotPasswordPayload,
-  MessageResponse,
-  NicknameAvailabilityParams,
-  NicknameAvailabilityResponse,
   ResetPasswordPayload,
   SignInPayload,
   SignInWithTelegramPayload,
   SignUpPayload,
-} from '~/features/auth/auth.types'
+} from '~/services/auth/auth.types'
+import type { UpdateProfilePayload } from '~/services/profile/profile.types'
+import type { User } from './user.types'
+
+export type AuthUser = Omit<User, 'ratings'>
+
+export type AuthResponse = {
+  token: string
+  user: User
+}
+
+export type MessageResponse = {
+  message: string
+}
+
+export type NicknameAvailabilityParams = {
+  nickname: string
+}
+
+export type NicknameAvailabilityResponse = {
+  available: boolean
+}
+
+export type MeResponse = User
 
 export type {
-  ProfileResponse as MeResponse,
+  ForgotPasswordPayload,
+  ResetPasswordPayload,
+  SignInPayload,
+  SignInWithTelegramPayload,
+  SignUpPayload,
   UpdateProfilePayload,
-} from '~/features/profile/profile.types'
+}

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Rating } from '~/types/rating'
+import type { Rating } from '~/types/rating.types'
 
 const props = defineProps<{
   rating: Rating[]

@@ -1,5 +1,5 @@
 import { ref, watch } from 'vue'
-import type { Rating } from '~/types/rating'
+import type { Rating } from '~/types/rating.types'
 import { useRatingApi } from '~/api/rating.api'
 
 export function useRatingQuery(gameType: Ref<string>) {

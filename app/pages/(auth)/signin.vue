@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { AtSign, LockKeyhole } from '@lucide/vue'
 import type { AxiosError } from 'axios'
-import Telegram from '~/components/icons/Telegram.vue'
 import { useAuthService } from '~/composables/services/useAuthService'
 import { useZodValidation } from '~/composables/useZodValidation'
 import type { ApiErrorResponse } from '~/services/client.types'
@@ -43,29 +42,6 @@ const submit = async () => {
     pending.value = false
   }
 }
-
-// const authByTelegram = async () => {
-//   if (!isTelegramAuthAvailable.value) {
-//     notify.error('Вход через Telegram доступен только внутри Telegram Mini App')
-//     return
-//   }
-
-//   try {
-//     isLoading.value = true
-//     await auth.signInWithTelegram({ initData: telegram.getInitData() })
-
-//     notify.success('Вы усепешно вошли в аккаунт!')
-//     await navigateTo('/')
-//   } catch (err) {
-//     notify.error(getApiErrorMessage(err, 'Произошла ошибка при входе в аккаунт'))
-//   } finally {
-//     isLoading.value = false
-//   }
-// }
-
-// onMounted(() => {
-//   isTelegramAuthAvailable.value = telegram.hasInitData()
-// })
 </script>
 
 <template>
@@ -118,21 +94,6 @@ const submit = async () => {
 
         <BaseButton type="submit" :disabled="pending" :loading="pending">Войти</BaseButton>
       </form>
-
-      <!-- <template v-if="isTelegramAuthAvailable">
-        <AuthDivider text="или войти через" />
-
-        <div class="flex justify-center gap-4">
-          <button
-            @click="authByTelegram"
-            type="button"
-            :disabled="isLoading"
-            class="w-14 h-14 bg-(--secondary)/20 border border-white/5 rounded-2xl flex items-center justify-center active:scale-90 transition"
-          >
-            <Telegram class="w-6 h-6" />
-          </button>
-        </div>
-      </template> -->
 
       <p class="text-center text-sm text-gray-500 mt-8">
         Ещё нет аккаунта?

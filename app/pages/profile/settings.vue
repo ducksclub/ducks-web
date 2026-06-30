@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { AtSign, Phone } from '@lucide/vue'
-import { useUploadApi } from '~/api/upload.api'
 
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
@@ -8,6 +7,9 @@ import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 
 import BaseInput from '~/components/ui/BaseInput.vue'
 import ImageUpload from '~/components/ui/ImageUpload.vue'
+import { useAuthService } from '~/composables/services/useAuthService'
+import { useProfileService } from '~/composables/services/useProfileService'
+import { useUploadService } from '~/composables/services/useUploadService'
 import { profileSchema } from '~/validation/profile'
 
 definePageMeta({
@@ -16,24 +18,37 @@ definePageMeta({
 })
 
 const notify = useNotify()
-const { uploadImage, isUploading } = useUploadApi()
+const { uploadImage, isUploading } = useUploadService()
 const { validate, errors } = useZodValidation(profileSchema)
 
-const isSaving = ref(false)
-const auth = useAuthProvider()
+const auth = useAuthService()
+const profile = useProfileService()
 
 const form = reactive({
-  email: auth.user.value?.email ?? '',
-  nickname: auth.user.value?.nickname ?? '',
-  phone: auth.user.value?.phone ?? '',
-  avatar: auth.user.value?.avatarUrl ?? '',
+  email: auth.profile.value?.email ?? '',
+  nickname: auth.profile.value?.nickname ?? '',
+  phone: auth.profile.value?.phone ?? '',
+  avatar: auth.profile.value?.avatarUrl ?? '',
   file: null as File | null,
 })
+
+watch(
+  () => auth.profile.value,
+  (currentProfile) => {
+    if (!currentProfile) return
+
+    form.email = currentProfile.email
+    form.nickname = currentProfile.nickname
+    form.phone = currentProfile.phone ?? ''
+    form.avatar = currentProfile.avatarUrl ?? ''
+  },
+  { immediate: true },
+)
 
 const saveProfile = async () => {
   if (!validate(form)) return
 
-  if (isSaving.value || isUploading.value) {
+  if (profile.pending.value || isUploading.value) {
     return
   }
 
@@ -41,8 +56,6 @@ const saveProfile = async () => {
   let imageHash = ''
 
   try {
-    isSaving.value = true
-
     if (form.file) {
       const uploaded = await uploadImage(form.file)
 
@@ -50,18 +63,17 @@ const saveProfile = async () => {
       imageHash = uploaded.hash
     }
 
-    await auth.updateProfile({
+    await profile.updateProfile({
       nickname: form.nickname,
-      phone: form.phone,
+      phone: form.phone || null,
       avatarUrl: imageUrl,
-      avatarHash: imageHash,
+      ...(imageHash ? { avatarHash: imageHash } : {}),
     })
+
+    form.file = null
     notify.success('Профиль сохранен')
-    await auth.restoreSession()
   } catch (error) {
     notify.error(getApiErrorMessage(error, 'Не удалось сохранить профиль'))
-  } finally {
-    isSaving.value = false
   }
 }
 </script>
@@ -114,8 +126,8 @@ const saveProfile = async () => {
 
     <BaseButton
       class="w-full"
-      :loading="isSaving || isUploading"
-      :disabled="isSaving || isUploading"
+      :loading="profile.pending.value || isUploading"
+      :disabled="profile.pending.value || isUploading"
       type="submit"
     >
       Сохранить изменения

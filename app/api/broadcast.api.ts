@@ -1,10 +1,10 @@
+import { apiRequest } from '~/services/client'
 import type { CreateBroadcastPayload, CreateBroadcastResponse } from '~/types/broadcast'
 
 export function useBroadcastApi() {
-  const api = useApi()
-
   const createBroadcast = (payload: CreateBroadcastPayload) => {
-    return api.request<CreateBroadcastResponse>(`/broadcasts`, {
+    return apiRequest<CreateBroadcastResponse, CreateBroadcastPayload>({
+      url: '/broadcasts',
       method: 'POST',
       body: payload,
     })

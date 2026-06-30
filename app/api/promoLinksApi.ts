@@ -1,3 +1,5 @@
+import { apiRequest } from '~/services/client'
+
 export type PromoLinkType = 'PUBLIC_SITE' | 'TELEGRAM_BOT' | 'TELEGRAM_MINI_APP'
 
 export type PromoLink = {
@@ -35,36 +37,39 @@ export type TrackPromoClickPayload = {
 }
 
 export function usePromoLinksApi() {
-  const api = useApi()
-
   const getPromoLinks = () => {
-    return api.request<PromoLink[]>('/admin/promo-links', {
+    return apiRequest<PromoLink[]>({
+      url: '/admin/promo-links',
       method: 'GET',
     })
   }
 
   const getPromoLink = (id: string) => {
-    return api.request<PromoLink>(`/admin/promo-links/${id}`, {
+    return apiRequest<PromoLink>({
+      url: `/admin/promo-links/${id}`,
       method: 'GET',
     })
   }
 
   const createPromoLink = (payload: CreatePromoLinkPayload) => {
-    return api.request<PromoLink, CreatePromoLinkPayload>('/admin/promo-links', {
+    return apiRequest<PromoLink, CreatePromoLinkPayload>({
+      url: '/admin/promo-links',
       method: 'POST',
       body: payload,
     })
   }
 
   const updatePromoLink = (id: string, payload: UpdatePromoLinkPayload) => {
-    return api.request<PromoLink, UpdatePromoLinkPayload>(`/admin/promo-links/${id}`, {
+    return apiRequest<PromoLink, UpdatePromoLinkPayload>({
+      url: `/admin/promo-links/${id}`,
       method: 'PATCH',
       body: payload,
     })
   }
 
   const trackPromoClick = (payload: TrackPromoClickPayload) => {
-    return api.request<void, TrackPromoClickPayload>('/promo-links/track-click', {
+    return apiRequest<void, TrackPromoClickPayload>({
+      url: '/promo-links/track-click',
       method: 'POST',
       body: payload,
       auth: false,

@@ -1,6 +1,6 @@
-export function useEventRegistrationApi(eventId: Ref<string>) {
-  const api = useApi()
+import { apiRequest } from '~/services/client'
 
+export function useEventRegistrationApi(eventId: Ref<string>) {
   const isLoading = ref(false)
   const isRegistered = ref(false)
   const registrationStatus = ref<string | null>(null)
@@ -14,7 +14,9 @@ export function useEventRegistrationApi(eventId: Ref<string>) {
   ])
 
   const fetchStatus = async () => {
-    const res = await api.request<{ status?: string }>(`/events/${eventId.value}/registration`)
+    const res = await apiRequest<{ status?: string }>({
+      url: `/events/${eventId.value}/registration`,
+    })
     registrationStatus.value = res?.status ?? null
     isRegistered.value = registeredStatuses.has(registrationStatus.value?.toUpperCase() ?? '')
   }
@@ -22,7 +24,8 @@ export function useEventRegistrationApi(eventId: Ref<string>) {
   const register = async () => {
     try {
       isLoading.value = true
-      await api.request(`/events/${eventId.value}/register`, {
+      await apiRequest<unknown>({
+        url: `/events/${eventId.value}/register`,
         method: 'POST',
       })
       await fetchStatus()
@@ -34,7 +37,8 @@ export function useEventRegistrationApi(eventId: Ref<string>) {
   const unregister = async () => {
     try {
       isLoading.value = true
-      await api.request(`/events/${eventId.value}/register`, {
+      await apiRequest<unknown>({
+        url: `/events/${eventId.value}/register`,
         method: 'DELETE',
       })
       registrationStatus.value = null

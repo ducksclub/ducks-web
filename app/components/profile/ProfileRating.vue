@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Rating } from '~/types/rating'
+import type { Rating } from '~/types/rating.types'
 
 type RatingItem = Pick<Rating, 'gameType' | 'points'>
 
