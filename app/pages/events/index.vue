@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
-import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import { useEventService } from '~/composables/services/useEventService'
 
 definePageMeta({

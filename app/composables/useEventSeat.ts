@@ -1,8 +1,8 @@
-import { useEventsApi } from '~/api/events.api'
+import { useEventService } from '~/composables/services/useEventService'
 import type { MySeatResponse } from '~/types/event-seat'
 
 export function useEventSeat(eventId: Ref<string>) {
-  const eventsApi = useEventsApi()
+  const eventService = useEventService()
 
   const seatInfo = ref<MySeatResponse | null>(null)
   const isSeatLoading = ref(false)
@@ -15,7 +15,7 @@ export function useEventSeat(eventId: Ref<string>) {
     try {
       isSeatLoading.value = true
       seatError.value = null
-      seatInfo.value = await eventsApi.getMyEventSeat(eventId.value)
+      seatInfo.value = await eventService.getMyEventSeat(eventId.value)
     } catch (error) {
       seatInfo.value = null
       seatError.value = getApiErrorMessage(error, 'Не удалось узнать место. Попробуйте позже.')

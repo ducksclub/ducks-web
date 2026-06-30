@@ -1,5 +1,4 @@
 import { eventService } from '~/services/event/event.service'
-import type { GetEventsParams } from '~/services/event/event.types'
 import { EventGameStatus, type Event } from '~/types/event.types'
 
 export const useEventService = () => {
@@ -8,6 +7,18 @@ export const useEventService = () => {
   const pending = ref<boolean>(false)
 
   const notify = useNotify()
+
+  const getEvent = (id: string) => {
+    return eventService.getEvent(id)
+  }
+
+  const getEventParticipants = (eventId: string) => {
+    return eventService.getEventParticipants(eventId)
+  }
+
+  const getMyEventSeat = (eventId: string) => {
+    return eventService.getMyEventSeat(eventId)
+  }
 
   const getEvents = async () => {
     pending.value = true
@@ -47,6 +58,9 @@ export const useEventService = () => {
     events,
     pending,
     nearestEvents,
+    getEvent,
+    getEventParticipants,
+    getMyEventSeat,
     getEvents,
     getNearestEvents,
   }

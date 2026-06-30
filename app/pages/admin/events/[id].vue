@@ -2,7 +2,6 @@
 import { Calendar, Map, Users } from '@lucide/vue'
 import dayjs from 'dayjs'
 import { useEventsApi } from '~/api/events.api'
-import { useUploadApi } from '~/api/upload.api'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
@@ -10,6 +9,7 @@ import BaseDatetime from '~/components/ui/BaseDatetime.vue'
 import BaseInput from '~/components/ui/BaseInput.vue'
 import BaseSelect from '~/components/ui/BaseSelect.vue'
 import ImageUpload from '~/components/ui/ImageUpload.vue'
+import { useUploadService } from '~/composables/services/useUploadService'
 
 import { categories } from '~/constants/categories'
 import { EventGameType, type Event } from '~/types/event'
@@ -25,7 +25,7 @@ const router = useRouter()
 const id = route.params.id as string
 
 const api = useEventsApi()
-const { uploadImage, isUploading } = useUploadApi()
+const { uploadImage, isUploading } = useUploadService()
 
 const isLoading = ref(true)
 const isSaving = ref(false)
