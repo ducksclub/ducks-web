@@ -1,6 +1,9 @@
 import type {
+  AuthMessageResponse,
   AuthResponse,
+  ForgotPasswordPayload,
   MeResponse,
+  ResetPasswordPayload,
   SignInPayload,
   SignInWithTelegramPayload,
   SignUpPayload,
@@ -84,6 +87,36 @@ export function useAuthProvider() {
     }
   }
 
+  async function forgotPassword(payload: ForgotPasswordPayload) {
+    try {
+      isLoading.value = true
+      errorMessage.value = null
+
+      return await request<AuthMessageResponse, ForgotPasswordPayload>('/auth/forgot-password', {
+        method: 'POST',
+        body: payload,
+        auth: false,
+      })
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  async function resetPassword(payload: ResetPasswordPayload) {
+    try {
+      isLoading.value = true
+      errorMessage.value = null
+
+      return await request<AuthMessageResponse, ResetPasswordPayload>('/auth/reset-password', {
+        method: 'POST',
+        body: payload,
+        auth: false,
+      })
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   async function restoreSession() {
     try {
       isLoading.value = true
@@ -141,6 +174,8 @@ export function useAuthProvider() {
     signIn,
     signInWithTelegram,
     signUp,
+    forgotPassword,
+    resetPassword,
     signOut,
     restoreSession,
     updateProfile,

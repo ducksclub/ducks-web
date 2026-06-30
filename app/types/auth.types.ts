@@ -26,6 +26,15 @@ export type SignInPayload = {
   password: string
 }
 
+export type ForgotPasswordPayload = {
+  email: string
+}
+
+export type ResetPasswordPayload = {
+  token: string
+  password: string
+}
+
 export type SignInWithTelegramPayload = {
   initData: string
 }
@@ -50,3 +59,9 @@ export type AuthResponse = {
 }
 
 export type MeResponse = AuthUser
+
+export type UpdateProfileResponse = AuthUser
+
+export type AuthMessageResponse = {
+  message: string
+}

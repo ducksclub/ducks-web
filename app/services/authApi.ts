@@ -1,11 +1,12 @@
 import type {
-  LoginPayload,
-  LoginResponse,
-  LoginViaTelegramPayload,
+  AuthMessageResponse,
+  AuthResponse,
+  ForgotPasswordPayload,
   MeResponse,
-  RegisterPayload,
-  RegisterResponse,
-  TelegramAuthResponse,
+  ResetPasswordPayload,
+  SignInPayload,
+  SignInWithTelegramPayload,
+  SignUpPayload,
   UpdateProfilePayload,
   UpdateProfileResponse,
 } from '~/types/auth.types'
@@ -55,22 +56,36 @@ export function useAuthApi() {
   }
 
   return {
-    signIn(payload: LoginPayload) {
-      return request<LoginResponse, LoginPayload>('/auth/signin', {
+    signIn(payload: SignInPayload) {
+      return request<AuthResponse, SignInPayload>('/auth/signin', {
         method: 'POST',
         body: payload,
       })
     },
 
-    signInWithTelegram(payload: LoginViaTelegramPayload) {
-      return request<TelegramAuthResponse, LoginViaTelegramPayload>('/auth/signin-with-telegram', {
+    signInWithTelegram(payload: SignInWithTelegramPayload) {
+      return request<AuthResponse, SignInWithTelegramPayload>('/auth/signin-with-telegram', {
         method: 'POST',
         body: payload,
       })
     },
 
-    signUp(payload: RegisterPayload) {
-      return request<RegisterResponse, RegisterPayload>('/auth/signup', {
+    signUp(payload: SignUpPayload) {
+      return request<AuthResponse, SignUpPayload>('/auth/signup', {
+        method: 'POST',
+        body: payload,
+      })
+    },
+
+    forgotPassword(payload: ForgotPasswordPayload) {
+      return request<AuthMessageResponse, ForgotPasswordPayload>('/auth/forgot-password', {
+        method: 'POST',
+        body: payload,
+      })
+    },
+
+    resetPassword(payload: ResetPasswordPayload) {
+      return request<AuthMessageResponse, ResetPasswordPayload>('/auth/reset-password', {
         method: 'POST',
         body: payload,
       })
