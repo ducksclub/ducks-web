@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
+import Skeleton from '~/components/rating/Skeleton.vue'
+import { useRatingService } from '~/composables/services/useRatingService'
 import { EventGameType } from '~/types/event'
 
 definePageMeta({
@@ -19,7 +21,17 @@ const tabs = [
   { label: 'Бильярд', value: EventGameType.POOL },
 ]
 
-const { rating, isLoading, error } = useRatingQuery(activeTab)
+const { pending, rating, error, getRating } = useRatingService()
+
+watch(
+  activeTab,
+  () => {
+    getRating(activeTab.value)
+  },
+  {
+    immediate: true,
+  },
+)
 </script>
 
 <template>
@@ -33,15 +45,9 @@ const { rating, isLoading, error } = useRatingQuery(activeTab)
     <RatingTabsSegmented v-model="activeTab" :items="tabs" />
 
     <div class="mt-4">
-      <div v-if="isLoading" class="space-y-2">
-        <div v-for="i in 5" :key="i" class="h-16 animate-pulse rounded-2xl bg-(--secondary)/20" />
-      </div>
-
-      <div v-else-if="error" class="text-center text-sm text-(--warning)">
-        {{ error }}
-      </div>
-
-      <div v-else-if="!rating.length" class="text-center text-sm text-gray-500">Нет данных</div>
+      <Skeleton v-if="pending" />
+      <UiEmptyList v-else-if="!rating.length" />
+      <UiError v-else-if="error" :message="error" />
 
       <RatingLeaderboard v-else :rating="rating" />
     </div>
