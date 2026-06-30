@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { getApiErrorMessage } from '~/shared/api/api-error'
+import { getApiErrorMessage } from '~/utils/api/api-error'
 import { FileText } from '@lucide/vue'
 
-import { contentApi } from '~/features/content/api/content.api'
+import { contentApi } from '~/utils/api/content'
 
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
@@ -11,7 +11,7 @@ import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 import BaseInput from '~/components/ui/BaseInput.vue'
 import BaseSelect from '~/components/ui/BaseSelect.vue'
 
-import { ContentType } from '~/features/content/model/content'
+import { ContentType } from '~~/shared/types/content'
 
 definePageMeta({
   layout: 'empty',

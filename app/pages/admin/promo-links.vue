@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { getApiErrorMessage } from '~/shared/api/api-error'
+import { getApiErrorMessage } from '~/utils/api/api-error'
 import { BarChart3, Check, Copy, Link2, Loader2, Plus, Power, RefreshCw, X } from '@lucide/vue'
-import { promoLinksApi } from '~/features/promo-links/api/promo-links.api'
+import { promoLinksApi } from '~/utils/api/promo-links'
 import type {
   CreatePromoLinkPayload,
   PromoLink,
   PromoLinkType,
-} from '~/features/promo-links/model/promo-link'
+} from '~~/shared/types/promo-link'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderMenu from '~/components/layout/header/HeaderMenu.vue'
 import HeaderMenuItem from '~/components/layout/header/HeaderMenuItem.vue'

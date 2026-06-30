@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { eventsApi } from '~/features/events/api/events.api'
+import { eventsApi } from '~/utils/api/events'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderMenu from '~/components/layout/header/HeaderMenu.vue'
 import HeaderMenuItem from '~/components/layout/header/HeaderMenuItem.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 import EventParticipantsList from '~/components/admin/event/EventParticipantsList.vue'
-import type { Event, Participant } from '~/features/events/model/event'
+import type { Event, Participant } from '~~/shared/types/event'
 
 definePageMeta({
   layout: 'admin',

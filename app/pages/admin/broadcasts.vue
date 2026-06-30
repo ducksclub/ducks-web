@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { getApiErrorMessage } from '~/shared/api/api-error'
-import { broadcastApi } from '~/features/broadcasts/api/broadcast.api'
+import { getApiErrorMessage } from '~/utils/api/api-error'
+import { broadcastApi } from '~/utils/api/broadcasts'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'

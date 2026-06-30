@@ -7,7 +7,6 @@ import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 
 definePageMeta({
   layout: 'empty',
-  middleware: 'auth',
 })
 
 const phone = '+7 (915) 276-92-69'

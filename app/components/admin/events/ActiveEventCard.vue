@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { getGameLabel } from '~/features/events/model/event.helpers'
-import type { Event } from '~/features/events/model/event'
+import { getGameLabel } from '~/utils/event'
+import type { Event } from '~~/shared/types/event'
 import ActiveEventBadge from './ActiveEventBadge.vue'
 
 const props = defineProps<{

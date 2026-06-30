@@ -2,52 +2,68 @@
 
 ## Goals
 
-- Keep the existing user-facing functionality and backend contracts.
-- Make feature boundaries explicit.
-- Keep pages thin: pages compose feature use-cases and components, but do not own API details.
-- Avoid additional state libraries until there is a concrete need.
+- Follow the simple Nuxt 4 directory structure.
+- Keep route pages easy to find in `app/pages`.
+- Keep reusable Vue state in `app/composables`.
+- Keep app runtime helpers and API clients in `app/utils`.
+- Keep shared DTOs and domain types in root `shared/types`.
+- Keep backend-facing Nuxt endpoints in root `server`.
 
-## Layers
+## Structure
 
 ```text
 app/
-  shared/       framework-agnostic helpers, HTTP client, base models
-  features/     domain modules grouped by business capability
-  components/   global UI/layout/shared components
-  composables/   truly app-wide Vue utilities only
-  pages/        Nuxt route entry points
-  middleware/   route access policies
-  server/       Nuxt server proxy and server-only endpoints
+  assets/        styles, fonts and app-bundled static assets
+  components/    reusable Vue components
+  composables/   Vue composables and app-level state
+  constants/     static app constants
+  layouts/       Nuxt layouts
+  middleware/    route guards
+  pages/         file-based routes
+  plugins/       Nuxt plugins
+  utils/         helpers, session storage and API clients
+  validation/    form validation schemas
+server/
+  api/           Nuxt server API routes and proxy endpoints
+shared/
+  types/         DTOs and TypeScript types shared by app/server code
+public/          public static files served as-is
 ```
 
 ## Import Rules
 
-- `shared` must not import from `features`.
-- `features/*/api` contains endpoint calls and DTOs only.
-- `features/*/model` contains domain types, constants, mappers and pure helpers.
-- `features/*/composables` contains user flows and Vue state for a feature.
-- `pages` can import feature composables and components.
-- Generic UI components must not call API modules directly.
-- Do not add compatibility facades such as `app/api`, `app/services`, `app/types` or `app/utils`.
-- Shared helpers are imported explicitly from `~/shared/*`; feature types and API clients are imported from their owning feature.
+- Pages compose components, composables and API clients, but should not hide route behavior in feature folders.
+- `app/utils/api/*` contains typed backend client methods only.
+- `app/composables/*` contains Vue state and user flows.
+- `shared/types/*` contains types and constants only; it must not import from `app/*`.
+- `server/api/*` is the only place for Nuxt server endpoints.
+- Do not add FSD folders such as `features`, `entities`, `widgets` or compatibility folders such as `services`, `types` under `app`.
+- Do not add barrel files that only re-export imports. Import directly from the file that owns the code.
 
-## Current Feature Modules
+## API Flow
 
-- `auth`: session, sign in/sign up, Telegram sign in, password reset, route access checks.
-- `events`: public events, details, registration, participants, seats and admin event workflows.
-- `profile`: profile read/update and persisted session synchronization.
-- `rating`: rating leaderboards by game type.
-- `content`: editable static content such as rules, FAQ and training levels.
-- `feedback`: user feedback and admin feedback moderation.
-- `promo-links`: promo link CRUD and public click tracking.
-- `broadcasts`: admin broadcast creation.
-- `upload`: image upload capability.
-- `telegram`: Telegram WebApp integration.
+Browser code calls typed clients from `app/utils/api/*`.
 
-## Removed Legacy Layers
+```text
+page/composable -> app/utils/api/* -> app/utils/api/http-client.ts -> /api/* -> server/api/[...path].ts -> backend
+```
 
-- `app/api`: replaced by `features/*/api`.
-- `app/services`: replaced by feature API clients and feature composables.
-- `app/types`: replaced by `features/*/model` and `shared/model`.
-- `app/utils`: replaced by explicit imports from `shared/lib`, `shared/api` and feature model helpers.
-- `app/composables/services`: replaced by `features/*/composables`.
+`NUXT_PUBLIC_API_BASE` should normally stay `/api`, so browser requests go through the Nuxt proxy. The private backend URL belongs in `NUXT_PRIVATE_API_BASE` and is available only on the server.
+
+## Runtime State
+
+- Auth token and profile are stored by `app/utils/session.ts`.
+- `app/utils/api/http-client.ts` attaches the bearer token only for requests that require auth.
+- On authenticated `401` responses, the session is cleared and the user is redirected to `/signin`.
+
+## Page QA Checklist
+
+Before a production handoff:
+
+- Run `npm run typecheck`.
+- Run `npm run build`.
+- Start the app and open every route from `app/pages`.
+- Check browser console and network errors.
+- Verify loading, empty and error states for pages that call API.
+- Verify protected/admin pages redirect correctly without auth.
+- Check desktop and mobile viewport layouts.

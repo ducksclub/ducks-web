@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ArrowDown, ArrowUp } from '@lucide/vue'
-import type { Event, Participant } from '~/features/events/model/event'
+import type { Event, Participant } from '~~/shared/types/event'
 
 const props = defineProps<{
   participant: Participant

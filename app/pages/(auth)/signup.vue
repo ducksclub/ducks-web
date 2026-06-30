@@ -3,9 +3,9 @@ import { useZodValidation } from '~/composables/useZodValidation'
 import { AtSign, LockKeyhole, User } from '@lucide/vue'
 import { signUpSchema } from '~/validation/auth.validation'
 import type { SignUpSchema } from '~/validation/auth.validation'
-import { useAuthSession } from '~/features/auth/composables/useAuthSession'
+import { useAuthSession } from '~/composables/useAuthSession'
 import type { AxiosError } from 'axios'
-import type { ApiErrorResponse } from '~/shared/api/http.types'
+import type { ApiErrorResponse } from '~~/shared/types/http'
 
 definePageMeta({
   layout: false,

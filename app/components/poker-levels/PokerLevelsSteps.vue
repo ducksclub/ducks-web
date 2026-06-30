@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Content } from '~/features/content/model/content'
+import type { Content } from '~~/shared/types/content'
 import Accordion from '../ui/Accordion.vue'
 
 type Props = {

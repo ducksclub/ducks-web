@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
-import { useEventsCatalog } from '~/features/events/composables/useEventsCatalog'
+import { useEventsCatalog } from '~/composables/useEventsCatalog'
 
 definePageMeta({
   middleware: 'auth',

@@ -1,5 +1,5 @@
-import { EventGameStatus } from '~/features/events/model/event'
-import { EventGameType } from '~/features/events/model/event'
+import { EventGameStatus } from '~~/shared/types/event'
+import { EventGameType } from '~~/shared/types/event'
 
 export const categories = [
   { label: 'Все', value: '' },

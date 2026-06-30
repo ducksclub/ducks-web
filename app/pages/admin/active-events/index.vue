@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { getApiErrorMessage } from '~/shared/api/api-error'
-import { eventsApi } from '~/features/events/api/events.api'
+import { getApiErrorMessage } from '~/utils/api/api-error'
+import { eventsApi } from '~/utils/api/events'
 import ActiveEventsList from '~/components/admin/events/ActiveEventsList.vue'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
-import type { Event } from '~/features/events/model/event'
+import type { Event } from '~~/shared/types/event'
 
 definePageMeta({
   layout: 'admin',

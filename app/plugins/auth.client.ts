@@ -1,4 +1,4 @@
-import { useAuthSession } from '~/features/auth/composables/useAuthSession'
+import { useAuthSession } from '~/composables/useAuthSession'
 
 export default defineNuxtPlugin(() => {
   const auth = useAuthSession()

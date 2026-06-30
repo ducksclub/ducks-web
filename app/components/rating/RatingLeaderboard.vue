@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { renderPicture } from '~/shared/lib/media'
-import { useAuthSession } from '~/features/auth/composables/useAuthSession'
-import type { Rating } from '~/features/rating/model/rating'
+import { renderPicture } from '~/utils/media'
+import { useAuthSession } from '~/composables/useAuthSession'
+import type { Rating } from '~~/shared/types/rating'
 
 const props = defineProps<{
   rating: Rating[]

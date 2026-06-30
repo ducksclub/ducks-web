@@ -6,7 +6,6 @@ import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 
 definePageMeta({
   layout: 'empty',
-  middleware: 'auth',
 })
 
 const router = useRouter()

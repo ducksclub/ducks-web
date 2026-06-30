@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTelegramWebApp } from '~/features/telegram/composables/useTelegramWebApp'
+import { useTelegramWebApp } from '~/composables/useTelegramWebApp'
 
 onMounted(() => {
   const telegram = useTelegramWebApp()

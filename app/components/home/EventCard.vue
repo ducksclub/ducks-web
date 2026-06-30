@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { formatDate } from '~/shared/lib/date'
+import { formatDate } from '~/utils/date'
 import { Clock } from '@lucide/vue'
-import type { Event, EventGameType } from '~/features/events/model/event'
+import type { Event, EventGameType } from '~~/shared/types/event'
 
 type EventGameTypeStyle = {
   label: string

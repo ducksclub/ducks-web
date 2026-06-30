@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { getApiErrorMessage } from '~/shared/api/api-error'
-import { formatDate } from '~/shared/lib/date'
+import { getApiErrorMessage } from '~/utils/api/api-error'
+import { formatDate } from '~/utils/date'
 import { ShareIcon } from '@lucide/vue'
-import { EventGameStatus, EventGameType, type Event } from '~/features/events/model/event'
+import { EventGameStatus, EventGameType, type Event } from '~~/shared/types/event'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderButton from '~/components/layout/header/HeaderButton.vue'
@@ -17,10 +17,10 @@ import EventScheduleCard from '~/components/events/detail/EventScheduleCard.vue'
 import EventStatsGrid from '~/components/events/detail/EventStatsGrid.vue'
 import EventTextSection from '~/components/events/detail/EventTextSection.vue'
 import { useShare } from '~/composables/helpers/useShare'
-import { useAuthSession } from '~/features/auth/composables/useAuthSession'
-import { useEventRegistration } from '~/features/events/composables/useEventRegistration'
-import { useEventSeat } from '~/features/events/composables/useEventSeat'
-import { useEventsCatalog } from '~/features/events/composables/useEventsCatalog'
+import { useAuthSession } from '~/composables/useAuthSession'
+import { useEventRegistration } from '~/composables/useEventRegistration'
+import { useEventSeat } from '~/composables/useEventSeat'
+import { useEventsCatalog } from '~/composables/useEventsCatalog'
 
 definePageMeta({
   layout: 'empty',

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { renderPicture } from '~/shared/lib/media'
+import { renderPicture } from '~/utils/media'
 import { CircleStencil, RectangleStencil, Cropper } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
 

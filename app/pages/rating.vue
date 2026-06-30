@@ -2,8 +2,8 @@
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 import Skeleton from '~/components/rating/Skeleton.vue'
-import { useRatingLeaderboard } from '~/features/rating/composables/useRatingLeaderboard'
-import { EventGameType } from '~/features/events/model/event'
+import { useRatingLeaderboard } from '~/composables/useRatingLeaderboard'
+import { EventGameType } from '~~/shared/types/event'
 
 definePageMeta({
   middleware: 'auth',

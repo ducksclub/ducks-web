@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Event } from '~/features/events/model/event'
+import type { Event } from '~~/shared/types/event'
 import ActiveEventCard from './ActiveEventCard.vue'
 import ActiveEventsSkeleton from './ActiveEventsSkeleton.vue'
 import ActiveEventsEmpty from './ActiveEventsEmpty.vue'

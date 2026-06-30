@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { getGameLabel } from '~/features/events/model/event.helpers'
-import type { Rating } from '~/features/rating/model/rating'
+import { getGameLabel } from '~/utils/event'
+import type { Rating } from '~~/shared/types/rating'
 
 type RatingItem = Pick<Rating, 'gameType' | 'points'>
 

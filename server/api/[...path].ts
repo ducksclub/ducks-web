@@ -3,6 +3,7 @@ import { joinURL } from 'ufo'
 export default defineEventHandler(async (event) => {
   const runtimeConfig = useRuntimeConfig()
   const apiBase = runtimeConfig.apiBase
+  const method = event.method
 
   if (!apiBase) {
     throw createError({
@@ -26,7 +27,14 @@ export default defineEventHandler(async (event) => {
 
   try {
     return await proxyRequest(event, target)
-  } catch {
+  } catch (error) {
+    console.error('[api-proxy] Backend request failed', {
+      method,
+      path,
+      target,
+      error: error instanceof Error ? error.message : String(error),
+    })
+
     throw createError({
       statusCode: 502,
       statusMessage: 'Ошибка соединения с backend',

@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { getApiErrorMessage } from '~/shared/api/api-error'
+import { getApiErrorMessage } from '~/utils/api/api-error'
 import { Calendar, Map, Users } from '@lucide/vue'
 import dayjs from 'dayjs'
-import { eventsApi } from '~/features/events/api/events.api'
+import { eventsApi } from '~/utils/api/events'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
-import { useUploadImage } from '~/features/upload/composables/useUploadImage'
+import { useUploadImage } from '~/composables/useUploadImage'
 import BaseDatetime from '~/components/ui/BaseDatetime.vue'
 import BaseInput from '~/components/ui/BaseInput.vue'
 import BaseSelect from '~/components/ui/BaseSelect.vue'
 import ImageUpload from '~/components/ui/ImageUpload.vue'
 
 import { categories } from '~/constants/categories'
-import type { Event, EventGameType } from '~/features/events/model/event'
+import type { Event, EventGameType } from '~~/shared/types/event'
 
 definePageMeta({
   layout: 'empty',

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { getApiErrorMessage } from '~/shared/api/api-error'
+import { getApiErrorMessage } from '~/utils/api/api-error'
 import { Plus } from '@lucide/vue'
-import { contentApi } from '~/features/content/api/content.api'
+import { contentApi } from '~/utils/api/content'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderButton from '~/components/layout/header/HeaderButton.vue'
@@ -9,7 +9,7 @@ import HeaderMenu from '~/components/layout/header/HeaderMenu.vue'
 import HeaderMenuItem from '~/components/layout/header/HeaderMenuItem.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 import BaseSelect from '~/components/ui/BaseSelect.vue'
-import { ContentType, type Content } from '~/features/content/model/content'
+import { ContentType, type Content } from '~~/shared/types/content'
 
 definePageMeta({
   layout: 'admin',

@@ -12,23 +12,27 @@ Nuxt 4 frontend for Duck's GameClub: Telegram Mini App/PWA, public event pages, 
 
 ## Architecture
 
-The project is organized around feature modules:
+The project follows the simple Nuxt 4 directory structure:
 
 ```text
 app/
-  shared/       HTTP client, base models and generic helpers
-  features/     business modules: auth, events, profile, rating, content, etc.
-  components/   global UI and layout components
-  pages/        Nuxt route entry points
+  components/   reusable UI and layout components
+  composables/  Vue composables and app-level flows
+  layouts/      Nuxt layouts
   middleware/   route access policies
-  server/       Nuxt server proxy
+  pages/        file-based Nuxt routes
+  plugins/      Nuxt plugins
+  utils/        helpers, session storage and API clients
+  validation/   form validation schemas
+server/
+  api/          Nuxt server proxy endpoints
+shared/
+  types/        DTOs and shared TypeScript types
 ```
 
-New code should import from `app/features/*` and `app/shared/*`.
+API clients live in `app/utils/api/*`. Shared DTOs live in `shared/types/*`. FSD folders such as `features`, `entities` and `widgets` are intentionally not used.
 
-Legacy folders such as `app/api`, `app/services`, `app/types`, `app/utils` and selected `app/composables` remain as compatibility facades during migration. They should not contain business logic.
-
-See [docs/architecture.md](./docs/architecture.md) for module responsibilities and import rules.
+See [docs/architecture.md](./docs/architecture.md) for import rules and [docs/api.md](./docs/api.md) for the backend API contract map.
 
 ## Main Scenarios
 
@@ -59,9 +63,20 @@ npm run dev
 npm run build
 npm run preview
 npm run typecheck
+npm run check
 ```
 
 `npm run check` runs production build and typecheck.
+
+## Quality Gate
+
+Before production handoff:
+
+- `npm run typecheck`
+- `npm run build`
+- Browser QA for every route under `app/pages`
+- Console/network checks for pages that call API
+- Protected route redirect checks for profile/admin pages
 
 ## Deployment Notes
 

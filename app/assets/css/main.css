@@ -1,5 +1,6 @@
 @import 'tailwindcss';
-@import './fonts/index.css';
+@import './fonts/Anton.css';
+@import './fonts/Montserrat.css';
 
 * {
   font-family: var(--font-montserrat);

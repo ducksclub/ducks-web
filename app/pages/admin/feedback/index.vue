@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { formatDate } from '~/shared/lib/date'
-import { getInitial } from '~/shared/lib/text'
-import { feedbackApi } from '~/features/feedback/api/feedback.api'
+import { formatDate } from '~/utils/date'
+import { getInitial } from '~/utils/text'
+import { feedbackApi } from '~/utils/api/feedback'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderMenu from '~/components/layout/header/HeaderMenu.vue'
 import HeaderMenuItem from '~/components/layout/header/HeaderMenuItem.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
-import type { Feedback } from '~/features/feedback/model/feedback'
+import type { Feedback } from '~~/shared/types/feedback'
 
 definePageMeta({
   layout: 'admin',

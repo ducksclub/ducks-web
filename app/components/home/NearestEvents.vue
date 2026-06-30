@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Event } from '~/features/events/model/event'
+import type { Event } from '~~/shared/types/event'
 
 defineProps<{
   events: Event[]

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { formatDate } from '~/shared/lib/date'
-import type { MySeatResponse } from '~/features/events/model/event-seat'
+import { formatDate } from '~/utils/date'
+import type { MySeatResponse } from '~~/shared/types/event-seat'
 import { X } from '@lucide/vue'
 
 const seatModalText = {

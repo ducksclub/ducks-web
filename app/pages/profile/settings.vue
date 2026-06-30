@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getApiErrorMessage } from '~/shared/api/api-error'
+import { getApiErrorMessage } from '~/utils/api/api-error'
 import { AtSign, Phone } from '@lucide/vue'
 
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
@@ -8,9 +8,9 @@ import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 
 import BaseInput from '~/components/ui/BaseInput.vue'
 import ImageUpload from '~/components/ui/ImageUpload.vue'
-import { useAuthSession } from '~/features/auth/composables/useAuthSession'
-import { useProfileEditor } from '~/features/profile/composables/useProfileEditor'
-import { useUploadImage } from '~/features/upload/composables/useUploadImage'
+import { useAuthSession } from '~/composables/useAuthSession'
+import { useProfileEditor } from '~/composables/useProfileEditor'
+import { useUploadImage } from '~/composables/useUploadImage'
 import { profileSchema } from '~/validation/profile'
 
 definePageMeta({

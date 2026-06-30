@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { getApiErrorMessage } from '~/shared/api/api-error'
+import { getApiErrorMessage } from '~/utils/api/api-error'
 import NearestEvents from '~/components/home/NearestEvents.vue'
 import Information from '~/components/ui/Information.vue'
-import { useEventsCatalog } from '~/features/events/composables/useEventsCatalog'
-import type { Event } from '~/features/events/model/event'
+import { useEventsCatalog } from '~/composables/useEventsCatalog'
+import type { Event } from '~~/shared/types/event'
 
 definePageMeta({
   layout: 'default',
