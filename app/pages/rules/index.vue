@@ -57,11 +57,11 @@ const documents: DocumentItem[] = [
     url: '/rules/full',
     subtitle: 'PDF документ',
   },
-  {
-    title: 'Пользовательское соглашение',
-    url: '/docs/ПОЛИТИКА_ОБРАБОТКИ_ПЕРСОНАЛЬНЫХ_ДАННЫХ_клуба_Duck.docx',
-    subtitle: 'PDF документ',
-  },
+  // {
+  //   title: 'Пользовательское соглашение',
+  //   url: '/docs/ПОЛИТИКА_ОБРАБОТКИ_ПЕРСОНАЛЬНЫХ_ДАННЫХ_клуба_Duck.docx',
+  //   subtitle: 'PDF документ',
+  // },
   {
     title: 'Оферта',
     url: '/docs/Политика_Утки.pdf',

@@ -128,7 +128,7 @@ const registerHandler = async () => {
         </NuxtLink>
       </CheckboxAgreement>
 
-      <CheckboxAgreement
+      <!-- <CheckboxAgreement
         v-model="form.agreeDuck"
         :error="!!errors.agreeDuck"
         :error-message="errors.agreeDuck"
@@ -141,7 +141,7 @@ const registerHandler = async () => {
         >
           обработку моих персональных данных.
         </NuxtLink>
-      </CheckboxAgreement>
+      </CheckboxAgreement> -->
 
       <BaseButton type="submit" :disabled="isLoading" :loading="isLoading">
         ЗАРЕГИСТРИРОВАТЬСЯ
