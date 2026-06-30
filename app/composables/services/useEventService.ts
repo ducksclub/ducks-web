@@ -32,7 +32,7 @@ export const useEventService = () => {
     }
   }
 
-  const getNearestEvents = async () => {
+  const getNearestEvents = async (): Promise<Event[]> => {
     pending.value = true
 
     try {
@@ -51,7 +51,7 @@ export const useEventService = () => {
       pending.value = false
     }
 
-    return nearestEvents
+    return nearestEvents.value
   }
 
   return {

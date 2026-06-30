@@ -24,7 +24,7 @@ export type EventGameStatus = (typeof EventGameStatus)[keyof typeof EventGameSta
 
 export type Event = {
   id: string
-  imageUrl: string
+  imageUrl: string | null
   imageHash: string
   title: string
   city: string
@@ -44,6 +44,10 @@ export type Event = {
   status: EventGameStatus
   createdAt: string
   updatedAt: string
+  reminderSentNow?: boolean
+  reminderSent24h?: boolean
+  reminderSent2h?: boolean
+  reminderSent15m?: boolean
   _count: {
     registrations: number
   }

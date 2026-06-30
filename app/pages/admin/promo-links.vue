@@ -83,8 +83,8 @@ const fetchPromoLinks = async () => {
 
   try {
     promoLinks.value = await getPromoLinks()
-  } catch (error: any) {
-    errorMessage.value = error?.data?.message || error?.error || 'Ошибка загрузки промо-ссылок'
+  } catch (error) {
+    errorMessage.value = getApiErrorMessage(error, 'Ошибка загрузки промо-ссылок')
   } finally {
     isLoading.value = false
   }
@@ -142,8 +142,8 @@ const createLink = async () => {
     if (createdLink?.url || createdLink?.code) {
       await copyLink(createdLink)
     }
-  } catch (error: any) {
-    notify.error(error?.data?.message || error?.error || 'Ошибка создания ссылки')
+  } catch (error) {
+    notify.error(getApiErrorMessage(error, 'Ошибка создания ссылки'))
   } finally {
     isSubmitting.value = false
   }
@@ -201,8 +201,8 @@ const toggleActive = async (link: PromoLink) => {
 
     promoLinks.value = promoLinks.value.map((item) => (item.id === link.id ? updated : item))
     notify.success(nextValue ? 'Ссылка активирована' : 'Ссылка отключена')
-  } catch (error: any) {
-    notify.error(error?.data?.message || error?.error || 'Ошибка обновления статуса')
+  } catch (error) {
+    notify.error(getApiErrorMessage(error, 'Ошибка обновления статуса'))
   } finally {
     const currentSet = new Set(togglingIds.value)
     currentSet.delete(link.id)

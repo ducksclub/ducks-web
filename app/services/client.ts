@@ -46,9 +46,12 @@ export async function apiRequest<TResponse, TBody = unknown>({
   params,
   config,
 }: RequestOptions<TBody>): Promise<TResponse> {
+  const runtimeConfig = useRuntimeConfig()
+
   const response = await axiosInstance.request<TResponse>({
     method,
     url,
+    baseURL: String(runtimeConfig.public.apiBase || '/api'),
     data: body,
     params,
     ...config,

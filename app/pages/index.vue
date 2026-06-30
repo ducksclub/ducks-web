@@ -24,7 +24,7 @@ const loadNearestEvents = async () => {
   try {
     nearestEvents.value = await getNearestEvents()
   } catch (e) {
-    console.log('[Event] Произошла ошибка при получений ближайших событий!', e)
+    useNotify().error(getApiErrorMessage(e, 'Не удалось загрузить ближайшие события'))
   } finally {
     pending.value = false
   }

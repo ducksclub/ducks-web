@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import type { RouteLocationNormalizedLoaded } from 'vue-router'
+
 const props = defineProps<{
   path: string
 }>()
 
-const route = inject<any>('activeRoute')
+const route = inject<RouteLocationNormalizedLoaded>('activeRoute')
 const { impact } = useTelegramHaptics()
 
 const isActive = computed(() => {

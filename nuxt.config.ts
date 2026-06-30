@@ -28,6 +28,7 @@ export default defineNuxtConfig({
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || process.env.NUXT_PUBLIC_API_URL || '/api',
       mediaBase: process.env.NUXT_PUBLIC_MEDIA_BASE || '',
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || '',
     },
   },
 

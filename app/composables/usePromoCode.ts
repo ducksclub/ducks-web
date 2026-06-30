@@ -90,6 +90,8 @@ export function usePromoCode() {
   }
 
   const getPromoLinkType = (): PromoLinkType | undefined => {
+    if (!import.meta.client) return getSavedPromoLinkType()
+
     if (getPromoCodeFromTelegram()) return 'TELEGRAM_MINI_APP'
     if (getPromoCodeFromUrl() && window.Telegram?.WebApp) return 'TELEGRAM_MINI_APP'
     if (getPromoCodeFromUrl()) return 'PUBLIC_SITE'

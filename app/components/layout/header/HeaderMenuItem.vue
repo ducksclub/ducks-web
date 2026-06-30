@@ -8,7 +8,7 @@ const emit = defineEmits<{
   (e: 'click'): void
 }>()
 
-const menu = inject<any>('headerMenu')
+const menu = inject<{ close: () => void }>('headerMenu')
 
 const handleClick = () => {
   emit('click')

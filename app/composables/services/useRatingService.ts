@@ -13,8 +13,7 @@ export const useRatingService = () => {
     try {
       rating.value = await ratingService.getRating(gameType)
     } catch (e) {
-      error.value = 'Не удалось получить рейтинг'
-      console.log('[RATING]', e)
+      error.value = getApiErrorMessage(e, 'Не удалось получить рейтинг')
     } finally {
       pending.value = false
     }

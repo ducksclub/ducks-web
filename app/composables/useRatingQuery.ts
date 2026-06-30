@@ -22,7 +22,7 @@ export function useRatingQuery(gameType: Ref<string>) {
 
       if (current !== requestId) return
 
-      rating.value = res.data
+      rating.value = res
     } catch {
       if (current !== requestId) return
 

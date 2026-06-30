@@ -32,8 +32,8 @@ const send = async () => {
     text.value = ''
 
     useNotify().success('Спасибо! Мы получили ваш feedback')
-  } catch (e: any) {
-    errorMessage.value = e?.error || 'Ошибка отправки'
+  } catch (e) {
+    errorMessage.value = getApiErrorMessage(e, 'Ошибка отправки')
   } finally {
     isLoading.value = false
   }

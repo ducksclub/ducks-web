@@ -1,13 +1,14 @@
 <script setup lang="ts">
+import { useAuthService } from '~/composables/services/useAuthService'
 import type { Rating } from '~/types/rating.types'
 
 const props = defineProps<{
   rating: Rating[]
 }>()
 
-const { user } = useAuthStore()
+const auth = useAuthService()
 
-const isMe = (id: string) => id === user?.id
+const isMe = (id: string) => id === auth.profile.value?.id
 
 const getInitial = (name?: string) => {
   if (!name) return '?'

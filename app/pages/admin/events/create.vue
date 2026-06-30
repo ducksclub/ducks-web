@@ -67,7 +67,7 @@ watch(
     form.gameType = template.gameType
     form.participantLimit = template.participantLimit
     form.initialDepositAmount = template.initialDepositAmount ?? 0
-    form.imageUrl = template.imageUrl
+    form.imageUrl = template.imageUrl ?? ''
     form.imageHash = template.imageHash
   },
 )

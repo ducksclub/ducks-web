@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Send, MessageSquareText } from '@lucide/vue'
 import { useBroadcastApi } from '~/api/broadcast.api'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
@@ -16,15 +15,6 @@ useHead({
 })
 
 const broadcast = useBroadcastApi()
-
-type BroadcastResponse = {
-  message: string
-  data: {
-    totalUsers: number
-    createdCount: number
-    skippedCount: number
-  }
-}
 
 const message = ref('')
 const isSaving = ref(false)
@@ -44,7 +34,7 @@ const previewText = computed(() => {
 })
 
 async function createBroadcast() {
-  if (!isValid.value || isSaving.value) return
+  if (!isValid.value || isSaving.value || !import.meta.client) return
 
   const confirmed = window.confirm(
     'Запустить рассылку? Сообщение будет поставлено в очередь для отправки пользователям Telegram.',
@@ -61,8 +51,8 @@ async function createBroadcast() {
 
     successMessage.value = `Рассылка добавлена в очередь. Получателей: ${response.data.createdCount}. Пропущено: ${response.data.skippedCount}.`
     message.value = ''
-  } catch (error: any) {
-    errorMessage.value = error?.data?.message || error?.message || 'Не удалось создать рассылку'
+  } catch (error) {
+    errorMessage.value = getApiErrorMessage(error, 'Не удалось создать рассылку')
   } finally {
     isSaving.value = false
   }

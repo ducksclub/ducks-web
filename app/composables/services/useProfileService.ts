@@ -21,8 +21,7 @@ export const useProfileService = () => {
 
       return data
     } catch (e) {
-      error.value = 'Не удалось получить профиль'
-      console.log('[PROFILE:getProfile]', e)
+      error.value = getApiErrorMessage(e, 'Не удалось получить профиль')
 
       throw e
     } finally {
@@ -47,8 +46,7 @@ export const useProfileService = () => {
 
       return data
     } catch (e) {
-      error.value = 'Не удалось обновить профиль'
-      console.log('[PROFILE:updateProfile]', e)
+      error.value = getApiErrorMessage(e, 'Не удалось обновить профиль')
 
       throw e
     } finally {
