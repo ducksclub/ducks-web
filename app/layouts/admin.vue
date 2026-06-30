@@ -21,13 +21,6 @@ import { Calendar, CornerDownLeft, Link2, Menu } from '@lucide/vue'
         <template #default> События </template>
       </LayoutNavbarButton>
 
-      <LayoutNavbarButton path="/admin/promo-links">
-        <template #icon>
-          <Link2 />
-        </template>
-        <template #default>Промо </template>
-      </LayoutNavbarButton>
-
       <LayoutNavbarButton path="/admin/menu">
         <template #icon>
           <Menu />

@@ -38,7 +38,7 @@ const fetchEvents = async () => {
       status: selectedStatus.value,
     })
 
-    events.value = response.data
+    events.value = response
   } catch (error) {
     errorMessage.value = getApiErrorMessage(error, 'Ошибка загрузки')
   } finally {
