@@ -30,9 +30,9 @@ export function useApi() {
   const auth = useAuthStore()
   const route = useRoute()
 
-  const apiUrl = config.public.apiUrl
+  const apiBase = config.public.apiBase
 
-  if (!apiUrl) {
+  if (!apiBase) {
     throw new Error('NUXT_PUBLIC_API_URL не найден')
   }
 
@@ -40,7 +40,7 @@ export function useApi() {
     path: string,
     options: ApiRequestOptions<TBody> = {},
   ): Promise<TResponse> {
-    const normalizedApiUrl = apiUrl.replace(/\/$/, '')
+    const normalizedApiUrl = apiBase.replace(/\/$/, '')
     const normalizedPath = path.startsWith('/') ? path : `/${path}`
     const url = `${normalizedApiUrl}${normalizedPath}${buildQuery(options.query)}`
 

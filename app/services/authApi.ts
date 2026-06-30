@@ -22,7 +22,7 @@ function buildAuthApiUrl(path: string) {
   const origin = import.meta.client
     ? window.location.origin
     : requestUrl?.origin || 'http://localhost'
-  const baseUrl = config.public.apiUrl?.trim().replace(/\/$/, '')
+  const baseUrl = config.public.apiBase?.trim().replace(/\/$/, '')
 
   if (!baseUrl) {
     throw new Error('API base URL is not configured')

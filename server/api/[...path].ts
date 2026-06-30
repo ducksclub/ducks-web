@@ -2,10 +2,10 @@ import { env } from 'process'
 import { joinURL } from 'ufo'
 
 export default defineEventHandler(async (event) => {
-  const apiUrl = env.API_URL
-  console.log('backendUrl', apiUrl)
+  const apiBase = env.NUXT_PRIVATE_API_BASE
+  console.log('backendUrl', apiBase)
 
-  if (!apiUrl) {
+  if (!apiBase) {
     throw createError({
       statusCode: 500,
       statusMessage: 'Не указан BACKEND_URL',
@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const target = joinURL(apiUrl, path)
+  const target = joinURL(apiBase, path)
 
   console.log('[API_PROXY]', {
     from: getRequestURL(event).pathname,
