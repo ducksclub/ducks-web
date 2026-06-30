@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios'
+import { ACCESS_TOKEN_KEY, PROFILE_KEY } from '~/composables/useSessionStorage'
 import type { ApiErrorResponse, RequestOptions } from './client.types'
 
 const axiosInstance = axios.create({
@@ -10,7 +11,7 @@ const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken')
+  const token = import.meta.client ? localStorage.getItem(ACCESS_TOKEN_KEY) : null
 
   const requiresAuth = config.headers?.['X-Requires-Auth'] !== 'false'
 
@@ -26,9 +27,9 @@ axiosInstance.interceptors.response.use(
   (error: AxiosError<ApiErrorResponse>) => {
     const requiresAuth = error.config?.headers?.['X-Requires-Auth'] !== 'false'
 
-    if (error.response?.status === 401 && requiresAuth) {
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('user')
+    if (import.meta.client && error.response?.status === 401 && requiresAuth) {
+      localStorage.removeItem(ACCESS_TOKEN_KEY)
+      localStorage.removeItem(PROFILE_KEY)
 
       window.location.href = '/signin'
     }

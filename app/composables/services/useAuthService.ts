@@ -15,6 +15,8 @@ export const useAuthService = () => {
   const profile = useState<User | null>('profile', () => null)
   const accessToken = useState<string | null>('access_token', () => null)
 
+  const session = useSessionStorage()
+
   // general
   const signIn = async (payload: SignInPayload) => {
     const response = await authService.signIn(payload)
@@ -40,12 +42,25 @@ export const useAuthService = () => {
   const signOut = () => {
     profile.value = null
     accessToken.value = null
+
+    session.clearSession()
+  }
+
+  const restoreSession = () => {
+    const storedSession = session.getSession()
+
+    profile.value = storedSession.profile
+    accessToken.value = storedSession.token
+
+    return storedSession
   }
 
   // helpers
   const setSession = (data: SessionData) => {
     profile.value = data.user
     accessToken.value = data.token
+
+    session.saveSession(data)
   }
 
   return {
@@ -56,5 +71,6 @@ export const useAuthService = () => {
     signInWithTelegram,
     signUp,
     signOut,
+    restoreSession,
   }
 }
