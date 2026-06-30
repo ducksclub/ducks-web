@@ -22,7 +22,7 @@ const signin = useSignIn()
     <div class="relative z-10 w-full max-w-85">
       <AuthBrandLogo />
 
-      <h2 class="text-center text-lg font-bold uppercase mb-6">Вход</h2>
+      <h2 class="mt-10 text-center text-lg font-bold uppercase mb-6">Вход</h2>
 
       <form @submit.prevent="signin.submit">
         <div class="space-y-3">

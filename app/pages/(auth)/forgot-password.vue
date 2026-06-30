@@ -43,7 +43,7 @@ const submit = async () => {
     <div class="w-full max-w-85">
       <AuthBrandLogo />
 
-      <h2 class="text-center text-lg font-bold uppercase mb-6">Восстановление пароля</h2>
+      <h2 class="mt-10 text-center text-lg font-bold uppercase mb-6">Восстановление пароля</h2>
 
       <form @submit.prevent="submit" class="space-y-4">
         <AuthField

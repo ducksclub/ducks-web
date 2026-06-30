@@ -60,7 +60,7 @@ const registerHandler = async () => {
   >
     <AuthBrandLogo class="mt-8" />
 
-    <form @submit.prevent="registerHandler" class="w-full max-w-85 space-y-4">
+    <form @submit.prevent="registerHandler" class="mt-10 w-full max-w-85 space-y-4">
       <h2 class="text-center uppercase text-lg font-black mb-6 tracking-wide">Регистрация</h2>
 
       <div class="space-y-3">
