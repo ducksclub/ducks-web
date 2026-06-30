@@ -2,10 +2,7 @@
 import { getApiErrorMessage } from '~/utils/api/api-error'
 import { AtSign } from '@lucide/vue'
 import { authApi as authService } from '~/utils/api/auth'
-import {
-  forgotPasswordSchema,
-  type ForgotPasswordSchema,
-} from '~/validation/auth.validation'
+import { forgotPasswordSchema, type ForgotPasswordSchema } from '~/validation/auth.validation'
 
 definePageMeta({
   layout: false,
@@ -49,7 +46,7 @@ const submit = async () => {
       <h2 class="text-center text-lg font-bold uppercase mb-6">Восстановление пароля</h2>
 
       <form @submit.prevent="submit" class="space-y-4">
-        <AuthInput
+        <AuthField
           v-model="form.email"
           type="email"
           placeholder="Email"
@@ -57,11 +54,8 @@ const submit = async () => {
           :error="!!errors.email"
           :error-message="errors.email"
           autocomplete="email"
-        >
-          <template #icon>
-            <AtSign class="w-5 h-5" />
-          </template>
-        </AuthInput>
+          :icon="AtSign"
+        />
 
         <BaseButton type="submit" :disabled="isLoading || isSent" :loading="isLoading">
           Отправить письмо
