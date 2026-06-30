@@ -63,7 +63,7 @@ const styles = computed(() => {
 <template>
   <NuxtLink
     :to="`/events/${props.event.id}`"
-    class="relative overflow-hidden rounded-2xl border bg-white/3 backdrop-blur-xl transition active:scale-[0.98]"
+    class="relative block border overflow-hidden rounded-2xl bg-white/3 backdrop-blur-xl transition active:scale-[0.98]"
     :class="styles?.ring"
   >
     <div
@@ -72,25 +72,25 @@ const styles = computed(() => {
     />
 
     <div class="absolute inset-0 bg-linear-to-br" :class="styles?.gradient" />
-
     <div class="absolute inset-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]" />
 
-    <div class="relative z-10 flex items-center gap-3 p-3">
-      <div class="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-black/30">
+    <div class="relative z-10">
+      <div class="relative w-full overflow-hidden bg-black/30">
         <NuxtImg
           v-if="event.imageUrl"
           :src="renderPicture(event.imageUrl)"
-          class="absolute inset-0 h-full w-full object-cover"
+          sizes="100vw"
+          class="block h-auto w-full object-contain"
         />
 
-        <div v-else class="flex h-full items-center justify-center text-2xl">
+        <div v-else class="flex aspect-16/10 w-full items-center justify-center text-4xl">
           {{ styles?.icon }}
         </div>
 
-        <div class="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/10" />
+        <div class="absolute inset-0 bg-linear-to-t from-black/55 via-transparent to-black/10" />
       </div>
 
-      <div class="min-w-0 flex-1">
+      <div class="min-w-0 px-4 py-3">
         <div class="mb-2 flex items-center justify-between gap-3">
           <span class="text-lg">
             {{ styles?.icon }}
