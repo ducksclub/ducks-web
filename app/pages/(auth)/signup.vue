@@ -64,53 +64,41 @@ const registerHandler = async () => {
       <h2 class="text-center uppercase text-lg font-black mb-6 tracking-wide">Регистрация</h2>
 
       <div class="space-y-3">
-        <AuthInput
+        <AuthField
           v-model="form.nickname"
           type="text"
           placeholder="Ваш никнейм"
           :error="!!errors.nickname"
           :error-message="errors.nickname"
-        >
-          <template #icon>
-            <User class="w-5 h-5" />
-          </template>
-        </AuthInput>
+          :icon="User"
+        />
 
-        <AuthInput
+        <AuthField
           v-model="form.email"
           type="text"
           placeholder="Email"
           :error="!!errors.email"
           :error-message="errors.email"
-        >
-          <template #icon>
-            <AtSign class="w-5 h-5" />
-          </template>
-        </AuthInput>
+          :icon="AtSign"
+        />
 
-        <AuthInput
+        <AuthField
           v-model="form.password"
           type="password"
           placeholder="Придумайте пароль"
           :error="!!errors.password"
           :error-message="errors.password"
-        >
-          <template #icon>
-            <LockKeyhole class="w-5 h-5" />
-          </template>
-        </AuthInput>
+          :icon="LockKeyhole"
+        />
 
-        <AuthInput
+        <AuthField
           v-model="form.confirmPassword"
           type="password"
           placeholder="Повторите пароль"
           :error="!!errors.confirmPassword"
           :error-message="errors.confirmPassword"
-        >
-          <template #icon>
-            <LockKeyhole class="w-5 h-5" />
-          </template>
-        </AuthInput>
+          :icon="LockKeyhole"
+        />
       </div>
 
       <CheckboxAgreement v-model="form.agree" :error="!!errors.agree" :error-message="errors.agree">

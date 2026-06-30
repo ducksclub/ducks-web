@@ -1,12 +1,7 @@
 <script setup lang="ts">
-import { AtSign, LockKeyhole } from '@lucide/vue'
 import TelegramIcon from '~/components/icons/TelegramIcon.vue'
-import { useZodValidation } from '~/composables/useZodValidation'
-import { useAuthSession } from '~/composables/useAuthSession'
-import { signInSchema } from '~/validation/auth.validation'
-import type { AxiosError } from 'axios'
-import type { SignInSchema } from '~/validation/auth.validation'
-import type { ApiErrorResponse } from '~~/shared/types/http'
+import { useSignIn } from '~/composables/auth/useSignIn'
+import { AtSign, LockKeyhole } from '@lucide/vue'
 
 definePageMeta({
   layout: false,
@@ -17,62 +12,7 @@ useHead({
   title: "Duck's | Вход",
 })
 
-const notify = useNotify()
-const telegram = useTelegramWebApp()
-const { signIn, signInWithTelegram } = useAuthSession()
-const { errors, validate } = useZodValidation<SignInSchema>(signInSchema)
-
-const pending = ref<boolean>(false)
-const isTelegramAuthAvailable = ref(false)
-const formData = ref<SignInSchema>({
-  email: '',
-  password: '',
-  remember: false,
-})
-
-const submit = async () => {
-  if (!validate(formData.value)) return
-
-  pending.value = true
-
-  try {
-    await signIn({ email: formData.value.email, password: formData.value.password })
-    await navigateTo('/')
-  } catch (e) {
-    const axiosError = e as AxiosError<ApiErrorResponse>
-    const errorMessage = axiosError.response?.data?.error?.message || 'Неверный email или пароль'
-    notify.error(errorMessage)
-  } finally {
-    pending.value = false
-  }
-}
-
-const submitTelegram = async () => {
-  const initData = telegram.getInitData()
-
-  if (!initData) {
-    notify.error('Вход через Telegram доступен только внутри Telegram Mini App')
-    return
-  }
-
-  pending.value = true
-
-  try {
-    await signInWithTelegram({ initData })
-    await navigateTo('/')
-  } catch (e) {
-    const axiosError = e as AxiosError<ApiErrorResponse>
-    const errorMessage =
-      axiosError.response?.data?.error?.message || 'Не удалось войти через Telegram'
-    notify.error(errorMessage)
-  } finally {
-    pending.value = false
-  }
-}
-
-onMounted(() => {
-  isTelegramAuthAvailable.value = telegram.hasInitData()
-})
+const signin = useSignIn()
 </script>
 
 <template>
@@ -80,53 +20,49 @@ onMounted(() => {
     class="min-h-screen bg-(--bg) text-white flex flex-col items-center justify-center p-6 relative overflow-hidden"
   >
     <div class="relative z-10 w-full max-w-85">
-      <AuthLogo />
+      <AuthBrandLogo />
 
       <h2 class="text-center text-lg font-bold uppercase mb-6">Вход</h2>
 
-      <form @submit.prevent="submit">
+      <form @submit.prevent="signin.submit">
         <div class="space-y-3">
-          <AuthInput
-            v-model="formData.email"
-            :disabled="pending"
+          <AuthField
+            v-model="signin.formData.value.email"
+            :disabled="signin.pending.value"
             type="email"
             placeholder="Email"
-            :error="!!errors.email"
-            :error-message="errors.email"
+            :error="!!signin.errors.value.email"
+            :error-message="signin.errors.value.email"
             :autocomplete="'email'"
-          >
-            <template #icon>
-              <AtSign class="w-5 h-5" />
-            </template>
-          </AuthInput>
+            :icon="AtSign"
+          />
 
-          <AuthInput
-            v-model="formData.password"
+          <AuthField
+            v-model="signin.formData.value.password"
             :type="'password'"
-            :error="!!errors.password"
-            :disabled="pending"
+            :error="!!signin.errors.value.password"
+            :disabled="signin.pending.value"
             :placeholder="'Пароль'"
-            :error-message="errors.password"
+            :error-message="signin.errors.value.password"
             :autocomplete="'current-password'"
-          >
-            <template #icon>
-              <LockKeyhole class="w-5 h-5" />
-            </template>
-          </AuthInput>
+            :icon="LockKeyhole"
+          />
         </div>
 
         <div class="flex justify-between items-center text-xs text-gray-500 mt-3">
-          <CheckboxAgreement v-model="formData.remember">
+          <CheckboxAgreement v-model="signin.formData.value.remember">
             <p class="mt-0.75">Запомнить меня</p>
           </CheckboxAgreement>
 
           <NuxtLink to="/forgot-password" class="text-(--logo-bg)">Забыли пароль?</NuxtLink>
         </div>
 
-        <BaseButton type="submit" :disabled="pending" :loading="pending">Войти</BaseButton>
+        <BaseButton type="submit" :disabled="signin.pending.value" :loading="signin.pending.value">
+          Войти
+        </BaseButton>
       </form>
 
-      <div v-if="isTelegramAuthAvailable" class="mt-6">
+      <div class="mt-6">
         <div class="flex items-center gap-3 text-[10px] font-bold uppercase text-gray-600">
           <span class="h-px flex-1 bg-white/10" />
           <span>или</span>
@@ -135,10 +71,10 @@ onMounted(() => {
 
         <button
           type="button"
-          :disabled="pending"
+          :disabled="signin.pending.value"
           class="mx-auto mt-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/5 bg-(--secondary)/20 text-(--accent) transition active:scale-90 disabled:opacity-50"
           aria-label="Войти через Telegram"
-          @click="submitTelegram"
+          @click="signin.submitTelegram"
         >
           <TelegramIcon class="h-7 w-7" />
         </button>
