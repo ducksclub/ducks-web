@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
-import { useAuthService } from '~/composables/services/useAuthService'
+import { useAuthSession } from '~/features/auth/composables/useAuthSession'
 
 definePageMeta({
   middleware: 'auth',
@@ -13,7 +13,7 @@ useHead({
 })
 
 const router = useRouter()
-const auth = useAuthService()
+const auth = useAuthSession()
 
 const menu: {
   label: string

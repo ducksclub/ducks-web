@@ -1,7 +1,7 @@
-import { useAuthService } from '~/composables/services/useAuthService'
+import { useAuthSession } from '~/features/auth/composables/useAuthSession'
 
 export default defineNuxtPlugin(() => {
-  const auth = useAuthService()
+  const auth = useAuthSession()
 
   if (!auth.accessToken.value) {
     auth.restoreSession()

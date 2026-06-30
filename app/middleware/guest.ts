@@ -1,14 +1,13 @@
-import { useAuthService } from '~/composables/services/useAuthService'
+import { useAuthSession } from '~/features/auth/composables/useAuthSession'
 
-export default defineNuxtRouteMiddleware(async (to) => {
-  const router = useRouter()
-  const auth = useAuthService()
+export default defineNuxtRouteMiddleware(() => {
+  const auth = useAuthSession()
 
   if (!auth.accessToken.value) {
     auth.restoreSession()
   }
 
   if (auth.accessToken.value) {
-    return router.push('/')
+    return navigateTo('/')
   }
 })

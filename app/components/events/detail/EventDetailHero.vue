@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { Event } from '~/types/event'
-import { statusMap } from '~/utils/labels'
+import { renderPicture } from '~/shared/lib/media'
+import type { Event } from '~/features/events/model/event'
+import { statusMap } from '~/features/events/model/event.helpers'
 
 const props = defineProps<{
   event: Event

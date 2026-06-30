@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { getApiErrorMessage } from '~/shared/api/api-error'
 import { Plus } from '@lucide/vue'
-import { useContentApi } from '~/api/content.api'
+import { contentApi } from '~/features/content/api/content.api'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderButton from '~/components/layout/header/HeaderButton.vue'
@@ -8,7 +9,7 @@ import HeaderMenu from '~/components/layout/header/HeaderMenu.vue'
 import HeaderMenuItem from '~/components/layout/header/HeaderMenuItem.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 import BaseSelect from '~/components/ui/BaseSelect.vue'
-import { ContentType, type Content } from '~/types/api/content.types'
+import { ContentType, type Content } from '~/features/content/model/content'
 
 definePageMeta({
   layout: 'admin',
@@ -16,7 +17,7 @@ definePageMeta({
 })
 
 const router = useRouter()
-const { getContents } = useContentApi()
+const { getContents } = contentApi
 
 const selectedContentType = ref<ContentType>(ContentType.FAQ)
 

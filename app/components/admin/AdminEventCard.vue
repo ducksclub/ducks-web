@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import type { Event } from '~/types/event'
+import { formatDate } from '~/shared/lib/date'
+import { renderPicture } from '~/shared/lib/media'
+import { getGameLabel, statusMap } from '~/features/events/model/event.helpers'
+import type { Event } from '~/features/events/model/event'
 
 const props = defineProps<{
   event: Event

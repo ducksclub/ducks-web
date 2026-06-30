@@ -2,8 +2,8 @@
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 import Skeleton from '~/components/rating/Skeleton.vue'
-import { useRatingService } from '~/composables/services/useRatingService'
-import { EventGameType } from '~/types/event'
+import { useRatingLeaderboard } from '~/features/rating/composables/useRatingLeaderboard'
+import { EventGameType } from '~/features/events/model/event'
 
 definePageMeta({
   middleware: 'auth',
@@ -21,7 +21,7 @@ const tabs = [
   { label: 'Бильярд', value: EventGameType.POOL },
 ]
 
-const { pending, rating, error, getRating } = useRatingService()
+const { pending, rating, error, getRating } = useRatingLeaderboard()
 
 watch(
   activeTab,

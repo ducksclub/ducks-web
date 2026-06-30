@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { getApiErrorMessage } from '~/shared/api/api-error'
 import { Plus } from '@lucide/vue'
-import { useEventsApi } from '~/api/events.api'
+import { eventsApi } from '~/features/events/api/events.api'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderButton from '~/components/layout/header/HeaderButton.vue'
 import HeaderMenu from '~/components/layout/header/HeaderMenu.vue'
@@ -8,7 +9,7 @@ import HeaderMenuItem from '~/components/layout/header/HeaderMenuItem.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 import BaseSelect from '~/components/ui/BaseSelect.vue'
 import { categories, statuses } from '~/constants/categories'
-import type { Event } from '~/types/event'
+import type { Event } from '~/features/events/model/event'
 
 definePageMeta({
   layout: 'admin',
@@ -18,7 +19,7 @@ definePageMeta({
 const router = useRouter()
 const notify = useNotify()
 const { impact } = useTelegramHaptics()
-const { getEvents, deleteEvent } = useEventsApi()
+const { getEvents, deleteEvent } = eventsApi
 
 const selectedCategory = ref()
 const selectedStatus = ref()

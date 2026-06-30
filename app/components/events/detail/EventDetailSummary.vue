@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Event } from '~/types/event'
+import type { Event } from '~/features/events/model/event'
 import { gameTypeColors } from '~/constants/categories'
-import { getGameLabel } from '~/utils/labels'
+import { getGameLabel } from '~/features/events/model/event.helpers'
 
 defineProps<{
   event: Event

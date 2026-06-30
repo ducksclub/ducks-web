@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import type { AuthUser } from '~/types/auth.types'
+import { getInitial } from '~/shared/lib/text'
+import { renderPicture } from '~/shared/lib/media'
+import type { AuthUser } from '~/features/auth/model/user'
 
 const props = defineProps<{
   photoUrl?: Pick<AuthUser, 'avatarUrl'>['avatarUrl']

@@ -1,18 +1,19 @@
 <script setup lang="ts">
+import { getApiErrorMessage } from '~/shared/api/api-error'
 import { Calendar, Map, Users } from '@lucide/vue'
 import dayjs from 'dayjs'
-import { useEventsApi } from '~/api/events.api'
+import { eventsApi } from '~/features/events/api/events.api'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
-import { useUploadService } from '~/composables/services/useUploadService'
+import { useUploadImage } from '~/features/upload/composables/useUploadImage'
 import BaseDatetime from '~/components/ui/BaseDatetime.vue'
 import BaseInput from '~/components/ui/BaseInput.vue'
 import BaseSelect from '~/components/ui/BaseSelect.vue'
 import ImageUpload from '~/components/ui/ImageUpload.vue'
 
 import { categories } from '~/constants/categories'
-import type { Event, EventGameType } from '~/types/event'
+import type { Event, EventGameType } from '~/features/events/model/event'
 
 definePageMeta({
   layout: 'empty',
@@ -25,8 +26,8 @@ useHead({
 
 const router = useRouter()
 
-const api = useEventsApi()
-const { uploadImage, isUploading } = useUploadService()
+const api = eventsApi
+const { uploadImage, isUploading } = useUploadImage()
 
 const isSaving = ref(false)
 const errorMessage = ref('')

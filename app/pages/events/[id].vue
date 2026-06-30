@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { getApiErrorMessage } from '~/shared/api/api-error'
+import { formatDate } from '~/shared/lib/date'
 import { ShareIcon } from '@lucide/vue'
-import { EventGameStatus, EventGameType, type Event } from '~/types/event'
+import { EventGameStatus, EventGameType, type Event } from '~/features/events/model/event'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderButton from '~/components/layout/header/HeaderButton.vue'
@@ -15,9 +17,10 @@ import EventScheduleCard from '~/components/events/detail/EventScheduleCard.vue'
 import EventStatsGrid from '~/components/events/detail/EventStatsGrid.vue'
 import EventTextSection from '~/components/events/detail/EventTextSection.vue'
 import { useShare } from '~/composables/helpers/useShare'
-import { useAuthService } from '~/composables/services/useAuthService'
-import { useEventRegistrationService } from '~/composables/services/useEventRegistrationService'
-import { useEventService } from '~/composables/services/useEventService'
+import { useAuthSession } from '~/features/auth/composables/useAuthSession'
+import { useEventRegistration } from '~/features/events/composables/useEventRegistration'
+import { useEventSeat } from '~/features/events/composables/useEventSeat'
+import { useEventsCatalog } from '~/features/events/composables/useEventsCatalog'
 
 definePageMeta({
   layout: 'empty',
@@ -29,8 +32,8 @@ useHead({
 
 const route = useRoute()
 const notify = useNotify()
-const auth = useAuthService()
-const eventService = useEventService()
+const auth = useAuthSession()
+const eventService = useEventsCatalog()
 
 const eventId = computed(() => route.params.id as string)
 const event = ref<Event | null>(null)
@@ -43,7 +46,7 @@ const isLoadingRegisteredPlayers = ref(false)
 const registeredPlayersError = ref<string | null>(null)
 
 const { isRegistered, register, unregister, fetchStatus, isLoading } =
-  useEventRegistrationService(eventId)
+  useEventRegistration(eventId)
 
 const { seatInfo, isSeatLoading, seatError, isSeatModalOpen, openSeatModal, closeSeatModal } =
   useEventSeat(eventId)

@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { getApiErrorMessage } from '~/shared/api/api-error'
 import NearestEvents from '~/components/home/NearestEvents.vue'
 import Information from '~/components/ui/Information.vue'
-import { useEventService } from '~/composables/services/useEventService'
-import type { Event } from '~/types/event.types'
+import { useEventsCatalog } from '~/features/events/composables/useEventsCatalog'
+import type { Event } from '~/features/events/model/event'
 
 definePageMeta({
   layout: 'default',
@@ -13,7 +14,7 @@ useHead({
   title: "Duck's | Главная",
 })
 
-const { getNearestEvents } = useEventService()
+const { getNearestEvents } = useEventsCatalog()
 
 const pending = ref<boolean>(false)
 const nearestEvents = ref<Event[]>([])

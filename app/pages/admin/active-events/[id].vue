@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useEventsApi } from '~/api/events.api'
+import { eventsApi } from '~/features/events/api/events.api'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderMenu from '~/components/layout/header/HeaderMenu.vue'
 import HeaderMenuItem from '~/components/layout/header/HeaderMenuItem.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 import EventParticipantsList from '~/components/admin/event/EventParticipantsList.vue'
-import type { Event, Participant } from '~/types/event'
+import type { Event, Participant } from '~/features/events/model/event'
 
 definePageMeta({
   layout: 'admin',
@@ -16,7 +16,7 @@ definePageMeta({
 const route = useRoute()
 const id = route.params.id as string
 
-const api = useEventsApi()
+const api = eventsApi
 
 const event = ref<Event>()
 const participants = ref<Participant[]>([])

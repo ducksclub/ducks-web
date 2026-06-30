@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getApiErrorMessage } from '~/shared/api/api-error'
 import { AtSign, Phone } from '@lucide/vue'
 
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
@@ -7,9 +8,9 @@ import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 
 import BaseInput from '~/components/ui/BaseInput.vue'
 import ImageUpload from '~/components/ui/ImageUpload.vue'
-import { useAuthService } from '~/composables/services/useAuthService'
-import { useProfileService } from '~/composables/services/useProfileService'
-import { useUploadService } from '~/composables/services/useUploadService'
+import { useAuthSession } from '~/features/auth/composables/useAuthSession'
+import { useProfileEditor } from '~/features/profile/composables/useProfileEditor'
+import { useUploadImage } from '~/features/upload/composables/useUploadImage'
 import { profileSchema } from '~/validation/profile'
 
 definePageMeta({
@@ -18,11 +19,11 @@ definePageMeta({
 })
 
 const notify = useNotify()
-const { uploadImage, isUploading } = useUploadService()
+const { uploadImage, isUploading } = useUploadImage()
 const { validate, errors } = useZodValidation(profileSchema)
 
-const auth = useAuthService()
-const profile = useProfileService()
+const auth = useAuthSession()
+const profile = useProfileEditor()
 
 const form = reactive({
   email: auth.profile.value?.email ?? '',

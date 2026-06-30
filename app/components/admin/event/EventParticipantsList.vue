@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Event, Participant } from '~/types/event'
+import type { Event, Participant } from '~/features/events/model/event'
 import EventParticipantCard from './EventParticipantCard.vue'
 import EventParticipantSkeleton from './EventParticipantSkeleton.vue'
 

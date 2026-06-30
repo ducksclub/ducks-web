@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { useEventsApi } from '~/api/events.api'
+import { getApiErrorMessage } from '~/shared/api/api-error'
+import { eventsApi } from '~/features/events/api/events.api'
 import ActiveEventsList from '~/components/admin/events/ActiveEventsList.vue'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
-import type { Event } from '~/types/event'
+import type { Event } from '~/features/events/model/event'
 
 definePageMeta({
   layout: 'admin',
@@ -12,7 +13,7 @@ definePageMeta({
 })
 
 const router = useRouter()
-const { getActiveEventsNow } = useEventsApi()
+const { getActiveEventsNow } = eventsApi
 
 const events = ref<Event[]>([])
 const isLoading = ref(true)

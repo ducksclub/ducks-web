@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import { useFeedbackApi } from '~/api/feedback.api'
+import { formatDate } from '~/shared/lib/date'
+import { getInitial } from '~/shared/lib/text'
+import { feedbackApi } from '~/features/feedback/api/feedback.api'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderMenu from '~/components/layout/header/HeaderMenu.vue'
 import HeaderMenuItem from '~/components/layout/header/HeaderMenuItem.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
-import type { Feedback } from '~/types/feedback'
+import type { Feedback } from '~/features/feedback/model/feedback'
 
 definePageMeta({
   layout: 'admin',
   middleware: 'admin',
 })
 
-const { getFeedback, deleteFeedback } = useFeedbackApi()
+const { getFeedback, deleteFeedback } = feedbackApi
 
 const feedbacks = ref<Feedback[]>([])
 const isLoading = ref(true)

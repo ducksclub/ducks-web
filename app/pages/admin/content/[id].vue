@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { getApiErrorMessage } from '~/shared/api/api-error'
 import { FileText } from '@lucide/vue'
 
-import { useContentApi } from '~/api/content.api'
+import { contentApi } from '~/features/content/api/content.api'
 
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
@@ -10,7 +11,7 @@ import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 import BaseInput from '~/components/ui/BaseInput.vue'
 import BaseSelect from '~/components/ui/BaseSelect.vue'
 
-import { ContentType } from '~/types/api/content.types'
+import { ContentType } from '~/features/content/model/content'
 
 definePageMeta({
   layout: 'empty',
@@ -21,7 +22,7 @@ const route = useRoute()
 const router = useRouter()
 const notify = useNotify()
 
-const { getContentById, updateContent } = useContentApi()
+const { getContentById, updateContent } = contentApi
 
 const contentId = route.params.id as string | undefined
 

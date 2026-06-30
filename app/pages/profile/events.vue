@@ -1,12 +1,13 @@
 <script setup lang="ts">
+import { getApiErrorMessage } from '~/shared/api/api-error'
 import { CalendarFold } from '@lucide/vue'
-import { useEventsApi } from '~/api/events.api'
+import { eventsApi } from '~/features/events/api/events.api'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 import BaseSelect from '~/components/ui/BaseSelect.vue'
 import { statuses } from '~/constants/categories'
-import type { Event } from '~/types/event'
+import type { Event } from '~/features/events/model/event'
 
 definePageMeta({
   layout: 'empty',
@@ -15,7 +16,7 @@ definePageMeta({
 
 const router = useRouter()
 
-const { getMyEvents } = useEventsApi()
+const { getMyEvents } = eventsApi
 
 const events = ref<Event[]>([])
 const isLoading = ref(true)

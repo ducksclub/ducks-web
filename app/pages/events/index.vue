@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
-import { useEventService } from '~/composables/services/useEventService'
+import { useEventsCatalog } from '~/features/events/composables/useEventsCatalog'
 
 definePageMeta({
   middleware: 'auth',
 })
 
-const { events, pending, getEvents } = useEventService()
+const { events, pending, getEvents } = useEventsCatalog()
 
 onMounted(() => {
   getEvents()

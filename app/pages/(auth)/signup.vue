@@ -3,9 +3,9 @@ import { useZodValidation } from '~/composables/useZodValidation'
 import { AtSign, LockKeyhole, User } from '@lucide/vue'
 import { signUpSchema } from '~/validation/auth.validation'
 import type { SignUpSchema } from '~/validation/auth.validation'
-import { useAuthService } from '~/composables/services/useAuthService'
+import { useAuthSession } from '~/features/auth/composables/useAuthSession'
 import type { AxiosError } from 'axios'
-import type { ApiErrorResponse } from '~/services/client.types'
+import type { ApiErrorResponse } from '~/shared/api/http.types'
 
 definePageMeta({
   layout: false,
@@ -17,7 +17,7 @@ useHead({
 })
 
 const notify = useNotify()
-const { signUp } = useAuthService()
+const { signUp } = useAuthSession()
 const { errors, validate } = useZodValidation<SignUpSchema>(signUpSchema)
 
 const pending = ref(false)
@@ -46,7 +46,7 @@ const registerHandler = async () => {
   } catch (e) {
     const axiosError = e as AxiosError<ApiErrorResponse>
     const errorMessage =
-      axiosError.response?.data?.error.message || 'Произошла ошибка при созданий аккаунта'
+      axiosError.response?.data?.error?.message || 'Произошла ошибка при созданий аккаунта'
     notify.error(errorMessage)
   } finally {
     pending.value = false

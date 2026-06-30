@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { formatDate } from '~/shared/lib/date'
 import { Calendar, Map } from '@lucide/vue'
-import type { Event } from '~/types/event'
+import type { Event } from '~/features/events/model/event'
 
 defineProps<{
   event: Event

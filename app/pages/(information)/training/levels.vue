@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getApiErrorMessage } from '~/shared/api/api-error'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
@@ -8,10 +9,10 @@ definePageMeta({
   layout: 'empty',
 })
 
-import { useContentApi } from '~/api/content.api'
-import { ContentType, type Content } from '~/types/api/content.types'
+import { contentApi } from '~/features/content/api/content.api'
+import { ContentType, type Content } from '~/features/content/model/content'
 
-const { getContents } = useContentApi()
+const { getContents } = contentApi
 const { impact } = useTelegramHaptics()
 
 const contents = ref<Content[]>([])

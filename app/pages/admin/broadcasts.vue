@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useBroadcastApi } from '~/api/broadcast.api'
+import { getApiErrorMessage } from '~/shared/api/api-error'
+import { broadcastApi } from '~/features/broadcasts/api/broadcast.api'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
@@ -14,7 +15,7 @@ useHead({
   title: "DUCK'S | Рассылка",
 })
 
-const broadcast = useBroadcastApi()
+const broadcast = broadcastApi
 
 const message = ref('')
 const isSaving = ref(false)

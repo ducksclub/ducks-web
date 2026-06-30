@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { useAuthService } from '~/composables/services/useAuthService'
-import type { Rating } from '~/types/rating.types'
+import { renderPicture } from '~/shared/lib/media'
+import { useAuthSession } from '~/features/auth/composables/useAuthSession'
+import type { Rating } from '~/features/rating/model/rating'
 
 const props = defineProps<{
   rating: Rating[]
 }>()
 
-const auth = useAuthService()
+const auth = useAuthSession()
 
 const isMe = (id: string) => id === auth.profile.value?.id
 

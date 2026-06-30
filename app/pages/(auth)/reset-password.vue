@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { getApiErrorMessage } from '~/shared/api/api-error'
 import { LockKeyhole } from '@lucide/vue'
-import { authService } from '~/services/auth/auth.service'
+import { authApi as authService } from '~/features/auth/api/auth.api'
 import { resetPasswordSchema, type ResetPasswordSchema } from '~/validation/auth.validation'
 
 definePageMeta({

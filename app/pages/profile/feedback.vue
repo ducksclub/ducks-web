@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useFeedbackApi } from '~/api/feedback.api'
+import { getApiErrorMessage } from '~/shared/api/api-error'
+import { feedbackApi } from '~/features/feedback/api/feedback.api'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
@@ -9,7 +10,7 @@ definePageMeta({
   middleware: 'auth',
 })
 
-const { createFeedback } = useFeedbackApi()
+const { createFeedback } = feedbackApi
 
 const text = ref('')
 const isLoading = ref(false)

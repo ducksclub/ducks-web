@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { AtSign, LockKeyhole } from '@lucide/vue'
 import { useZodValidation } from '~/composables/useZodValidation'
-import { useAuthService } from '~/composables/services/useAuthService'
+import { useAuthSession } from '~/features/auth/composables/useAuthSession'
 import { signInSchema } from '~/validation/auth.validation'
 import type { AxiosError } from 'axios'
 import type { SignInSchema } from '~/validation/auth.validation'
-import type { ApiErrorResponse } from '~/services/client.types'
+import type { ApiErrorResponse } from '~/shared/api/http.types'
 
 definePageMeta({
   layout: false,
@@ -17,7 +17,7 @@ useHead({
 })
 
 const notify = useNotify()
-const { signIn } = useAuthService()
+const { signIn } = useAuthSession()
 const { errors, validate } = useZodValidation<SignInSchema>(signInSchema)
 
 const pending = ref<boolean>(false)
@@ -37,7 +37,7 @@ const submit = async () => {
     await navigateTo('/')
   } catch (e) {
     const axiosError = e as AxiosError<ApiErrorResponse>
-    const errorMessage = axiosError.response?.data?.error.message || 'Неверный email или пароль'
+    const errorMessage = axiosError.response?.data?.error?.message || 'Неверный email или пароль'
     notify.error(errorMessage)
   } finally {
     pending.value = false

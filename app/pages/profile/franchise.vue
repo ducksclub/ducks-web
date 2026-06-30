@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { z } from 'zod'
-import { useContactApi } from '~/api/contact.api'
+import { contactApi } from '~/features/contact/api/contact.api'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
@@ -31,7 +31,7 @@ const schema = z.object({
 })
 
 const { validate, errors } = useZodValidation(schema)
-const { sendContact } = useContactApi()
+const { sendContact } = contactApi
 
 const sendForm = async () => {
   error.value = ''

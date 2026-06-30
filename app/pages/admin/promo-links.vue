@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { getApiErrorMessage } from '~/shared/api/api-error'
 import { BarChart3, Check, Copy, Link2, Loader2, Plus, Power, RefreshCw, X } from '@lucide/vue'
-import {
-  usePromoLinksApi,
-  type CreatePromoLinkPayload,
-  type PromoLink,
-  type PromoLinkType,
-} from '~/api/promoLinksApi'
+import { promoLinksApi } from '~/features/promo-links/api/promo-links.api'
+import type {
+  CreatePromoLinkPayload,
+  PromoLink,
+  PromoLinkType,
+} from '~/features/promo-links/model/promo-link'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderMenu from '~/components/layout/header/HeaderMenu.vue'
 import HeaderMenuItem from '~/components/layout/header/HeaderMenuItem.vue'
@@ -20,7 +21,7 @@ const PROMO_CODE_PATTERN = /^[a-zA-Z0-9_-]{2,64}$/
 
 const notify = useNotify()
 const config = useRuntimeConfig()
-const { getPromoLinks, createPromoLink, updatePromoLink } = usePromoLinksApi()
+const { getPromoLinks, createPromoLink, updatePromoLink } = promoLinksApi
 
 const promoLinks = ref<PromoLink[]>([])
 const isLoading = ref(true)
