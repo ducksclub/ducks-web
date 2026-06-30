@@ -12,6 +12,46 @@ const httpClient = axios.create({
   },
 })
 
+const formatRetryAfter = (totalSeconds: number) => {
+  const seconds = Math.ceil(totalSeconds)
+  const minutes = Math.floor(seconds / 60)
+  const restSeconds = seconds % 60
+
+  if (minutes > 0 && restSeconds > 0) {
+    return `${minutes} мин. ${restSeconds} сек.`
+  }
+
+  if (minutes > 0) {
+    return `${minutes} мин.`
+  }
+
+  return `${seconds} сек.`
+}
+
+const getRetryAfterSeconds = (retryAfter?: string) => {
+  if (!retryAfter) return 0
+
+  const seconds = Number(retryAfter)
+
+  if (Number.isFinite(seconds)) return seconds
+
+  const retryAt = Date.parse(retryAfter)
+
+  if (Number.isNaN(retryAt)) return 0
+
+  return (retryAt - Date.now()) / 1000
+}
+
+const getRateLimitMessage = (retryAfter?: string) => {
+  const seconds = getRetryAfterSeconds(retryAfter)
+
+  if (Number.isFinite(seconds) && seconds > 0) {
+    return `Слишком много запросов. Попробуйте снова через ${formatRetryAfter(seconds)}`
+  }
+
+  return 'Слишком много запросов. Подождите немного и попробуйте снова.'
+}
+
 httpClient.interceptors.request.use((config) => {
   const token = import.meta.client ? localStorage.getItem(ACCESS_TOKEN_KEY) : null
   const requiresAuth = config.headers?.[AUTH_HEADER_FLAG] !== 'false'
@@ -29,6 +69,21 @@ httpClient.interceptors.response.use(
   (response) => response,
   (error: AxiosError<ApiErrorResponse>) => {
     const requiresAuth = error.config?.headers?.[AUTH_HEADER_FLAG] !== 'false'
+
+    if (error.response?.status === 429) {
+      const message = getRateLimitMessage(error.response.headers?.['retry-after'])
+      const data = error.response.data
+
+      error.response.data = {
+        ...data,
+        message,
+        error: {
+          ...data?.error,
+          code: data?.error?.code || 'RATE_LIMIT_EXCEEDED',
+          message,
+        },
+      }
+    }
 
     if (import.meta.client && error.response?.status === 401 && requiresAuth) {
       localStorage.removeItem(ACCESS_TOKEN_KEY)
