@@ -56,7 +56,7 @@ const submit = async () => {
 <template>
   <div class="min-h-screen bg-(--bg) text-white flex flex-col items-center justify-center p-6">
     <div class="w-full max-w-85">
-      <AuthLogo />
+      <AuthBrandLogo />
 
       <h2 class="text-center text-lg font-bold uppercase mb-6">Новый пароль</h2>
 
