@@ -17,7 +17,8 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiUrl: process.env.API_URL,
+      apiBase: process.env.NUXT_PRIVATE_API_BASE,
+      mediaBase: process.env.NUXT_PUBLIC_MEDIA_BASE,
     },
   },
   app: {
@@ -45,7 +46,7 @@ export default defineNuxtConfig({
 
     manifest: {
       name: "Duck's GameClub",
-      short_name: "Duck's",
+      short_name: "Duck's Club",
       description: "Duck's GameClub Mini App",
       theme_color: '#0a0c12',
       background_color: '#0a0c12',
