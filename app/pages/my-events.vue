@@ -3,14 +3,13 @@ import { getApiErrorMessage } from '~/utils/api/api-error'
 import { CalendarFold } from '@lucide/vue'
 import { eventsApi } from '~/utils/api/events'
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
-import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
 import BaseSelect from '~/components/ui/BaseSelect.vue'
 import { statuses } from '~/constants/categories'
 import type { Event } from '~~/shared/types/event'
 
 definePageMeta({
-  layout: 'empty',
+  layout: 'default',
   middleware: 'auth',
 })
 
@@ -28,8 +27,8 @@ const loadEvents = async () => {
 
   try {
     errorMessage.value = ''
-    const res = await getMyEvents({ status: selectedStatus.value })
-    events.value = res.data
+    const res = await getMyEvents()
+    events.value = res
   } catch (error) {
     errorMessage.value = getApiErrorMessage(error, 'Не удалось загрузить ваши записи')
   } finally {
@@ -42,10 +41,6 @@ watch(selectedStatus, loadEvents, { immediate: true })
 
 <template>
   <BaseHeader>
-    <template #left>
-      <HeaderBackButton />
-    </template>
-
     <template #default>
       <HeaderTitle title="Мои записи" />
     </template>
@@ -67,7 +62,7 @@ watch(selectedStatus, loadEvents, { immediate: true })
 
     <!-- EMPTY -->
     <div
-      v-else-if="!events.length"
+      v-else-if="!events?.length"
       class="flex flex-col items-center justify-center py-24 text-center"
     >
       <div class="mb-6 flex size-20 items-center justify-center rounded-full bg-(--secondary)/20">

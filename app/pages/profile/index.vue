@@ -20,7 +20,6 @@ const menu: {
   path: string
   variant?: 'default' | 'admin'
 }[] = [
-  { label: 'Мои турниры', path: '/profile/events' },
   { label: 'Настройки профиля', path: '/profile/settings' },
   { label: 'Ближайшие турниры', path: '/events', variant: 'admin' },
   { label: 'Идеи и предложения', path: '/profile/feedback' },

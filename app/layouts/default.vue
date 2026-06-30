@@ -28,7 +28,7 @@ import { Calendar, CalendarDays, ClipboardCheck, Info, List, Star, User } from '
         <template #default> Рейтинг </template>
       </LayoutNavbarButton>
 
-      <LayoutNavbarButton path="/profile/events">
+      <LayoutNavbarButton path="/my-events">
         <template #icon>
           <ClipboardCheck />
         </template>
