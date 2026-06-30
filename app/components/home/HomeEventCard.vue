@@ -63,7 +63,7 @@ const styles = computed(() => {
 <template>
   <NuxtLink
     :to="`/events/${props.event.id}`"
-    class="relative overflow-hidden rounded-2xl border bg-white/3 p-4 backdrop-blur-xl transition active:scale-[0.98]"
+    class="relative overflow-hidden rounded-2xl border bg-white/3 backdrop-blur-xl transition active:scale-[0.98]"
     :class="styles?.ring"
   >
     <div
@@ -75,27 +75,43 @@ const styles = computed(() => {
 
     <div class="absolute inset-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]" />
 
-    <div class="relative z-10">
-      <div class="flex items-center justify-between">
-        <span class="text-lg">
-          {{ styles?.icon }}
-        </span>
+    <div class="relative z-10 flex items-center gap-3 p-3">
+      <div class="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-black/30">
+        <NuxtImg
+          v-if="event.imageUrl"
+          :src="renderPicture(event.imageUrl)"
+          class="absolute inset-0 h-full w-full object-cover"
+        />
 
-        <span class="text-[10px] text-white/30 tracking-wider"> LIVE </span>
+        <div v-else class="flex h-full items-center justify-center text-2xl">
+          {{ styles?.icon }}
+        </div>
+
+        <div class="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/10" />
       </div>
 
-      <p class="mt-3 text-sm font-semibold tracking-[-0.01em]" :class="styles?.text">
-        {{ event.title }}
-      </p>
+      <div class="min-w-0 flex-1">
+        <div class="mb-2 flex items-center justify-between gap-3">
+          <span class="text-lg">
+            {{ styles?.icon }}
+          </span>
 
-      <p class="text-[11px] text-gray-400">
-        {{
-          formatDate(event.startsAt, {
-            dateStyle: 'long',
-            timeStyle: 'long',
-          })
-        }}
-      </p>
+          <span class="text-[10px] tracking-wider text-white/30"> LIVE </span>
+        </div>
+
+        <p class="line-clamp-2 text-sm font-semibold tracking-[-0.01em]" :class="styles?.text">
+          {{ event.title }}
+        </p>
+
+        <p class="text-[11px] text-gray-400">
+          {{
+            formatDate(event.startsAt, {
+              dateStyle: 'long',
+              timeStyle: 'long',
+            })
+          }}
+        </p>
+      </div>
     </div>
   </NuxtLink>
 </template>
