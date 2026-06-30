@@ -29,7 +29,7 @@ const loadTopEvents = async () => {
     .sort((a, b) => {
       return new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime()
     })
-    .slice(0, 2)
+    .slice(0, 1)
 
   topEvents.value = nearestEvents
 }
