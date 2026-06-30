@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { AtSign, LockKeyhole } from '@lucide/vue'
-import type { AxiosError } from 'axios'
-import { useAuthService } from '~/composables/services/useAuthService'
 import { useZodValidation } from '~/composables/useZodValidation'
-import type { ApiErrorResponse } from '~/services/client.types'
+import { useAuthService } from '~/composables/services/useAuthService'
 import { signInSchema } from '~/validation/auth.validation'
+import type { AxiosError } from 'axios'
 import type { SignInSchema } from '~/validation/auth.validation'
+import type { ApiErrorResponse } from '~/services/client.types'
 
 definePageMeta({
   layout: false,
@@ -31,6 +31,7 @@ const submit = async () => {
   if (!validate(formData.value)) return
 
   pending.value = true
+
   try {
     await signIn({ email: formData.value.email, password: formData.value.password })
     await navigateTo('/')
