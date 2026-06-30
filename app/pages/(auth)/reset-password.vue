@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { LockKeyhole } from '@lucide/vue'
-import { useAuthApi } from '~/features/auth/auth.api'
-import { resetPasswordSchema, type ResetPasswordSchema } from '~/features/auth/auth.schemas'
+import { authService } from '~/services/auth/auth.service'
+import { resetPasswordSchema, type ResetPasswordSchema } from '~/validation/auth.validation'
 
 definePageMeta({
   layout: false,
@@ -13,7 +13,6 @@ useHead({
 })
 
 const route = useRoute()
-const authApi = useAuthApi()
 const notify = useNotify()
 const { errors, validate } = useZodValidation<ResetPasswordSchema>(resetPasswordSchema)
 
@@ -38,7 +37,7 @@ const submit = async () => {
 
   try {
     isLoading.value = true
-    const response = await authApi.resetPassword({
+    const response = await authService.resetPassword({
       token: token.value,
       password: form.value.password,
     })

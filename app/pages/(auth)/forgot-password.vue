@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { AtSign } from '@lucide/vue'
-import { useAuthApi } from '~/features/auth/auth.api'
+import { authService } from '~/services/auth/auth.service'
 import {
   forgotPasswordSchema,
   type ForgotPasswordSchema,
-} from '~/features/auth/auth.schemas'
+} from '~/validation/auth.validation'
 
 definePageMeta({
   layout: false,
@@ -15,7 +15,6 @@ useHead({
   title: "Duck's | Восстановление пароля",
 })
 
-const authApi = useAuthApi()
 const notify = useNotify()
 const { errors, validate } = useZodValidation<ForgotPasswordSchema>(forgotPasswordSchema)
 
@@ -30,7 +29,7 @@ const submit = async () => {
 
   try {
     isLoading.value = true
-    const response = await authApi.forgotPassword({ email: form.value.email })
+    const response = await authService.forgotPassword({ email: form.value.email })
     isSent.value = true
     notify.success(response.message)
   } catch (error) {
