@@ -32,6 +32,10 @@ const registeredPlayersOpen = ref(false)
 const registeredPlayerNicknames = ref<string[]>([])
 const isLoadingRegisteredPlayers = ref(false)
 const registeredPlayersError = ref<string | null>(null)
+const nowTimestamp = ref(Date.now())
+let revealBlocksTimer: ReturnType<typeof setInterval> | undefined
+
+const EVENT_DETAILS_REVEAL_WINDOW_MS = 3 * 60 * 60 * 1000
 
 const { isRegistered, register, unregister, fetchStatus, isLoading } =
   useEventRegistrationApi(eventId)
@@ -59,6 +63,20 @@ const hasSeatingInfo = computed(() => {
 
 const registeredPlayersCount = computed(() => {
   return event.value?._count?.registrations ?? registeredPlayerNicknames.value.length
+})
+
+const isAdmin = computed(() => user.value?.role === 'admin')
+
+const isEventDetailsRevealWindow = computed(() => {
+  if (!event.value?.startsAt) return false
+
+  const timeUntilStart = new Date(event.value.startsAt).getTime() - nowTimestamp.value
+
+  return timeUntilStart >= 0 && timeUntilStart < EVENT_DETAILS_REVEAL_WINDOW_MS
+})
+
+const shouldShowEventDetailsBlocks = computed(() => {
+  return isAdmin.value || isEventDetailsRevealWindow.value
 })
 
 const fetchEvent = async () => {
@@ -118,6 +136,10 @@ const onShare = () => {
 }
 
 onMounted(async () => {
+  revealBlocksTimer = setInterval(() => {
+    nowTimestamp.value = Date.now()
+  }, 60_000)
+
   const requests = [fetchEvent(), fetchRegisteredPlayers()]
 
   if (isAuthenticated.value) {
@@ -125,6 +147,10 @@ onMounted(async () => {
   }
 
   await Promise.all(requests)
+})
+
+onBeforeUnmount(() => {
+  if (revealBlocksTimer) clearInterval(revealBlocksTimer)
 })
 </script>
 
@@ -229,7 +255,7 @@ onMounted(async () => {
       </div>
 
       <!-- INFO GRID -->
-      <div class="grid grid-cols-1 gap-3">
+      <div v-if="shouldShowEventDetailsBlocks" class="grid grid-cols-1 gap-3">
         <div class="rounded-2xl border border-white/5 bg-(--secondary)/20 p-4">
           <p class="text-[10px] text-gray-500 uppercase tracking-widest">Участники</p>
           <p class="mt-1 text-sm font-bold">
@@ -251,7 +277,10 @@ onMounted(async () => {
         </div>
       </div>
 
-      <div class="rounded-2xl border border-white/5 bg-(--secondary)/20">
+      <div
+        v-if="shouldShowEventDetailsBlocks"
+        class="rounded-2xl border border-white/5 bg-(--secondary)/20"
+      >
         <button
           type="button"
           class="flex w-full items-center gap-3 p-4 text-left transition hover:bg-white/5"
