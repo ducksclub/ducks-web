@@ -14,11 +14,11 @@ import { Calendar, CalendarDays, ClipboardCheck, Info, List, Star, User } from '
         <template #default> Главная </template>
       </LayoutNavbarButton>
 
-      <LayoutNavbarButton path="/profile">
+      <LayoutNavbarButton path="/events">
         <template #icon>
-          <User />
+          <CalendarDays />
         </template>
-        <template #default> Профиль </template>
+        <template #default> Турниры </template>
       </LayoutNavbarButton>
 
       <LayoutNavbarButton path="/rating">
@@ -28,11 +28,11 @@ import { Calendar, CalendarDays, ClipboardCheck, Info, List, Star, User } from '
         <template #default> Рейтинг </template>
       </LayoutNavbarButton>
 
-      <LayoutNavbarButton path="/events">
+      <LayoutNavbarButton path="/profile">
         <template #icon>
-          <CalendarDays />
+          <User />
         </template>
-        <template #default> Турниры </template>
+        <template #default> Профиль </template>
       </LayoutNavbarButton>
     </LayoutNavbar>
   </div>
