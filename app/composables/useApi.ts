@@ -33,7 +33,7 @@ export function useApi() {
   const apiBase = config.public.apiBase
 
   if (!apiBase) {
-    throw new Error('NUXT_PUBLIC_API_URL не найден')
+    throw new Error('NUXT_PRIVATE_API_BASE не найден')
   }
 
   async function request<TResponse, TBody = unknown>(
