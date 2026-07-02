@@ -30,19 +30,12 @@ export function useApi() {
   const auth = useAuthStore()
   const route = useRoute()
 
-  const apiBase = config.public.apiBase
-
-  if (!apiBase) {
-    throw new Error('NUXT_PUBLIC_API_BASE не найден')
-  }
-
   async function request<TResponse, TBody = unknown>(
     path: string,
     options: ApiRequestOptions<TBody> = {},
   ): Promise<TResponse> {
-    const normalizedApiUrl = apiBase.replace(/\/$/, '')
     const normalizedPath = path.startsWith('/') ? path : `/${path}`
-    const url = `${normalizedApiUrl}${normalizedPath}${buildQuery(options.query)}`
+    const url = `/api${normalizedPath}${buildQuery(options.query)}`
 
     const axiosConfig: AxiosRequestConfig<TBody> = {
       url,
