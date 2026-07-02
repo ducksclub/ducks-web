@@ -32,12 +32,10 @@ const fetchEvents = async () => {
   errorMessage.value = ''
 
   try {
-    const response = await getEvents({
+    events.value = await getEvents({
       gameType: selectedCategory.value,
       status: selectedStatus.value,
     })
-
-    events.value = response.data
   } catch (error: any) {
     errorMessage.value = error?.error || 'Ошибка загрузки'
   } finally {

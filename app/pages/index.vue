@@ -18,7 +18,7 @@ const api = useEventsApi()
 const topEvents = ref<Event[]>([])
 
 const loadTopEvents = async () => {
-  const { data: events } = await api.getEvents({ status: EventGameStatus.PUBLISHED })
+  const events = await api.getEvents({ status: EventGameStatus.PUBLISHED })
 
   if (events && !events?.length) {
     topEvents.value = []

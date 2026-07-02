@@ -24,8 +24,7 @@ const fetchEvents = async () => {
   errorMessage.value = ''
 
   try {
-    const response = await getEvents({ gameType: selectedCategory.value, status: 'published' })
-    events.value = response.data
+    events.value = await getEvents({ gameType: selectedCategory.value, status: 'published' })
   } catch (error) {
     errorMessage.value = (error as any).error
   } finally {

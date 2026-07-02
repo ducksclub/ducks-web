@@ -49,7 +49,7 @@ export type Event = {
   }
 }
 
-export type EventsResponse = PaginatedResponse<Event>
+export type EventsResponse = Event[]
 export type EventResponse = Event
 export type TemplatesResponse = PaginatedResponse<Event>
 
