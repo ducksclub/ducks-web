@@ -13,7 +13,7 @@ useHead({
 })
 
 const form = ref<RegisterSchema>({
-  username: '',
+  nickname: '',
   email: '',
   password: '',
   confirmPassword: '',
@@ -34,7 +34,7 @@ const registerHandler = async () => {
   try {
     await auth.signUp({
       email: form.value.email,
-      username: form.value.username,
+      nickname: form.value.nickname,
       password: form.value.password,
     })
 
@@ -61,11 +61,11 @@ const registerHandler = async () => {
 
       <div class="space-y-3">
         <AuthInput
-          v-model="form.username"
+          v-model="form.nickname"
           type="text"
           placeholder="Ваш никнейм"
-          :error="!!errors.username"
-          :error-message="errors.username"
+          :error="!!errors.nickname"
+          :error-message="errors.nickname"
         >
           <template #icon>
             <User class="w-5 h-5" />

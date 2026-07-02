@@ -34,7 +34,7 @@ const go = (path: string) => {
   </BaseHeader>
 
   <div class="p-6 space-y-8">
-    <ProfileCard :username="auth.user.value?.username!" :photo-url="auth.user.value?.avatarUrl" />
+    <ProfileCard :nickname="auth.user.value?.nickname!" :photo-url="auth.user.value?.avatarUrl" />
     <ProfileRating :ratings="auth.user.value?.ratings ?? []" />
 
     <div class="space-y-3">

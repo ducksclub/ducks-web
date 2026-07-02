@@ -99,7 +99,7 @@ const fetchRegisteredPlayers = async () => {
 
     const response = await eventsApi.getEventParticipants(eventId.value)
     registeredPlayerNicknames.value = response.participants
-      .map((participant) => participant.user?.username)
+      .map((participant) => participant.user?.nickname)
       .filter((nickname): nickname is string => Boolean(nickname))
   } catch (e) {
     registeredPlayersError.value = 'Не удалось загрузить список игроков'
@@ -331,10 +331,10 @@ onBeforeUnmount(() => {
                 v-for="(nickname, index) in registeredPlayerNicknames"
                 :key="nickname"
                 class="rounded-xl px-3 py-2 text-sm font-semibold"
-                :class="user?.username === nickname ? 'text-(--logo-bg)' : 'text-gray-200'"
+                :class="user?.nickname === nickname ? 'text-(--logo-bg)' : 'text-gray-200'"
               >
                 <b>{{ index + 1 }} - </b>
-                <span>{{ nickname }} {{ user?.username === nickname ? '(Вы)' : '' }}</span>
+                <span>{{ nickname }} {{ user?.nickname === nickname ? '(Вы)' : '' }}</span>
               </div>
             </div>
 

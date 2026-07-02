@@ -6,7 +6,7 @@ export type AuthUser = {
   promoLinkId: string | null
   avatarHash: string | null
   avatarUrl: string | null
-  username: string
+  nickname: string
   role: string
   email: string
   phone: string | null
@@ -42,7 +42,7 @@ export type SignInWithTelegramPayload = {
 export type UpdateProfilePayload = {
   email: string
   phone: string
-  username: string
+  nickname: string
   avatarUrl: string
   avatarHash: string
 }
@@ -50,7 +50,7 @@ export type UpdateProfilePayload = {
 export type SignUpPayload = {
   email: string
   password: string
-  username: string
+  nickname: string
 }
 
 export type AuthResponse = {
