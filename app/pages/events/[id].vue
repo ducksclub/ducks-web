@@ -32,10 +32,6 @@ const registeredPlayersOpen = ref(false)
 const registeredPlayerNicknames = ref<string[]>([])
 const isLoadingRegisteredPlayers = ref(false)
 const registeredPlayersError = ref<string | null>(null)
-const nowTimestamp = ref(Date.now())
-let revealBlocksTimer: ReturnType<typeof setInterval> | undefined
-
-const EVENT_DETAILS_REVEAL_WINDOW_MS = 3 * 60 * 60 * 1000
 
 const { isRegistered, register, unregister, fetchStatus, isLoading } =
   useEventRegistrationApi(eventId)
@@ -67,16 +63,8 @@ const registeredPlayersCount = computed(() => {
 
 const isAdmin = computed(() => user.value?.role === 'admin')
 
-const isEventDetailsRevealWindow = computed(() => {
-  if (!event.value?.startsAt) return false
-
-  const timeUntilStart = new Date(event.value.startsAt).getTime() - nowTimestamp.value
-
-  return timeUntilStart >= 0 && timeUntilStart < EVENT_DETAILS_REVEAL_WINDOW_MS
-})
-
 const shouldShowEventDetailsBlocks = computed(() => {
-  return isAdmin.value || isEventDetailsRevealWindow.value
+  return isAdmin.value
 })
 
 const fetchEvent = async () => {
@@ -136,10 +124,6 @@ const onShare = () => {
 }
 
 onMounted(async () => {
-  revealBlocksTimer = setInterval(() => {
-    nowTimestamp.value = Date.now()
-  }, 60_000)
-
   const requests = [fetchEvent(), fetchRegisteredPlayers()]
 
   if (isAuthenticated.value) {
@@ -147,10 +131,6 @@ onMounted(async () => {
   }
 
   await Promise.all(requests)
-})
-
-onBeforeUnmount(() => {
-  if (revealBlocksTimer) clearInterval(revealBlocksTimer)
 })
 </script>
 
