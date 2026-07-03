@@ -128,7 +128,7 @@ onMounted(() => {
       <AuthDivider text="или войти через" />
 
       <div class="flex justify-center gap-4">
-        <TelegramLoginWidget telegram-login="your_bot_username" @callback="onTelegramLogin" />
+        <TelegramLoginWidget telegram-login="ducks_gameclub_bot" @callback="onTelegramLogin" />
         <!-- <button
           @click="authByTelegram"
           type="button"
