@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useEventsApi } from '~/api/events.api'
 import { categories } from '~/constants/categories'
-import type { Event } from '~/types/event'
+import { EventGameStatus, type Event } from '~/types/event'
 
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
@@ -24,7 +24,10 @@ const fetchEvents = async () => {
   errorMessage.value = ''
 
   try {
-    events.value = await getEvents({ gameType: selectedCategory.value, status: 'published' })
+    events.value = await getEvents({
+      gameType: selectedCategory.value,
+      status: EventGameStatus.PUBLISHED,
+    })
   } catch (error) {
     errorMessage.value = (error as any).error
   } finally {

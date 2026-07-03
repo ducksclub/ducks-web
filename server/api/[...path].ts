@@ -1,9 +1,8 @@
 import { env } from 'process'
-import { joinURL } from 'ufo'
+import { joinURL, withQuery } from 'ufo'
 
 export default defineEventHandler(async (event) => {
   const apiBase = env.NUXT_PRIVATE_API_BASE
-  console.log('backendUrl', apiBase)
 
   if (!apiBase) {
     throw createError({
@@ -23,10 +22,11 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const target = joinURL(apiBase, path)
+  const target = withQuery(joinURL(apiBase, path), getQuery(event))
 
   console.log('[API_PROXY]', {
     from: getRequestURL(event).pathname,
+    query: getQuery(event),
     to: target,
   })
 

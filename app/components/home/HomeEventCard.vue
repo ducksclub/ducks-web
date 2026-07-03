@@ -79,7 +79,6 @@ const styles = computed(() => {
         <NuxtImg
           v-if="event.imageUrl"
           :src="renderPicture(event.imageUrl)"
-          sizes="100vw"
           class="block h-auto w-full object-contain"
         />
 
