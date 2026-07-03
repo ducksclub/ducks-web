@@ -4,7 +4,6 @@ import Telegram from '~/components/icons/Telegram.vue'
 
 import { loginSchema, type LoginSchema } from '~/validation/auth'
 import { useZodValidation } from '~/composables/useZodValidation'
-import TelegramWidgetClient from '~/components/auth/TelegramWidget.client.vue'
 
 definePageMeta({
   layout: false,
@@ -45,7 +44,7 @@ const submit = async () => {
   }
 }
 
-const authByTelegram = async (user: any) => {
+const authByTelegram = async () => {
   if (!isTelegramAuthAvailable.value) {
     notify.error('Вход через Telegram доступен только внутри Telegram Mini App')
     return
@@ -53,10 +52,9 @@ const authByTelegram = async (user: any) => {
 
   try {
     isLoading.value = true
-    console.log('Telegram init data:', telegram.getInitData())
-    // await auth.signInWithTelegram({ initData: telegram.getInitData() })
-    console.log('User data from Telegram widget:', user)
-    // notify.success('Вы усепешно вошли в аккаунт!')
+    await auth.signInWithTelegram({ initData: telegram.getInitData() })
+
+    notify.success('Вы усепешно вошли в аккаунт!')
     await navigateTo('/')
   } catch (err) {
     const message =
@@ -126,15 +124,14 @@ onMounted(() => {
       <AuthDivider text="или войти через" />
 
       <div class="flex justify-center gap-4">
-        <!-- <button
-            @click="authByTelegram"
-            type="button"
-            :disabled="isLoading"
-            class="w-14 h-14 bg-(--secondary)/20 border border-white/5 rounded-2xl flex items-center justify-center active:scale-90 transition"
-          >
-            <Telegram class="w-6 h-6" />
-          </button> -->
-        <TelegramWidgetClient @success="authByTelegram" @error="notify.error($event)" />
+        <button
+          @click="authByTelegram"
+          type="button"
+          :disabled="isLoading"
+          class="w-14 h-14 bg-(--secondary)/20 border border-white/5 rounded-2xl flex items-center justify-center active:scale-90 transition"
+        >
+          <Telegram class="w-6 h-6" />
+        </button>
       </div>
 
       <p class="text-center text-sm text-gray-500 mt-8">
