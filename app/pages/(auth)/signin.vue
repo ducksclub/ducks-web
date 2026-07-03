@@ -4,6 +4,7 @@ import Telegram from '~/components/icons/Telegram.vue'
 
 import { loginSchema, type LoginSchema } from '~/validation/auth'
 import { useZodValidation } from '~/composables/useZodValidation'
+import TelegramWidget from '~/components/auth/TelegramWidget.vue'
 
 definePageMeta({
   layout: false,
@@ -129,7 +130,7 @@ onMounted(() => {
 
       <div class="flex justify-center gap-4">
         <ClientOnly>
-          <TelegramLoginWidget telegram-login="ducks_gameclub_bot" @callback="onTelegramLogin" />
+          <TelegramWidget />
         </ClientOnly>
         <!-- <button
           @click="authByTelegram"
