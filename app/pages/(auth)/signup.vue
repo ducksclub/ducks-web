@@ -18,7 +18,7 @@ const form = ref<RegisterSchema>({
   password: '',
   confirmPassword: '',
   agree: false,
-  agreeDuck: false,
+  agreeDuck: true,
 })
 
 const isLoading = ref(false)

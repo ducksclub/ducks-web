@@ -115,7 +115,7 @@ onMounted(() => {
             <p class="mt-0.75">Запомнить меня</p>
           </CheckboxAgreement>
 
-          <NuxtLink to="/forgot-password" class="text-(--logo-bg)">Забыли пароль?</NuxtLink>
+          <NuxtLink to="/#forgot-password" class="text-(--logo-bg)">Забыли пароль?</NuxtLink>
         </div>
 
         <BaseButton type="submit" :disabled="isLoading" :loading="isLoading">Войти</BaseButton>
