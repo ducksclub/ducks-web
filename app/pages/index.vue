@@ -16,16 +16,29 @@ useHead({
 const api = useEventsApi()
 
 const topEvents = ref<Event[]>([])
-
 const loadTopEvents = async () => {
   const events = await api.getEvents({ status: EventGameStatus.PUBLISHED })
 
-  if (events && !events?.length) {
+  if (!events?.length) {
     topEvents.value = []
     return
   }
 
-  const nearestEvents = [...events]
+  const now = Date.now()
+
+  const nearestEvents = events
+    .filter((event) => {
+      const startsAt = new Date(event.startsAt).getTime()
+      const endsAt = event.endsAt ? new Date(event.endsAt).getTime() : null
+
+      // Если есть endsAt — показываем событие, которое еще не закончилось
+      if (endsAt) {
+        return endsAt >= now
+      }
+
+      // Если endsAt нет — показываем только будущие события
+      return startsAt >= now
+    })
     .sort((a, b) => {
       return new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime()
     })
