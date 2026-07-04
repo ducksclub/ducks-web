@@ -61,11 +61,13 @@ const showMeBadge = (item: Rating) => isMe(item.user.id)
 
   <!-- LIST -->
   <div class="space-y-2">
-    <div
+    <NuxtLink
       v-for="(item, index) in rating"
       :key="item.id"
       class="grid grid-cols-12 items-center px-4 py-4 rounded-2xl border transition-all duration-200"
       :class="rowClass(item, index)"
+      :to="`/users/${item.user.id}`"
+      :aria-label="`Открыть профиль игрока ${item.user.nickname}`"
     >
       <div class="col-span-2 flex items-center gap-2">
         <span class="text-sm font-black" :class="positionClass(index)">
@@ -107,6 +109,6 @@ const showMeBadge = (item: Rating) => isMe(item.user.id)
       <div class="col-span-3 text-right font-black text-sm tabular-nums" :class="pointsClass(item)">
         {{ item.points }}
       </div>
-    </div>
+    </NuxtLink>
   </div>
 </template>

@@ -1,4 +1,4 @@
-import type { AuthUser } from './auth.types'
+import type { RatingUser } from './user'
 
 export type Rating = {
   id: string
@@ -7,7 +7,7 @@ export type Rating = {
   points: number
   createdAt: string
   updatedAt: string
-  user: AuthUser
+  user: RatingUser
 }
 
 export type RatingResponse = {
