@@ -22,8 +22,7 @@ Request body:
 {
   "code": "<telegram_authorization_code>",
   "codeVerifier": "<pkce_code_verifier>",
-  "redirectUri": "https://YOUR_DOMAIN/auth/telegram/callback",
-  "nonce": "<nonce>"
+  "redirectUri": "https://YOUR_DOMAIN/auth/telegram/callback"
 }
 ```
 

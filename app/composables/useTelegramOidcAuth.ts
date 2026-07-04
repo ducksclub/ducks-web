@@ -3,7 +3,6 @@ const telegramOauthUrl = 'https://oauth.telegram.org/auth'
 
 type TelegramOidcSession = {
   state: string
-  nonce: string
   codeVerifier: string
   redirectUri: string
 }
@@ -83,14 +82,12 @@ export function useTelegramOidcAuth() {
     }
 
     const state = crypto.randomUUID()
-    const nonce = crypto.randomUUID()
     const codeVerifier = createCodeVerifier()
     const codeChallenge = await createCodeChallenge(codeVerifier)
     const redirectUri = `${window.location.origin}/auth/telegram/callback`
 
     saveTelegramOidcSession({
       state,
-      nonce,
       codeVerifier,
       redirectUri,
     })
@@ -101,7 +98,6 @@ export function useTelegramOidcAuth() {
     url.searchParams.set('response_type', 'code')
     url.searchParams.set('scope', 'openid profile')
     url.searchParams.set('state', state)
-    url.searchParams.set('nonce', nonce)
     url.searchParams.set('code_challenge', codeChallenge)
     url.searchParams.set('code_challenge_method', 'S256')
 

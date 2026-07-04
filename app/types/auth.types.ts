@@ -43,7 +43,6 @@ export type SignInWithTelegramOidcPayload = {
   code: string
   codeVerifier: string
   redirectUri: string
-  nonce?: string
 }
 
 export type UpdateProfilePayload = {

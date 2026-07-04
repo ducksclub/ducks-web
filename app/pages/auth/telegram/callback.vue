@@ -80,7 +80,6 @@ async function completeTelegramLogin() {
       code,
       codeVerifier: session.codeVerifier,
       redirectUri: session.redirectUri,
-      nonce: session.nonce,
     })
 
     status.value = 'success'

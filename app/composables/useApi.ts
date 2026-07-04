@@ -55,7 +55,11 @@ export function useApi() {
       const response = await axios.request<TResponse>(axiosConfig)
       return response.data
     } catch (error) {
-      if (error instanceof AxiosError && error.response?.status === 401) {
+      if (
+        options.auth !== false &&
+        error instanceof AxiosError &&
+        error.response?.status === 401
+      ) {
         auth.expireSession()
 
         if (route.path !== '/signin') {
