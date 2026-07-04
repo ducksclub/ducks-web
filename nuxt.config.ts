@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
-  modules: ['@nuxt/image', '@pinia/nuxt', 'pinia-plugin-persistedstate/nuxt', '@vite-pwa/nuxt', 'nuxt-telegram-auth'],
+  modules: ['@nuxt/image', '@pinia/nuxt', 'pinia-plugin-persistedstate/nuxt', '@vite-pwa/nuxt'],
   typescript: {
     strict: true,
   },
@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     TELEGRAM_TOKEN: process.env.TELEGRAM_TOKEN,
     public: {
       mediaBase: process.env.NUXT_PUBLIC_MEDIA_BASE,
+      telegramLoginClientId: process.env.NUXT_PUBLIC_TELEGRAM_LOGIN_CLIENT_ID,
     },
   },
   app: {
