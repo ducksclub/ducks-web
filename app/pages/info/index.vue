@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Send, Phone, HelpCircle, MessageCircle } from '@lucide/vue'
+import { Info, MessageCircle, Phone, Send } from '@lucide/vue'
 
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderBackButton from '~/components/layout/header/HeaderBackButton.vue'
@@ -14,6 +14,12 @@ useHead({
 })
 
 const menu = [
+  {
+    label: 'О клубе',
+    sub: '',
+    icon: Info,
+    link: '/about',
+  },
   {
     label: 'Поддержка',
     sub: '',

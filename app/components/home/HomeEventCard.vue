@@ -74,42 +74,38 @@ const styles = computed(() => {
     <div class="absolute inset-0 bg-linear-to-br" :class="styles?.gradient" />
     <div class="absolute inset-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]" />
 
-    <div class="relative z-10">
-      <div class="relative w-full overflow-hidden bg-black/30">
-        <NuxtImg
-          v-if="event.imageUrl"
-          :src="renderPicture(event.imageUrl)"
-          class="block h-auto w-full object-contain"
-        />
+    <div class="relative z-10 aspect-16/10 w-full overflow-hidden bg-black/30">
+      <NuxtImg
+        v-if="event.imageUrl"
+        :src="renderPicture(event.imageUrl)"
+        class="block h-full w-full object-cover"
+      />
 
-        <div v-else class="flex aspect-16/10 w-full items-center justify-center text-4xl">
-          {{ styles?.icon }}
-        </div>
-
-        <div class="absolute inset-0 bg-linear-to-t from-black/55 via-transparent to-black/10" />
+      <div v-else class="flex h-full w-full items-center justify-center text-5xl">
+        {{ styles?.icon }}
       </div>
 
-      <div class="min-w-0 px-4 py-3">
-        <div class="mb-2 flex items-center justify-between gap-3">
-          <span class="text-lg">
-            {{ styles?.icon }}
+      <div class="absolute inset-0 bg-linear-to-t from-black/90 via-black/35 to-black/10" />
+
+      <div class="absolute right-0 bottom-0 p-2.5">
+        <div class="inline-flex min-w-0 flex-col items-end gap-2">
+          <p
+            class="rounded-xl border border-white/10 bg-black/60 px-2.5 py-2 text-[10px] font-medium leading-tight text-white/85 shadow-[0_8px_24px_rgba(0,0,0,0.4)] backdrop-blur-md drop-shadow-[0_1px_5px_rgba(0,0,0,0.9)] w-fit"
+          >
+            {{
+              formatDate(event.startsAt, {
+                dateStyle: 'medium',
+                timeStyle: 'short',
+              })
+            }}
+          </p>
+
+          <span
+            class="rounded-lg bg-(--logo-bg) px-3 py-1.5 text-center text-[10px] font-bold leading-none text-white shadow-[0_6px_18px_rgba(220,38,38,0.35)]"
+          >
+            Зарегистрироваться
           </span>
-
-          <span class="text-[10px] tracking-wider text-white/30"> LIVE </span>
         </div>
-
-        <p class="line-clamp-2 text-sm font-semibold tracking-[-0.01em]" :class="styles?.text">
-          {{ event.title }}
-        </p>
-
-        <p class="text-[11px] text-gray-400">
-          {{
-            formatDate(event.startsAt, {
-              dateStyle: 'long',
-              timeStyle: 'long',
-            })
-          }}
-        </p>
       </div>
     </div>
   </NuxtLink>
