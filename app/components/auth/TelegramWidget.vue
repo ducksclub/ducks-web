@@ -90,6 +90,7 @@ function loadTelegramLoginScript() {
 }
 
 async function handleTelegramLogin() {
+  console.log('handleTelegramLogin called')
   try {
     isLoading.value = true
 
