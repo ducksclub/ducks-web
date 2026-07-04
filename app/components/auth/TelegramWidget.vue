@@ -115,8 +115,7 @@ async function handleTelegramLogin() {
       onTelegramAuth,
     )
   } catch (error) {
-    result.value =
-      error instanceof Error ? error.message : 'Неизвестная ошибка Telegram авторизации'
+    console.log(error instanceof Error ? error.message : 'Неизвестная ошибка Telegram авторизации')
   } finally {
     isLoading.value = false
   }
@@ -124,7 +123,7 @@ async function handleTelegramLogin() {
 
 async function onTelegramAuth(data: TelegramLoginPayload) {
   if ('error' in data) {
-    result.value = `Ошибка авторизации: ${data.error}`
+    console.log(`Ошибка авторизации: ${data.error}`)
     return
   }
 
