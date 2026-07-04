@@ -132,7 +132,7 @@ async function onTelegramAuth(data: TelegramLoginPayload) {
 
   await auth.signInWithTelegram({ idToken: data.id_token })
   notify.success('Вы усепешно вошли в аккаунт!')
-  await navigateTo('/')
+  // await navigateTo('/')
 
   console.log('Telegram auth data:', data)
   console.log(
