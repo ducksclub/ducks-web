@@ -74,8 +74,6 @@ function loadTelegramLoginScript() {
     const script = document.createElement('script')
 
     script.src = 'https://oauth.telegram.org/js/telegram-login.js?5'
-    script.setAttribute('data-client-id', String(config.public.telegramLoginClientId))
-    script.setAttribute('data-request-access', 'write')
     script.async = true
 
     script.onload = () => {
@@ -111,7 +109,7 @@ async function handleTelegramLogin() {
     window.Telegram.Login.auth(
       {
         client_id: clientId.value,
-        scope: ['profile'],
+        scope: ['profile', 'write'],
         lang: 'ru',
         nonce: crypto.randomUUID(),
       },
