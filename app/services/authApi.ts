@@ -5,6 +5,7 @@ import type {
   MeResponse,
   ResetPasswordPayload,
   SignInPayload,
+  SignInWithTelegramOidcPayload,
   SignInWithTelegramPayload,
   SignUpPayload,
   UpdateProfilePayload,
@@ -65,6 +66,13 @@ export function useAuthApi() {
 
     signInWithTelegram(payload: SignInWithTelegramPayload) {
       return request<AuthResponse, SignInWithTelegramPayload>('/auth/signin-with-telegram', {
+        method: 'POST',
+        body: payload,
+      })
+    },
+
+    signInWithTelegramOidc(payload: SignInWithTelegramOidcPayload) {
+      return request<AuthResponse, SignInWithTelegramOidcPayload>('/auth/telegram/oidc', {
         method: 'POST',
         body: payload,
       })

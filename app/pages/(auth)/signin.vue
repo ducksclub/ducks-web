@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { AtSign, LockKeyhole } from '@lucide/vue'
-import Telegram from '~/components/icons/Telegram.vue'
 
 import { loginSchema, type LoginSchema } from '~/validation/auth'
 import { useZodValidation } from '~/composables/useZodValidation'
@@ -16,7 +15,6 @@ useHead({
 })
 
 const notify = useNotify()
-const telegram = useTelegramWebApp()
 const auth = useAuthProvider()
 const { errors, validate } = useZodValidation<LoginSchema>(loginSchema)
 
@@ -27,7 +25,6 @@ const formData = ref<LoginSchema>({
 })
 
 const isLoading = ref(false)
-const isTelegramAuthAvailable = ref(false)
 
 const submit = async () => {
   if (!validate(formData.value)) return
@@ -35,7 +32,7 @@ const submit = async () => {
   try {
     isLoading.value = true
     await auth.signIn({ email: formData.value.email, password: formData.value.password })
-    notify.success('Вы усепешно вошли в аккаунт!')
+    notify.success('Вы успешно вошли в аккаунт!')
     await navigateTo('/')
   } catch (err) {
     const message = (err as any)?.response?.data?.error.message ?? 'Не удалось войти в аккаунт'

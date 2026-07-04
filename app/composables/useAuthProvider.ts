@@ -5,6 +5,7 @@ import type {
   MeResponse,
   ResetPasswordPayload,
   SignInPayload,
+  SignInWithTelegramOidcPayload,
   SignInWithTelegramPayload,
   SignUpPayload,
   UpdateProfilePayload,
@@ -47,6 +48,31 @@ export function useAuthProvider() {
 
       const response = await request<AuthResponse, SignInWithTelegramPayload>(
         '/auth/signin-with-telegram',
+        {
+          method: 'POST',
+          body: payload,
+          auth: false,
+        },
+      )
+
+      auth.setSession({
+        token: response.token,
+        user: response.user,
+      })
+
+      return response
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  async function signInWithTelegramOidc(payload: SignInWithTelegramOidcPayload) {
+    try {
+      isLoading.value = true
+      errorMessage.value = null
+
+      const response = await request<AuthResponse, SignInWithTelegramOidcPayload>(
+        '/auth/telegram/oidc',
         {
           method: 'POST',
           body: payload,
@@ -173,6 +199,7 @@ export function useAuthProvider() {
 
     signIn,
     signInWithTelegram,
+    signInWithTelegramOidc,
     signUp,
     forgotPassword,
     resetPassword,

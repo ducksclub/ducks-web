@@ -1,184 +1,30 @@
 <script setup lang="ts">
-type TelegramLoginUser = {
-  id: number
-  first_name?: string
-  last_name?: string
-  username?: string
-  photo_url?: string
-}
-
-type TelegramLoginSuccessPayload = {
-  id_token: string
-  user: TelegramLoginUser
-}
-
-type TelegramLoginErrorPayload = {
-  error: string
-}
-
-type TelegramLoginPayload = TelegramLoginSuccessPayload | TelegramLoginErrorPayload
-
-declare global {
-  interface Window {
-    Telegram?: {
-      Login?: {
-        auth: (
-          options: {
-            client_id: number
-            scope?: string[]
-            lang?: string
-            nonce?: string
-          },
-          callback: (data: TelegramLoginPayload) => void,
-        ) => void
-      }
-    }
-  }
-}
-
-const config = useRuntimeConfig()
-const auth = useAuthProvider()
 const notify = useNotify()
+const { startTelegramOidcLogin } = useTelegramOidcAuth()
 
-const result = ref<string>('Пользователь ещё не авторизован')
 const isLoading = ref(false)
-const isScriptLoaded = ref(false)
-
-const clientId = computed(() => {
-  return Number(config.public.telegramLoginClientId)
-})
-
-function loadTelegramLoginScript() {
-  return new Promise<void>((resolve, reject) => {
-    if (window.Telegram?.Login) {
-      isScriptLoaded.value = true
-      resolve()
-      return
-    }
-
-    const existingScript = document.querySelector<HTMLScriptElement>(
-      'script[src="https://oauth.telegram.org/js/telegram-login.js?5"]',
-    )
-
-    if (existingScript) {
-      existingScript.addEventListener('load', () => {
-        isScriptLoaded.value = true
-        resolve()
-      })
-
-      existingScript.addEventListener('error', () => {
-        reject(new Error('Не удалось загрузить Telegram Login library'))
-      })
-
-      return
-    }
-
-    const script = document.createElement('script')
-
-    script.src = 'https://oauth.telegram.org/js/telegram-login.js?5'
-    script.async = true
-
-    script.onload = () => {
-      isScriptLoaded.value = true
-      resolve()
-    }
-
-    script.onerror = () => {
-      reject(new Error('Не удалось загрузить Telegram Login library'))
-    }
-
-    document.head.appendChild(script)
-  })
-}
 
 async function handleTelegramLogin() {
-  console.log('handleTelegramLogin called')
   try {
     isLoading.value = true
-
-    if (!clientId.value) {
-      result.value = 'Не указан Telegram Client ID'
-      return
-    }
-
-    await loadTelegramLoginScript()
-
-    if (!window.Telegram?.Login) {
-      result.value = 'Telegram Login library не загрузилась'
-      return
-    }
-
-    window.Telegram.Login.auth(
-      {
-        client_id: clientId.value,
-        scope: ['profile', 'write'],
-        lang: 'ru',
-        nonce: crypto.randomUUID(),
-      },
-      onTelegramAuth,
-    )
+    await startTelegramOidcLogin()
   } catch (error) {
-    console.log(error instanceof Error ? error.message : 'Неизвестная ошибка Telegram авторизации')
-  } finally {
+    const message =
+      error instanceof Error ? error.message : 'Не удалось авторизоваться через Telegram'
+
+    notify.error(message)
     isLoading.value = false
   }
 }
-
-async function onTelegramAuth(data: TelegramLoginPayload) {
-  if ('error' in data) {
-    console.log(`Ошибка авторизации: ${data.error}`)
-    return
-  }
-
-  await auth.signInWithTelegram({ idToken: data.id_token })
-  notify.success('Вы усепешно вошли в аккаунт!')
-  // await navigateTo('/')
-
-  console.log('Telegram auth data:', data)
-  console.log(
-    'JSON: ',
-    JSON.stringify(
-      {
-        user: data.user,
-        id_token: data.id_token,
-      },
-      null,
-      2,
-    ),
-  )
-
-  /*
-    Для реальной авторизации отправь id_token на backend:
-
-    const response = await $fetch('/api/auth/telegram', {
-      method: 'POST',
-      body: {
-        id_token: data.id_token,
-      },
-    })
-
-    После этого backend должен:
-    1. проверить id_token;
-    2. найти или создать пользователя;
-    3. вернуть accessToken твоего приложения.
-  */
-}
-
-onMounted(async () => {
-  try {
-    await loadTelegramLoginScript()
-  } catch {
-    result.value = 'Telegram Login library не загрузилась'
-    console.error('Не удалось загрузить Telegram Login library')
-  }
-})
 </script>
 
 <template>
   <button
     type="button"
     :disabled="isLoading"
-    class="inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-[#2AABEE] to-[#229ED9] size-10 text-sm font-bold text-white shadow-lg shadow-sky-500/20 transition hover:-translate-y-0.5 hover:shadow-sky-500/30 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60"
+    aria-label="Войти через Telegram"
+    title="Войти через Telegram"
+    class="inline-flex size-10 items-center justify-center rounded-xl bg-linear-to-r from-[#2AABEE] to-[#229ED9] text-white shadow-lg shadow-sky-500/20 transition hover:-translate-y-0.5 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60"
     @click="handleTelegramLogin"
   >
     <svg v-if="!isLoading" class="size-5" viewBox="0 0 24 24" fill="currentColor">

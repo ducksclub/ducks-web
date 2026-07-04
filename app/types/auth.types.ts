@@ -39,6 +39,13 @@ export type SignInWithTelegramPayload = {
   idToken: string
 }
 
+export type SignInWithTelegramOidcPayload = {
+  code: string
+  codeVerifier: string
+  redirectUri: string
+  nonce?: string
+}
+
 export type UpdateProfilePayload = {
   email: string
   phone: string
