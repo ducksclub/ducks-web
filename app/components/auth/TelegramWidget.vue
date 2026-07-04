@@ -37,6 +37,8 @@ declare global {
 }
 
 const config = useRuntimeConfig()
+const auth = useAuthProvider()
+const notify = useNotify()
 
 const result = ref<string>('Пользователь ещё не авторизован')
 const isLoading = ref(false)
@@ -127,6 +129,10 @@ async function onTelegramAuth(data: TelegramLoginPayload) {
     console.log(`Ошибка авторизации: ${data.error}`)
     return
   }
+
+  await auth.signInWithTelegram({ idToken: data.id_token })
+  notify.success('Вы усепешно вошли в аккаунт!')
+  await navigateTo('/')
 
   console.log('Telegram auth data:', data)
   console.log(

@@ -36,7 +36,7 @@ export type ResetPasswordPayload = {
 }
 
 export type SignInWithTelegramPayload = {
-  initData: string
+  idToken: string
 }
 
 export type UpdateProfilePayload = {

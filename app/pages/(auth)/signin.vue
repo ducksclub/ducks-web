@@ -29,10 +29,6 @@ const formData = ref<LoginSchema>({
 const isLoading = ref(false)
 const isTelegramAuthAvailable = ref(false)
 
-function onTelegramLogin(user: unknown) {
-  console.log(user)
-}
-
 const submit = async () => {
   if (!validate(formData.value)) return
 
@@ -48,31 +44,6 @@ const submit = async () => {
     isLoading.value = false
   }
 }
-
-const authByTelegram = async () => {
-  if (!isTelegramAuthAvailable.value) {
-    notify.error('Вход через Telegram доступен только внутри Telegram Mini App')
-    return
-  }
-
-  try {
-    isLoading.value = true
-    await auth.signInWithTelegram({ initData: telegram.getInitData() })
-
-    notify.success('Вы усепешно вошли в аккаунт!')
-    await navigateTo('/')
-  } catch (err) {
-    const message =
-      (err as any)?.response?.data?.error.message ?? 'Произошла ошибка при входе в аккаунт'
-    notify.error(message)
-  } finally {
-    isLoading.value = false
-  }
-}
-
-onMounted(() => {
-  isTelegramAuthAvailable.value = telegram.hasInitData()
-})
 </script>
 
 <template>
