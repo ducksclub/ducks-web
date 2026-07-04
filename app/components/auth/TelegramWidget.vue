@@ -163,6 +163,7 @@ onMounted(async () => {
     await loadTelegramLoginScript()
   } catch {
     result.value = 'Telegram Login library не загрузилась'
+    console.error('Не удалось загрузить Telegram Login library')
   }
 })
 </script>
