@@ -129,17 +129,7 @@ onMounted(() => {
       <AuthDivider text="или войти через" />
 
       <div class="flex justify-center gap-4">
-        <ClientOnly>
-          <TelegramWidget />
-        </ClientOnly>
-        <!-- <button
-          @click="authByTelegram"
-          type="button"
-          :disabled="isLoading"
-          class="w-14 h-14 bg-(--secondary)/20 border border-white/5 rounded-2xl flex items-center justify-center active:scale-90 transition"
-        >
-          <Telegram class="w-6 h-6" />
-        </button> -->
+        <TelegramWidget />
       </div>
 
       <p class="text-center text-sm text-gray-500 mt-8">
