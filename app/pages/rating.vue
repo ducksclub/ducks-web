@@ -19,7 +19,7 @@ const tabs = [
   { label: 'Бильярд', value: EventGameType.POOL },
 ]
 
-const { rating, isLoading, error } = useRatingQuery(activeTab)
+// const { rating, isLoading, error } = useRatingQuery(activeTab)
 </script>
 
 <template>
@@ -29,10 +29,22 @@ const { rating, isLoading, error } = useRatingQuery(activeTab)
     </template>
   </BaseHeader>
 
-  <div class="p-4">
+  <main class="px-4 pb-6 pt-4">
     <RatingTabsSegmented v-model="activeTab" :items="tabs" />
 
-    <div class="mt-4">
+    <section class="mt-4 overflow-hidden rounded-3xl border border-white/10 bg-white/3">
+      <div class="relative aspect-square overflow-hidden bg-black">
+        <NuxtImg
+          src="/assets/images/rating-coming-soon.jpg"
+          alt="Duck's готовит рейтинг клуба"
+          class="h-full w-full object-cover"
+          sizes="sm:100vw md:420px"
+          preload
+        />
+      </div>
+    </section>
+
+    <!-- <div class="mt-4">
       <div v-if="isLoading" class="space-y-2">
         <div v-for="i in 5" :key="i" class="h-16 animate-pulse rounded-2xl bg-(--secondary)/20" />
       </div>
@@ -44,6 +56,6 @@ const { rating, isLoading, error } = useRatingQuery(activeTab)
       <div v-else-if="!rating.length" class="text-center text-sm text-gray-500">Нет данных</div>
 
       <RatingLeaderboard v-else :rating="rating" />
-    </div>
-  </div>
+    </div> -->
+  </main>
 </template>
