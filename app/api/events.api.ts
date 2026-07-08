@@ -27,7 +27,7 @@ export function useEventsApi() {
   }
 
   const getMyEvents = (params?: GetEventsParams) => {
-    return api.request<EventsResponse>('/events/me', {
+    return api.request<EventsResponse>('/my-events', {
       method: 'GET',
       query: params,
     })
@@ -41,7 +41,7 @@ export function useEventsApi() {
   }
 
   const getEventParticipants = (eventId: string) => {
-    return api.request<GetEventParticipantsResponse>(`/events/${eventId}/participants`, {
+    return api.request<GetEventParticipantsResponse>(`/event-results/${eventId}/participants`, {
       method: 'GET',
     })
   }
@@ -59,7 +59,7 @@ export function useEventsApi() {
   }
 
   const getMyEventSeat = (eventId: string) => {
-    return api.request<MySeatResponse>(`/events/${eventId}/my-seat`, {
+    return api.request<MySeatResponse>(`/events/${eventId}/seat/me`, {
       method: 'GET',
     })
   }
@@ -77,7 +77,7 @@ export function useEventsApi() {
   }
 
   const reorderParticipants = (eventId: string, payload: ReorderParticipantsPayload) => {
-    return api.request(`/events/${eventId}/participants/reorder`, {
+    return api.request(`/event-results/${eventId}/participants/reorder`, {
       method: 'PATCH',
       body: payload,
     })
@@ -91,7 +91,7 @@ export function useEventsApi() {
   }
 
   const finalizeEvent = (eventId: string) => {
-    return api.request<FinalizeEventResponse>(`/events/${eventId}/finalize`, {
+    return api.request<FinalizeEventResponse>(`/event-results/${eventId}/finalize`, {
       method: 'POST',
     })
   }

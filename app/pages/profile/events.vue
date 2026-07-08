@@ -25,7 +25,7 @@ const loadEvents = async () => {
 
   try {
     const res = await getMyEvents({ status: selectedStatus.value })
-    events.value = res.data
+    events.value = res
   } catch (e) {
     console.error(e)
   } finally {
