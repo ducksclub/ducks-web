@@ -14,7 +14,9 @@ export function useEventRegistrationApi(eventId: Ref<string>) {
   ])
 
   const fetchStatus = async () => {
-    const res = await api.request<{ status?: string }>(`/events/${eventId.value}/registration`)
+    const res = await api.request<{ status?: string }>(
+      `/event-registrations/${eventId.value}/check`,
+    )
     registrationStatus.value = res?.status ?? null
     isRegistered.value = registeredStatuses.has(registrationStatus.value?.toUpperCase() ?? '')
   }
@@ -22,7 +24,7 @@ export function useEventRegistrationApi(eventId: Ref<string>) {
   const register = async () => {
     try {
       isLoading.value = true
-      await api.request(`/events/${eventId.value}/register`, {
+      await api.request(`/event-registrations/${eventId.value}/register`, {
         method: 'POST',
       })
       await fetchStatus()
@@ -34,8 +36,8 @@ export function useEventRegistrationApi(eventId: Ref<string>) {
   const unregister = async () => {
     try {
       isLoading.value = true
-      await api.request(`/events/${eventId.value}/register`, {
-        method: 'DELETE',
+      await api.request(`/event-registrations/${eventId.value}/cancel`, {
+        method: 'POST',
       })
       registrationStatus.value = null
       isRegistered.value = false
