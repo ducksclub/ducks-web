@@ -47,6 +47,10 @@ const loadTopEvents = async () => {
   topEvents.value = nearestEvents
 }
 
+const openEvents = () => {
+  navigateTo('/events')
+}
+
 onMounted(() => {
   loadTopEvents()
 })
@@ -59,6 +63,8 @@ onMounted(() => {
     <template v-if="topEvents.length">
       <HomeEventCard v-for="e in topEvents" :key="e.id" :event="e" />
     </template>
+
+    <!-- <HomeWeeklyTournamentSchedule @open="openEvents" /> -->
 
     <HomeNavigation />
 
