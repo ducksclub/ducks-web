@@ -15,36 +15,38 @@ useHead({
 
 const api = useEventsApi()
 
-const topEvents = ref<Event[]>([])
-const loadTopEvents = async () => {
-  const events = await api.getEvents({ status: EventGameStatus.PUBLISHED })
+const events = ref<Event[]>([])
 
-  if (!events?.length) {
-    topEvents.value = []
-    return
-  }
-
+const upcomingEvents = computed(() => {
   const now = Date.now()
 
-  const nearestEvents = events
+  return events.value
     .filter((event) => {
       const startsAt = new Date(event.startsAt).getTime()
       const endsAt = event.endsAt ? new Date(event.endsAt).getTime() : null
 
-      // Если есть endsAt — показываем событие, которое еще не закончилось
       if (endsAt) {
         return endsAt >= now
       }
 
-      // Если endsAt нет — показываем только будущие события
       return startsAt >= now
     })
     .sort((a, b) => {
       return new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime()
     })
-    .slice(0, 1)
+})
 
-  topEvents.value = nearestEvents
+const topEvents = computed(() => upcomingEvents.value.slice(0, 1))
+
+const loadEvents = async () => {
+  const fetchedEvents = await api.getEvents({ status: EventGameStatus.PUBLISHED })
+
+  if (!fetchedEvents?.length) {
+    events.value = []
+    return
+  }
+
+  events.value = fetchedEvents
 }
 
 const openEvents = () => {
@@ -52,7 +54,7 @@ const openEvents = () => {
 }
 
 onMounted(() => {
-  loadTopEvents()
+  loadEvents()
 })
 </script>
 
@@ -64,7 +66,7 @@ onMounted(() => {
       <HomeEventCard v-for="e in topEvents" :key="e.id" :event="e" />
     </template>
 
-    <!-- <HomeWeeklyTournamentSchedule @open="openEvents" /> -->
+    <HomeWeeklyTournamentSchedule :events="events" @open="openEvents" />
 
     <HomeNavigation />
 

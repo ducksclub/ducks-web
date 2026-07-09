@@ -1,64 +1,97 @@
 <script setup lang="ts">
 import { CalendarDays, ChevronRight } from '@lucide/vue'
+import type { Event } from '~/types/event'
 
-type ScheduleDay = {
+type CalendarDay = {
   weekday: string
   date: string
   time: string
-  active?: boolean
+  eventCount: number
+  active: boolean
 }
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     title?: string
-    days?: ScheduleDay[]
+    events?: Event[]
   }>(),
   {
     title: 'РАСПИСАНИЕ ТУРНИРОВ НА НЕДЕЛЮ',
-    days: () => [
-      {
-        weekday: 'ПН',
-        date: '30 июня',
-        time: '20:00',
-      },
-      {
-        weekday: 'ВТ',
-        date: '1 июля',
-        time: '18:30',
-        active: true,
-      },
-      {
-        weekday: 'СР',
-        date: '2 июля',
-        time: '21:00',
-      },
-      {
-        weekday: 'ЧТ',
-        date: '3 июля',
-        time: '19:00',
-      },
-      {
-        weekday: 'ПТ',
-        date: '4 июля',
-        time: '20:30',
-      },
-      {
-        weekday: 'СБ',
-        date: '5 июля',
-        time: '18:00',
-      },
-      {
-        weekday: 'ВС',
-        date: '6 июля',
-        time: '20:00',
-      },
-    ],
+    events: () => [],
   },
 )
 
 const emit = defineEmits<{
   open: []
 }>()
+
+const selectedDate = ref(new Date())
+let dateSyncInterval: ReturnType<typeof setInterval> | undefined
+
+const formatWeekday = (date: Date) =>
+  new Intl.DateTimeFormat('ru-RU', {
+    weekday: 'short',
+  })
+    .format(date)
+    .replace('.', '')
+    .toUpperCase()
+
+const formatCalendarDate = (date: Date) =>
+  new Intl.DateTimeFormat('ru-RU', {
+    day: 'numeric',
+    month: 'long',
+  }).format(date)
+
+const isSameDate = (left: Date, right: Date) =>
+  left.getFullYear() === right.getFullYear() &&
+  left.getMonth() === right.getMonth() &&
+  left.getDate() === right.getDate()
+
+const formatEventTime = (date: Date) =>
+  new Intl.DateTimeFormat('ru-RU', {
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date)
+
+const syncSelectedDate = () => {
+  selectedDate.value = new Date()
+}
+
+onMounted(() => {
+  syncSelectedDate()
+  dateSyncInterval = setInterval(syncSelectedDate, 60_000)
+})
+
+onBeforeUnmount(() => {
+  if (dateSyncInterval) {
+    clearInterval(dateSyncInterval)
+  }
+})
+
+const calendarDays = computed<CalendarDay[]>(() => {
+  const today = selectedDate.value
+  const startDate = new Date(today)
+  startDate.setHours(0, 0, 0, 0)
+
+  return Array.from({ length: 7 }, (_, index) => {
+    const currentDate = new Date(startDate)
+    currentDate.setDate(startDate.getDate() + index)
+
+    const eventsByDay = props.events
+      .filter((event) => isSameDate(new Date(event.startsAt), currentDate))
+      .sort((left, right) => new Date(left.startsAt).getTime() - new Date(right.startsAt).getTime())
+
+    const nearestEvent = eventsByDay[0]
+
+    return {
+      weekday: formatWeekday(currentDate),
+      date: formatCalendarDate(currentDate),
+      time: nearestEvent ? formatEventTime(new Date(nearestEvent.startsAt)) : 'Нет',
+      eventCount: eventsByDay.length,
+      active: isSameDate(currentDate, today),
+    }
+  })
+})
 </script>
 
 <template>
@@ -102,7 +135,7 @@ const emit = defineEmits<{
 
       <div class="mt-3 grid grid-cols-7 gap-1.5">
         <div
-          v-for="day in days"
+          v-for="day in calendarDays"
           :key="`${day.weekday}-${day.date}-${day.time}`"
           class="min-w-0 rounded-xl border px-1 py-2 text-center transition"
           :class="
@@ -127,9 +160,19 @@ const emit = defineEmits<{
 
           <div
             class="text-[13px] leading-none font-black text-white tabular-nums"
-            :class="{ 'text-white': day.active }"
+            :class="[
+              day.active && 'text-white',
+              !day.eventCount && 'text-[10px] text-gray-600 normal-nums',
+            ]"
           >
             {{ day.time }}
+          </div>
+
+          <div
+            v-if="day.eventCount > 1"
+            class="mt-1 text-[9px] leading-none font-bold text-(--logo-bg)"
+          >
+            +{{ day.eventCount - 1 }}
           </div>
         </div>
       </div>
