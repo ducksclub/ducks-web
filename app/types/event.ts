@@ -61,6 +61,7 @@ export type UpdateEventPayload = {
   gameRules: Event['gameRules']
   features: Event['features']
   address: Event['address']
+  status: Event['status']
   startsAt: Event['startsAt']
   gameType: Event['gameType']
   participantLimit: Event['participantLimit']

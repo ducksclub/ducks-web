@@ -11,8 +11,8 @@ import BaseInput from '~/components/ui/BaseInput.vue'
 import BaseSelect from '~/components/ui/BaseSelect.vue'
 import ImageUpload from '~/components/ui/ImageUpload.vue'
 
-import { categories } from '~/constants/categories'
-import { EventGameType, type Event } from '~/types/event'
+import { categories, statuses } from '~/constants/categories'
+import { EventGameStatus, EventGameType, type Event } from '~/types/event'
 
 definePageMeta({
   layout: 'empty',
@@ -41,6 +41,7 @@ const form = reactive({
   startsAt: '',
   participantLimit: 10,
   initialDepositAmount: 0,
+  status: '' as EventGameStatus,
   imageUrl: '',
   imageHash: '',
   file: null as File | null,
@@ -59,6 +60,7 @@ const loadEvent = async () => {
     form.address = event.address ?? ''
     form.gameType = event.gameType ?? ''
     form.startsAt = event.startsAt
+    form.status = event.status
     form.participantLimit = event.participantLimit ?? 10
     form.initialDepositAmount = event.initialDepositAmount ?? 0
     form.imageUrl = event.imageUrl ?? ''
@@ -107,6 +109,7 @@ const updateEvent = async () => {
         startsAt: form.startsAt,
         participantLimit: form.participantLimit,
         initialDepositAmount: form.initialDepositAmount,
+        status: form.status as EventGameStatus,
 
         imageUrl,
         imageHash,
@@ -201,6 +204,8 @@ const updateEvent = async () => {
       placeholder="1 особенность, 2 особенность ..."
       :icon="Map"
     />
+
+    <BaseSelect v-model="form.status" label="Статус" :options="statuses" />
 
     <div
       v-if="errorMessage"
