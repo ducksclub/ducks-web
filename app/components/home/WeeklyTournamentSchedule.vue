@@ -36,22 +36,10 @@ const formatWeekday = (date: Date) =>
     .replace('.', '')
     .toUpperCase()
 
-const formatCalendarDate = (date: Date) =>
-  new Intl.DateTimeFormat('ru-RU', {
-    day: 'numeric',
-    month: 'long',
-  }).format(date)
-
 const isSameDate = (left: Date, right: Date) =>
   left.getFullYear() === right.getFullYear() &&
   left.getMonth() === right.getMonth() &&
   left.getDate() === right.getDate()
-
-const formatEventTime = (date: Date) =>
-  new Intl.DateTimeFormat('ru-RU', {
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(date)
 
 const syncSelectedDate = () => {
   selectedDate.value = new Date()
@@ -85,8 +73,8 @@ const calendarDays = computed<CalendarDay[]>(() => {
 
     return {
       weekday: formatWeekday(currentDate),
-      date: formatCalendarDate(currentDate),
-      time: nearestEvent ? formatEventTime(new Date(nearestEvent.startsAt)) : 'Нет',
+      date: formatDate(currentDate, { format: 'D MMMM' }),
+      time: nearestEvent ? formatDate(nearestEvent.startsAt, { format: 'HH:mm' }) : 'Нет',
       eventCount: eventsByDay.length,
       active: isSameDate(currentDate, today),
     }
