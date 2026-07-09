@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import Information from '~/components/ui/Information.vue'
+import { useClientUiApi } from '~/api/clientUi.api'
 import { useEventsApi } from '~/api/events.api'
+import { ClientUiTypes } from '~/types/client-ui'
+import type { ClientUiType } from '~/types/client-ui'
 import { EventGameStatus } from '~/types/event'
 import type { Event } from '~/types/event'
 
@@ -14,8 +17,46 @@ useHead({
 })
 
 const api = useEventsApi()
+const clientUiApi = useClientUiApi()
 
 const events = ref<Event[]>([])
+const clientUiType = ref<ClientUiType>(ClientUiTypes.POKER)
+
+type ClientUiBanner = {
+  image: string
+  link: string
+  label: string
+}
+
+const clientUiBanners: Record<ClientUiType, ClientUiBanner> = {
+  [ClientUiTypes.POKER]: {
+    image: '/assets/images/duck.jpg',
+    link: '/training/levels',
+    label: 'Обучение покеру',
+  },
+  [ClientUiTypes.DEALER]: {
+    image: '/assets/images/rating-coming-soon.jpg',
+    link: '/profile/franchise',
+    label: 'Заявка на участие',
+  },
+  [ClientUiTypes.FLOOR]: {
+    image: '/assets/images/way.jpg',
+    link: '/rules',
+    label: 'Правила клуба',
+  },
+  [ClientUiTypes.ADMINISTRATOR]: {
+    image: '/assets/images/logo.jpg',
+    link: '/support',
+    label: 'Поддержка',
+  },
+  [ClientUiTypes.MANAGER]: {
+    image: '/assets/images/duck.jpg',
+    link: '/about',
+    label: 'О клубе',
+  },
+}
+
+const clientUiBanner = computed(() => clientUiBanners[clientUiType.value])
 
 const upcomingEvents = computed(() => {
   const now = Date.now()
@@ -49,12 +90,23 @@ const loadEvents = async () => {
   events.value = fetchedEvents
 }
 
+const loadClientUi = async () => {
+  try {
+    const setting = await clientUiApi.getClientUi()
+
+    clientUiType.value = setting.type
+  } catch (error) {
+    console.error('Ошибка загрузки настройки клиентского UI:', error)
+  }
+}
+
 const openEvents = () => {
   navigateTo('/events')
 }
 
 onMounted(() => {
   loadEvents()
+  loadClientUi()
 })
 </script>
 
@@ -67,6 +119,18 @@ onMounted(() => {
     </template>
 
     <HomeWeeklyTournamentSchedule :events="events" @open="openEvents" />
+
+    <NuxtLink
+      :to="clientUiBanner.link"
+      class="block aspect-3/1.5 w-full overflow-hidden rounded-2xl border border-white/5 bg-(--secondary)/20 transition active:scale-[0.99]"
+      :aria-label="clientUiBanner.label"
+    >
+      <NuxtImg
+        :src="clientUiBanner.image"
+        :alt="clientUiBanner.label"
+        class="h-full w-full object-cover"
+      />
+    </NuxtLink>
 
     <HomeNavigation />
 

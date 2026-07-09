@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CalendarDays, ChevronRight, MessageSquare, Send } from '@lucide/vue'
+import { CalendarDays, ChevronRight, Image, MessageSquare, Send } from '@lucide/vue'
 
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
@@ -40,6 +40,12 @@ const menu = computed(() => {
       description: 'Массовые уведомления для участников в Telegram',
       path: '/admin/broadcasts',
       icon: Send,
+    },
+    {
+      label: 'Клиентская часть',
+      description: 'Картинка и кнопка на клиентской стороне',
+      path: '/admin/client-ui',
+      icon: Image,
     },
   ]
 
