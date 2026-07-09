@@ -96,35 +96,37 @@ const calendarDays = computed<CalendarDay[]>(() => {
 
 <template>
   <section
-    class="group relative overflow-hidden rounded-2xl border border-white/5 bg-(--secondary)/20 p-3 backdrop-blur-xl transition hover:border-(--logo-bg)/20 hover:bg-white/4"
+    class="group relative overflow-hidden rounded-2xl border border-red-500/70 bg-black/70 px-3 py-2.5 shadow-[0_0_18px_rgba(239,68,68,0.55),inset_0_0_18px_rgba(239,68,68,0.16)] backdrop-blur-xl transition hover:border-red-400 hover:bg-black/75 hover:shadow-[0_0_26px_rgba(239,68,68,0.7),inset_0_0_22px_rgba(239,68,68,0.2)]"
   >
     <div
-      class="pointer-events-none absolute inset-0 bg-linear-to-br from-(--logo-bg)/14 via-(--logo-bg)/4 to-transparent"
+      class="pointer-events-none absolute inset-0 bg-linear-to-br from-red-500/24 via-red-950/18 to-transparent"
     />
     <div
-      class="pointer-events-none absolute -top-12 -right-12 h-32 w-32 rounded-full bg-(--logo-bg)/12 blur-3xl transition group-hover:bg-(--logo-bg)/18"
+      class="pointer-events-none absolute -top-12 -right-12 h-32 w-32 rounded-full bg-red-500/30 blur-3xl transition group-hover:bg-red-400/35"
     />
     <div
-      class="pointer-events-none absolute inset-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
+      class="pointer-events-none absolute inset-0 rounded-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.18),inset_0_0_0_1px_rgba(248,113,113,0.18)]"
     />
 
     <div class="relative z-10">
       <div class="flex items-center gap-2.5">
         <div
-          class="flex size-9 shrink-0 items-center justify-center rounded-xl border border-(--logo-bg)/20 bg-(--logo-bg)/10 text-(--logo-bg)"
+          class="flex size-8 shrink-0 items-center justify-center rounded-xl border border-red-400/55 bg-red-500/12 text-amber-200 shadow-[0_0_14px_rgba(239,68,68,0.42)]"
           aria-hidden="true"
         >
-          <CalendarDays :size="17" :stroke-width="2.5" />
+          <CalendarDays :size="16" :stroke-width="2.5" />
         </div>
 
         <div class="min-w-0 flex-1">
-          <h2 class="mt-0.5 text-xs leading-4 font-black tracking-wide text-white uppercase">
+          <h2
+            class="mt-0.5 text-xs leading-4 font-black tracking-wide text-amber-200 uppercase [text-shadow:0_0_10px_rgba(251,191,36,0.85),0_0_18px_rgba(239,68,68,0.55)]"
+          >
             {{ title }}
           </h2>
         </div>
 
         <button
-          class="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-white/5 bg-white/5 text-(--logo-bg) transition hover:border-(--logo-bg)/25 hover:bg-(--logo-bg)/10 active:scale-95"
+          class="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-red-400/40 bg-red-500/10 text-amber-200 shadow-[0_0_12px_rgba(239,68,68,0.35)] transition hover:border-red-300/65 hover:bg-red-500/18 active:scale-95"
           type="button"
           aria-label="Открыть расписание турниров"
           @click="emit('open')"
@@ -133,36 +135,34 @@ const calendarDays = computed<CalendarDay[]>(() => {
         </button>
       </div>
 
-      <div class="mt-3 grid grid-cols-7 gap-1.5">
+      <div class="mt-2 grid grid-cols-7 gap-1.5">
         <div
           v-for="day in calendarDays"
           :key="`${day.weekday}-${day.date}-${day.time}`"
-          class="min-w-0 rounded-xl border px-1 py-2 text-center transition"
+          class="min-w-0 rounded-xl border px-1 py-1.5 text-center transition"
           :class="
             day.active
-              ? 'border-(--logo-bg)/30 bg-(--logo-bg)/10 shadow-[0_10px_28px_rgba(220,38,38,0.12)]'
-              : 'border-white/5 bg-black/18'
+              ? 'border-red-400/55 bg-red-500/12 shadow-[0_0_16px_rgba(239,68,68,0.32)]'
+              : 'border-red-500/14 bg-black/28'
           "
         >
           <div
-            class="text-[10px] leading-none font-black tracking-wide"
-            :class="day.active ? 'text-(--logo-bg)' : 'text-gray-500'"
+            class="text-[10px] leading-none font-black tracking-wide text-amber-200 [text-shadow:0_0_9px_rgba(251,191,36,0.55)]"
           >
             {{ day.weekday }}
           </div>
 
-          <div
-            class="mt-1.5 min-h-7 text-[9px] leading-3 font-semibold text-gray-400"
-            :class="{ 'text-red-100/80': day.active }"
-          >
-            {{ day.date }}
+          <div class="mt-1 min-h-6 text-[9px] leading-3 font-bold text-amber-300/75">
+            <span class="inline-block rounded px-1">
+              {{ day.date }}
+            </span>
           </div>
 
           <div
-            class="text-[13px] leading-none font-black text-white tabular-nums"
+            class="text-[10px] leading-none font-black text-white tabular-nums [text-shadow:0_0_8px_rgba(255,255,255,0.36)]"
             :class="[
               day.active && 'text-white',
-              !day.eventCount && 'text-[10px] text-gray-600 normal-nums',
+              !day.eventCount && 'text-[10px] text-white/42 normal-nums',
             ]"
           >
             {{ day.time }}
