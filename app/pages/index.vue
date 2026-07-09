@@ -30,7 +30,7 @@ type ClientUiBanner = {
 
 const clientUiBanners: Record<ClientUiType, ClientUiBanner> = {
   [ClientUiTypes.POKER]: {
-    image: '/assets/images/duck.jpg',
+    image: '/assets/images/poker-training.png',
     link: '/training/levels',
     label: 'Обучение покеру',
   },
@@ -122,7 +122,7 @@ onMounted(() => {
 
     <NuxtLink
       :to="clientUiBanner.link"
-      class="block aspect-3/1.5 w-full overflow-hidden rounded-2xl border border-white/5 bg-(--secondary)/20 transition active:scale-[0.99]"
+      class="block aspect-10/5 w-full overflow-hidden rounded-2xl border border-white/5 bg-(--secondary)/20 transition active:scale-[0.99]"
       :aria-label="clientUiBanner.label"
     >
       <NuxtImg
