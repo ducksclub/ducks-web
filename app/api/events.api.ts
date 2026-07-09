@@ -59,7 +59,7 @@ export function useEventsApi() {
   }
 
   const getMyEventSeat = (eventId: string) => {
-    return api.request<MySeatResponse>(`/events/${eventId}/seat/me`, {
+    return api.request<MySeatResponse>(`/event-registrations/${eventId}/seat/me`, {
       method: 'GET',
     })
   }
