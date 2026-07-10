@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import type { Content } from '~/types/api/content.types'
 import Accordion from '../ui/Accordion.vue'
 
 type Props = {
-  steps: Pick<Content, 'key' | 'title' | 'body'>[]
+  steps: {
+    key: string
+    title: string
+    body: string
+  }[]
   openedKey: string | null
   isLoading?: boolean
 }
@@ -18,18 +21,19 @@ const emit = defineEmits<{
 <template>
   <div>
     <div v-if="isLoading" class="space-y-3">
-      <div v-for="i in 4" :key="i" class="h-20 animate-pulse rounded-2xl bg-(--secondary)/20" />
+      <div v-for="i in 5" :key="i" class="h-20 animate-pulse rounded-2xl bg-(--secondary)/20" />
     </div>
 
     <div v-else-if="steps.length" class="space-y-3">
       <Accordion
         v-for="(step, index) in steps"
-        :key="index"
+        :key="step.key"
         :index="index"
         :title="step.title"
         :description="step.body"
-        :is-open="openedKey === `level-${index}`"
-        @toggle="emit('toggle', `level-${index}`)"
+        :is-open="openedKey === step.key"
+        wrap
+        @toggle="emit('toggle', step.key)"
       />
     </div>
 
