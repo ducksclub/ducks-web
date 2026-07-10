@@ -21,6 +21,7 @@ const clientUiApi = useClientUiApi()
 
 const events = ref<Event[]>([])
 const clientUiType = ref<ClientUiType>(ClientUiTypes.POKER)
+const UPCOMING_EVENT_VISIBLE_AFTER_START_MS = 3 * 60 * 60 * 1000
 
 type ClientUiBanner = {
   image: string
@@ -70,7 +71,7 @@ const upcomingEvents = computed(() => {
         return endsAt >= now
       }
 
-      return startsAt >= now
+      return startsAt + UPCOMING_EVENT_VISIBLE_AFTER_START_MS >= now
     })
     .sort((a, b) => {
       return new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime()
