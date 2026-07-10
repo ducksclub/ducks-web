@@ -13,3 +13,36 @@ export type ClientUiSetting = {
 }
 
 export type UpdateClientUiPayload = ClientUiSetting
+
+export type ClientUiRegistrationUser = {
+  id: string
+  nickname: string
+  avatarUrl: string | null
+}
+
+export type ClientUiRegistration = {
+  id: string
+  type: ClientUiType
+  createdAt: string
+  user: ClientUiRegistrationUser
+}
+
+export type ClientUiRegistrationsResponse = {
+  type: ClientUiType
+  registrations: ClientUiRegistration[]
+}
+
+export type ClientUiRegistrationStatusResponse = {
+  type: ClientUiType
+  registration: ClientUiRegistration | null
+}
+
+export type CreateClientUiRegistrationResponse = {
+  registration: ClientUiRegistration
+  registrations: ClientUiRegistration[]
+}
+
+export type DeleteClientUiRegistrationResponse = {
+  registration: null
+  registrations: ClientUiRegistration[]
+}
