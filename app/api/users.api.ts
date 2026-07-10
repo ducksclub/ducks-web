@@ -1,4 +1,4 @@
-import type { PublicUserProfile } from '~/types/user'
+import type { GetUsersResponse, PublicUserProfile } from '~/types/user'
 
 export function useUsersApi() {
   const api = useApi()
@@ -9,7 +9,14 @@ export function useUsersApi() {
     })
   }
 
+  const getUsers = () => {
+    return api.request<GetUsersResponse>('/users', {
+      method: 'GET',
+    })
+  }
+
   return {
     getUser,
+    getUsers,
   }
 }

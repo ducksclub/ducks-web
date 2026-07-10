@@ -15,4 +15,19 @@ export type PublicUserProfile = {
   ratings?: UserRating[]
 }
 
+export type AdminUser = PublicUserProfile & {
+  email?: string | null
+  phone?: string | null
+  telegramId?: string | null
+  sourceCode?: string | null
+  sourceType?: string | null
+}
+
+export type GetUsersResponse =
+  | AdminUser[]
+  | {
+      data: AdminUser[]
+      meta?: { page: number; total: number; limit: number; pages: number }
+    }
+
 export type RatingUser = Pick<PublicUserProfile, 'id' | 'avatarUrl' | 'nickname'>

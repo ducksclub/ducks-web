@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CalendarDays, ChevronRight, Image, MessageSquare, Send } from '@lucide/vue'
+import { CalendarDays, ChevronRight, Image, MessageSquare, Send, UserRound } from '@lucide/vue'
 
 import BaseHeader from '~/components/layout/header/BaseHeader.vue'
 import HeaderTitle from '~/components/layout/header/HeaderTitle.vue'
@@ -34,6 +34,12 @@ const menu = computed(() => {
       description: 'Отзывы и предложения от участников',
       path: '/admin/feedback',
       icon: MessageSquare,
+    },
+    {
+      label: 'Пользователи',
+      description: 'Все зарегистрированные пользователи веб-приложения',
+      path: '/admin/users',
+      icon: UserRound,
     },
     {
       label: 'Рассылки',
