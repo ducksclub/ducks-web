@@ -38,26 +38,26 @@ const trainingSections = [
     title: ClientUiTypes.POKER,
     body: 'Базовое и продвинутое обучение игре: правила, комбинации, позиции, банкролл и игровая дисциплина.',
   },
-  {
-    key: 'dealer',
-    title: ClientUiTypes.DEALER,
-    body: 'Обучение работе дилера: раздача, контроль банка, коммуникация за столом и стандарты клуба.',
-  },
-  {
-    key: 'floor',
-    title: ClientUiTypes.FLOOR,
-    body: 'Подготовка флора: организация игры, решение спорных ситуаций и контроль качества сервиса.',
-  },
-  {
-    key: 'administrator',
-    title: ClientUiTypes.ADMINISTRATOR,
-    body: 'Обучение администраторов: прием гостей, запись на события, работа с расписанием и поддержка игроков.',
-  },
-  {
-    key: 'manager',
-    title: ClientUiTypes.MANAGER,
-    body: 'Подготовка управляющих: операционные процессы клуба, команда, сервис и контроль смены.',
-  },
+  // {
+  //   key: 'dealer',
+  //   title: ClientUiTypes.DEALER,
+  //   body: 'Обучение работе дилера: раздача, контроль банка, коммуникация за столом и стандарты клуба.',
+  // },
+  // {
+  //   key: 'floor',
+  //   title: ClientUiTypes.FLOOR,
+  //   body: 'Подготовка флора: организация игры, решение спорных ситуаций и контроль качества сервиса.',
+  // },
+  // {
+  //   key: 'administrator',
+  //   title: ClientUiTypes.ADMINISTRATOR,
+  //   body: 'Обучение администраторов: прием гостей, запись на события, работа с расписанием и поддержка игроков.',
+  // },
+  // {
+  //   key: 'manager',
+  //   title: ClientUiTypes.MANAGER,
+  //   body: 'Подготовка управляющих: операционные процессы клуба, команда, сервис и контроль смены.',
+  // },
 ] as const
 
 const normalizeTitle = (title: string) => title.trim().toUpperCase()
@@ -231,9 +231,7 @@ onMounted(() => {
         </div>
       </div>
 
-      <div v-else class="px-4 py-5 text-sm font-medium text-gray-400">
-        Пока никто не записался
-      </div>
+      <div v-else class="px-4 py-5 text-sm font-medium text-gray-400">Пока никто не записался</div>
     </section>
 
     <Information class="mt-4">
