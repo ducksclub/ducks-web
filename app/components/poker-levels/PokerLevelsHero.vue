@@ -14,14 +14,15 @@ import { GraduationCap } from '@lucide/vue'
       <h1 class="text-xl font-black text-white">Обучение в клубе</h1>
 
       <p class="mt-2 text-sm leading-relaxed text-gray-400">
-        На одной странице собраны направления обучения для игроков и команды клуба. Откройте
-        нужный блок, чтобы посмотреть детали.
+        На одной странице собраны направления обучения для игроков и команды клуба. Откройте нужный
+        блок, чтобы посмотреть детали.
       </p>
 
       <div
         class="mt-4 inline-flex rounded-xl border border-red-500/10 bg-red-500/10 px-3 py-2 text-xs font-semibold text-red-200"
       >
-        Покер • Дилер • Флор • Администратор • Управляющий
+        <!-- Покер • Дилер • Флор • Администратор • Управляющий -->
+        Покер
       </div>
     </div>
   </div>
