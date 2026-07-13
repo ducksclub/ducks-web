@@ -85,8 +85,6 @@ const styles = computed(() => {
         {{ styles?.icon }}
       </div>
 
-      <div class="absolute inset-0 bg-linear-to-t from-black/90 via-black/35 to-black/10" />
-
       <div class="absolute right-0 bottom-0 p-2.5">
         <div class="inline-flex min-w-0 flex-col items-end gap-2">
           <p
