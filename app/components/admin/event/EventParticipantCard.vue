@@ -1,13 +1,22 @@
 <script setup lang="ts">
-import type { Event } from '~/types/event'
+import type { Event as GameEvent } from '~/types/event'
 
 defineProps<{
   participant: any
   index: number
-  event?: Event
+  event?: GameEvent
+}>()
+
+const emit = defineEmits<{
+  (e: 'update-points', points: number): void
 }>()
 
 const isFocused = ref(false)
+
+const updatePoints = (event: globalThis.Event) => {
+  const value = Number((event.target as HTMLInputElement).value)
+  emit('update-points', Number.isFinite(value) ? Math.max(0, Math.trunc(value)) : 0)
+}
 </script>
 
 <template>
@@ -74,7 +83,7 @@ const isFocused = ref(false)
 
         <input
           :id="`participant-points-${participant.id}`"
-          v-model.number="participant.points"
+          :value="participant.points"
           type="number"
           min="0"
           step="1"
@@ -82,6 +91,7 @@ const isFocused = ref(false)
           :disabled="event?.status === 'completed'"
           class="h-9 w-full appearance-none m-0 rounded-xl border border-white/10 bg-(--bg) px-2 text-center text-sm font-black tabular-nums text-white outline-none transition-all placeholder:text-gray-600 focus:border-(--logo-bg)/50 focus:bg-black/25 focus:ring-2 focus:ring-(--logo-bg)/10 disabled:cursor-not-allowed disabled:opacity-60"
           placeholder="0"
+          @input="updatePoints"
         />
       </div>
     </div>

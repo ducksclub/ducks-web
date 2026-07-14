@@ -89,7 +89,7 @@ export type CreateEventPayload = {
 export type ReorderParticipantsPayload = {
   participants: {
     userId: string
-    position: number
+    points: number
   }[]
 }
 
@@ -110,5 +110,6 @@ export type Participant = {
   createdAt: string
   cancelledAt: string
   position: number | null
+  points: number
   user: AuthUser
 }

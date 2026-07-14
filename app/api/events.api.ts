@@ -4,6 +4,7 @@ import type {
   EventsResponse,
   FinalizeEventResponse,
   GetEventParticipantsResponse,
+  Participant,
   ReorderParticipantsPayload,
   TemplatesResponse,
   UpdateEventParams,
@@ -76,11 +77,16 @@ export function useEventsApi() {
     })
   }
 
-  const reorderParticipants = (eventId: string, payload: ReorderParticipantsPayload) => {
-    return api.request(`/event-results/${eventId}/participants/reorder`, {
+  const reorderParticipants = async (eventId: string, payload: ReorderParticipantsPayload) => {
+    const response = await api.request<{ data: Participant[] }>(
+      `/event-results/${eventId}/participants/reorder`,
+      {
       method: 'PATCH',
       body: payload,
-    })
+      },
+    )
+
+    return response.data
   }
 
   const createEvent = (payload: CreateEventPayload) => {

@@ -23,6 +23,39 @@ const participants = ref<Participant[]>([])
 
 const isLoading = ref(true)
 const isFinalizing = ref(false)
+let reorderTimer: ReturnType<typeof setTimeout> | undefined
+let reorderVersion = 0
+
+const updatePoints = (participantId: string, points: number) => {
+  if (event.value?.status === 'completed') return
+
+  const participant = participants.value.find((item) => item.id === participantId)
+  if (!participant) return
+
+  participant.points = points
+  reorderVersion += 1
+  const requestVersion = reorderVersion
+
+  clearTimeout(reorderTimer)
+  reorderTimer = setTimeout(async () => {
+    try {
+      const updatedParticipants = await api.reorderParticipants(id, {
+        participants: participants.value.map((item) => ({
+          userId: item.userId,
+          points: item.points ?? 0,
+        })),
+      })
+
+      if (requestVersion === reorderVersion) {
+        participants.value = updatedParticipants
+      }
+    } catch (error: any) {
+      useNotify().error(error?.data?.message || 'Не удалось сохранить баллы')
+    }
+  }, 500)
+}
+
+onBeforeUnmount(() => clearTimeout(reorderTimer))
 
 const load = async () => {
   isLoading.value = true
@@ -76,5 +109,6 @@ const finalize = async () => {
     :loading="isLoading"
     :participants="participants"
     :event="event"
+    @update-points="updatePoints"
   />
 </template>

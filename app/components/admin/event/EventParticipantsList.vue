@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import type { Event } from '~/types/event'
+import type { Event, Participant } from '~/types/event'
 import EventParticipantCard from './EventParticipantCard.vue'
 import EventParticipantSkeleton from './EventParticipantSkeleton.vue'
 
 defineProps<{
-  participants: any[]
+  participants: Participant[]
   event?: Event
   loading: boolean
 }>()
 
+const emit = defineEmits<{
+  (e: 'update-points', participantId: string, points: number): void
+}>()
 </script>
 
 <template>
@@ -23,6 +26,7 @@ defineProps<{
       :participant="p"
       :index="i"
       :event="event"
+      @update-points="emit('update-points', p.id, $event)"
     />
   </div>
 </template>
