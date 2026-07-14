@@ -22,9 +22,7 @@ const event = ref<Event>()
 const participants = ref<Participant[]>([])
 
 const isLoading = ref(true)
-const isSavingOrder = ref(false)
 const isFinalizing = ref(false)
-const isDirty = ref(false)
 
 const load = async () => {
   isLoading.value = true
@@ -40,39 +38,6 @@ const load = async () => {
 }
 
 onMounted(load)
-
-const move = (from: number, direction: 'up' | 'down') => {
-  if (event.value?.status === 'completed') return
-
-  const to = direction === 'up' ? from - 1 : from + 1
-  if (to < 0 || to >= participants.value.length) return // @ts-ignore
-  ;[participants.value[from], participants.value[to]] = [
-    participants.value[to],
-    participants.value[from],
-  ]
-
-  isDirty.value = true
-}
-
-const save = async () => {
-  if (!isDirty.value) return
-
-  isSavingOrder.value = true
-
-  try {
-    await api.reorderParticipants(id, {
-      participants: participants.value.map((p, i) => ({
-        userId: p.userId || p.user?.id,
-        position: i + 1,
-      })),
-    })
-
-    isDirty.value = false
-    await load()
-  } finally {
-    isSavingOrder.value = false
-  }
-}
 
 const finalize = async () => {
   if (event.value?.status === 'completed') return
@@ -102,8 +67,6 @@ const finalize = async () => {
 
     <template #right>
       <HeaderMenu>
-        <HeaderMenuItem :disabled="!isDirty" @click="save"> Сохранить </HeaderMenuItem>
-
         <HeaderMenuItem danger @click="finalize"> Завершить </HeaderMenuItem>
       </HeaderMenu>
     </template>
@@ -113,6 +76,5 @@ const finalize = async () => {
     :loading="isLoading"
     :participants="participants"
     :event="event"
-    @move="move"
   />
 </template>

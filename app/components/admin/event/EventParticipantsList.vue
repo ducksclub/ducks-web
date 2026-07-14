@@ -9,11 +9,6 @@ defineProps<{
   loading: boolean
 }>()
 
-const emit = defineEmits<{
-  (e: 'move', index: number, direction: 'up' | 'down'): void
-}>()
-
-const move = (i: number, dir: 'up' | 'down') => emit('move', i, dir)
 </script>
 
 <template>
@@ -28,7 +23,6 @@ const move = (i: number, dir: 'up' | 'down') => emit('move', i, dir)
       :participant="p"
       :index="i"
       :event="event"
-      @move="move(i, $event)"
     />
   </div>
 </template>
