@@ -13,6 +13,8 @@ useHead({
 const auth = useAuthProvider()
 const router = useRouter()
 
+onMounted(() => auth.restoreSession())
+
 const menu = [
   { label: 'Мои турниры', path: '/profile/events' },
   { label: 'Настройки профиля', path: '/profile/settings' },
