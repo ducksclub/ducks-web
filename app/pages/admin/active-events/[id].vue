@@ -9,7 +9,7 @@ import EventParticipantsList from '~/components/admin/event/EventParticipantsLis
 import type { Event, Participant } from '~/types/event'
 
 definePageMeta({
-  layout: 'admin',
+  layout: 'empty',
   middleware: 'admin',
 })
 
