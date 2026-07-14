@@ -10,6 +10,7 @@ import type {
   SignUpPayload,
   UpdateProfilePayload,
 } from '~/types/auth.types'
+import { useApi } from './useApi'
 
 export function useAuthProvider() {
   const auth = useAuthStore()
