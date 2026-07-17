@@ -29,6 +29,7 @@ const { uploadImage, isUploading } = useUploadApi()
 
 const isLoading = ref(true)
 const isSaving = ref(false)
+const isSaveConfirmOpen = ref(false)
 const errorMessage = ref('')
 
 const form = reactive({
@@ -218,9 +219,19 @@ const updateEvent = async () => {
       class="w-full"
       :disabled="isSaving || isUploading"
       :loading="isSaving || isUploading"
-      @click="updateEvent"
+      @click="isSaveConfirmOpen = true"
     >
       Сохранить изменения
     </BaseButton>
   </div>
+
+  <UiConfirmDialog
+    :open="isSaveConfirmOpen"
+    title="Сохранить изменения?"
+    description="Новые данные события станут доступны пользователям сразу после сохранения."
+    confirm-label="Сохранить"
+    :loading="isSaving || isUploading"
+    @close="isSaveConfirmOpen = false"
+    @confirm="updateEvent"
+  />
 </template>

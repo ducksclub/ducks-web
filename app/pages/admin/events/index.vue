@@ -26,6 +26,8 @@ const selectedStatus = ref()
 const events = ref<Event[]>([])
 const isLoading = ref(true)
 const errorMessage = ref('')
+const eventToDelete = ref<Event | null>(null)
+const isDeleting = ref(false)
 
 const fetchEvents = async () => {
   isLoading.value = true
@@ -44,13 +46,26 @@ const fetchEvents = async () => {
 }
 
 const handleDeleteEvent = async (eventId: string) => {
-  await notify.promise(deleteEvent({ id: eventId }), {
-    loading: 'Удаление...',
-    success: 'Успешно удалено',
-    error: 'Ошибка удаления',
-  })
+  eventToDelete.value = events.value.find((event) => event.id === eventId) ?? null
+}
 
-  await fetchEvents()
+const confirmDeleteEvent = async () => {
+  if (!eventToDelete.value || isDeleting.value) return
+
+  isDeleting.value = true
+
+  try {
+    await notify.promise(deleteEvent({ id: eventToDelete.value.id }), {
+      loading: 'Удаление...',
+      success: 'Успешно удалено',
+      error: 'Ошибка удаления',
+    })
+
+    eventToDelete.value = null
+    await fetchEvents()
+  } finally {
+    isDeleting.value = false
+  }
 }
 
 const go = (to: string) => {
@@ -128,4 +143,15 @@ watch([selectedCategory, selectedStatus], fetchEvents, {
       />
     </div>
   </div>
+
+  <UiConfirmDialog
+    :open="Boolean(eventToDelete)"
+    title="Удалить событие?"
+    :description="`Событие «${eventToDelete?.title ?? ''}» будет удалено без возможности восстановления.`"
+    confirm-label="Удалить"
+    danger
+    :loading="isDeleting"
+    @close="eventToDelete = null"
+    @confirm="confirmDeleteEvent"
+  />
 </template>

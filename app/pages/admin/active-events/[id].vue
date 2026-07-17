@@ -23,6 +23,7 @@ const participants = ref<Participant[]>([])
 
 const isLoading = ref(true)
 const isFinalizing = ref(false)
+const isFinalizeConfirmOpen = ref(false)
 let reorderTimer: ReturnType<typeof setTimeout> | undefined
 let reorderVersion = 0
 
@@ -75,12 +76,11 @@ onMounted(load)
 const finalize = async () => {
   if (event.value?.status === 'completed') return
 
-  if (!confirm('Финализировать событие?')) return
-
   isFinalizing.value = true
 
   try {
     await api.finalizeEvent(id)
+    isFinalizeConfirmOpen.value = false
     await load()
   } finally {
     isFinalizing.value = false
@@ -100,7 +100,7 @@ const finalize = async () => {
 
     <template #right>
       <HeaderMenu>
-        <HeaderMenuItem danger @click="finalize"> Завершить </HeaderMenuItem>
+        <HeaderMenuItem danger @click="isFinalizeConfirmOpen = true"> Завершить </HeaderMenuItem>
       </HeaderMenu>
     </template>
   </BaseHeader>
@@ -110,5 +110,16 @@ const finalize = async () => {
     :participants="participants"
     :event="event"
     @update-points="updatePoints"
+  />
+
+  <UiConfirmDialog
+    :open="isFinalizeConfirmOpen"
+    title="Завершить событие?"
+    description="Результаты будут зафиксированы, баллы начислены участникам, а дальнейшее редактирование станет недоступно."
+    confirm-label="Завершить"
+    danger
+    :loading="isFinalizing"
+    @close="isFinalizeConfirmOpen = false"
+    @confirm="finalize"
   />
 </template>
