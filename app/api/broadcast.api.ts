@@ -1,4 +1,9 @@
-import type { CreateBroadcastPayload, CreateBroadcastResponse } from '~/types/broadcast'
+import type {
+  BroadcastDetailResponse,
+  BroadcastListResponse,
+  CreateBroadcastPayload,
+  CreateBroadcastResponse,
+} from '~/types/broadcast'
 
 export function useBroadcastApi() {
   const api = useApi()
@@ -10,7 +15,19 @@ export function useBroadcastApi() {
     })
   }
 
+  const getBroadcasts = (page = 1, limit = 20) => {
+    return api.request<BroadcastListResponse>('/broadcasts', {
+      query: { page, limit },
+    })
+  }
+
+  const getBroadcast = (id: string) => {
+    return api.request<BroadcastDetailResponse>(`/broadcasts/${id}`)
+  }
+
   return {
     createBroadcast,
+    getBroadcasts,
+    getBroadcast,
   }
 }
