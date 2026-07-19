@@ -7,10 +7,7 @@ export type Feedback = {
   user: AuthUser
 }
 
-export type GetFeedbackResponse = {
-  data: Feedback[]
-  meta: { page: number; total: number; limit: number; pages: number }
-}
+export type GetFeedbackResponse = Feedback[]
 
 export type CreateFeedbackPayload = {
   message: string

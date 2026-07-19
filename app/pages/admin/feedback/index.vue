@@ -25,8 +25,8 @@ const loadFeedbacks = async () => {
   isLoading.value = true
 
   try {
-    const res = await getFeedback()
-    feedbacks.value = res.data
+    const data = await getFeedback()
+    feedbacks.value = data
   } finally {
     isLoading.value = false
   }
@@ -94,14 +94,14 @@ onMounted(loadFeedbacks)
         <div
           class="size-10 flex items-center justify-center rounded-2xl bg-(--logo-bg)/10 text-(--logo-bg) font-black"
         >
-          {{ getInitial(f.user.nickname) }}
+          {{ getInitial(f.user?.nickname || 'Unknown') }}
         </div>
 
         <!-- CONTENT -->
         <div class="flex-1 min-w-0">
           <div class="flex items-center justify-between">
             <p class="text-sm font-semibold truncate">
-              {{ f.user.nickname || 'Unknown' }}
+              {{ f.user?.nickname || 'Unknown' }}
             </p>
 
             <span class="text-[10px] text-gray-500">
@@ -110,7 +110,7 @@ onMounted(loadFeedbacks)
           </div>
 
           <p class="text-xs text-gray-400 mt-1 truncate">
-            {{ f.user?.email }}
+            {{ f.user?.email || 'Unknown' }}
           </p>
 
           <p class="text-sm text-gray-200 mt-3 leading-relaxed whitespace-pre-wrap">
