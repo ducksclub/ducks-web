@@ -90,6 +90,7 @@ export type ReorderParticipantsPayload = {
   participants: {
     userId: string
     points: number
+    bounty: number
   }[]
 }
 
@@ -111,5 +112,6 @@ export type Participant = {
   cancelledAt: string
   position: number | null
   points: number
+  bounty: number
   user: AuthUser
 }

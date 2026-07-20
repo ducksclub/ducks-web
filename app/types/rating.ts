@@ -5,6 +5,7 @@ export type Rating = {
   userId: string
   gameType: string
   points: number
+  bounty?: number | null
   createdAt: string
   updatedAt: string
   user: RatingUser

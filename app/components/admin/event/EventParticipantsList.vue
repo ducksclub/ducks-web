@@ -11,6 +11,7 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: 'update-points', participantId: string, points: number): void
+  (e: 'update-bounty', participantId: string, bounty: number): void
 }>()
 </script>
 
@@ -27,6 +28,7 @@ const emit = defineEmits<{
       :index="i"
       :event="event"
       @update-points="emit('update-points', p.id, $event)"
+      @update-bounty="emit('update-bounty', p.id, $event)"
     />
   </div>
 </template>

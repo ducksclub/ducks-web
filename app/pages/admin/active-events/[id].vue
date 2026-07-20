@@ -27,13 +27,17 @@ const isFinalizeConfirmOpen = ref(false)
 let reorderTimer: ReturnType<typeof setTimeout> | undefined
 let reorderVersion = 0
 
-const updatePoints = (participantId: string, points: number) => {
+const updateParticipantResult = (
+  participantId: string,
+  field: 'points' | 'bounty',
+  value: number,
+) => {
   if (event.value?.status === 'completed') return
 
   const participant = participants.value.find((item) => item.id === participantId)
   if (!participant) return
 
-  participant.points = points
+  participant[field] = value
   reorderVersion += 1
   const requestVersion = reorderVersion
 
@@ -44,6 +48,7 @@ const updatePoints = (participantId: string, points: number) => {
         participants: participants.value.map((item) => ({
           userId: item.userId,
           points: item.points ?? 0,
+          bounty: item.bounty ?? 0,
         })),
       })
 
@@ -55,6 +60,12 @@ const updatePoints = (participantId: string, points: number) => {
     }
   }, 500)
 }
+
+const updatePoints = (participantId: string, points: number) =>
+  updateParticipantResult(participantId, 'points', points)
+
+const updateBounty = (participantId: string, bounty: number) =>
+  updateParticipantResult(participantId, 'bounty', bounty)
 
 onBeforeUnmount(() => clearTimeout(reorderTimer))
 
@@ -110,6 +121,7 @@ const finalize = async () => {
     :participants="participants"
     :event="event"
     @update-points="updatePoints"
+    @update-bounty="updateBounty"
   />
 
   <UiConfirmDialog

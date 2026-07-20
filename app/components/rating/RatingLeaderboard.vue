@@ -1,11 +1,15 @@
 <script setup lang="ts">
+import { EventGameType, type EventGameType as GameType } from '~/types/event'
 import type { Rating } from '~/types/rating'
 
 const props = defineProps<{
   rating: Rating[]
+  gameType: GameType
 }>()
 
 const { user } = useAuthStore()
+
+const showBounty = computed(() => props.gameType === EventGameType.POKER)
 
 const isMe = (id: string) => id === user?.id
 
@@ -55,7 +59,8 @@ const showMeBadge = (item: Rating) => isMe(item.user.id)
     class="mt-4 grid grid-cols-12 px-4 mb-2 text-[10px] font-black text-gray-600 uppercase tracking-[0.2em]"
   >
     <div class="col-span-2">#</div>
-    <div class="col-span-7">Игрок</div>
+    <div :class="showBounty ? 'col-span-5' : 'col-span-7'">Игрок</div>
+    <div v-if="showBounty" class="col-span-2 text-right">Баунти</div>
     <div class="col-span-3 text-right">Очки</div>
   </div>
 
@@ -75,7 +80,10 @@ const showMeBadge = (item: Rating) => isMe(item.user.id)
         </span>
       </div>
 
-      <div class="col-span-7 flex items-center gap-3 min-w-0">
+      <div
+        class="flex min-w-0 items-center gap-3"
+        :class="showBounty ? 'col-span-5' : 'col-span-7'"
+      >
         <NuxtImg
           v-if="item.user?.avatarUrl"
           class="w-9 h-9 rounded-full flex items-center justify-center border text-xs font-black tracking-wide"
@@ -104,6 +112,13 @@ const showMeBadge = (item: Rating) => isMe(item.user.id)
             вы
           </div>
         </div>
+      </div>
+
+      <div
+        v-if="showBounty"
+        class="col-span-2 text-right text-sm font-bold tabular-nums text-gray-400"
+      >
+        {{ item.bounty ?? 0 }}
       </div>
 
       <div class="col-span-3 text-right font-black text-sm tabular-nums" :class="pointsClass(item)">
