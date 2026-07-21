@@ -11,12 +11,4 @@ export type Rating = {
   user: RatingUser
 }
 
-export type RatingResponse = {
-  data: Rating[]
-  meta: {
-    page: number
-    total: number
-    limit: number
-    pages: number
-  }
-}
+export type RatingResponse = Rating[]

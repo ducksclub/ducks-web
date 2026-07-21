@@ -18,11 +18,11 @@ export function useRatingQuery(gameType: Ref<string>) {
       isLoading.value = true
       error.value = null
 
-      const res = await api.getRating(gameType.value)
+      const ratings = await api.getRating(gameType.value)
 
       if (current !== requestId) return
 
-      rating.value = res.data
+      rating.value = ratings
     } catch {
       if (current !== requestId) return
 
