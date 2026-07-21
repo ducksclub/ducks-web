@@ -29,7 +29,7 @@ const { rating, isLoading, error } = useRatingQuery(activeTab)
     </template>
   </BaseHeader>
 
-  <main class="px-4 pb-6 pt-4">
+  <main class="px-4 pt-4 pb-28">
     <RatingTabsSegmented v-model="activeTab" :items="tabs" />
 
     <!-- <section class="mt-4 overflow-hidden rounded-3xl border border-white/10 bg-white/3">
@@ -52,8 +52,6 @@ const { rating, isLoading, error } = useRatingQuery(activeTab)
       <div v-else-if="error" class="text-center text-sm text-(--warning)">
         {{ error }}
       </div>
-
-      <div v-else-if="!rating.length" class="text-center text-sm text-gray-500">Нет данных</div>
 
       <RatingLeaderboard v-else :rating="rating" :game-type="activeTab" />
     </div>
