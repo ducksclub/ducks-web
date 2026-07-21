@@ -7,6 +7,7 @@ type ApiRequestOptions<TBody = unknown> = {
   body?: TBody
   query?: Record<string, QueryValue>
   auth?: boolean
+  timeout?: number
 }
 
 function buildQuery(query?: Record<string, QueryValue>) {
@@ -41,7 +42,7 @@ export function useApi() {
       url,
       method: options.method || 'GET',
       data: options.body,
-      timeout: 10000,
+      timeout: options.timeout ?? 10000,
       headers: {
         ...(options.auth !== false && auth.token
           ? {

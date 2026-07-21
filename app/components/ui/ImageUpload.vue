@@ -2,6 +2,9 @@
 import { CircleStencil, RectangleStencil, Cropper } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
 
+const MAX_IMAGE_SIZE = 20 * 1024 * 1024
+const ALLOWED_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp'])
+
 const props = withDefaults(
   defineProps<{
     modelValue?: string
@@ -32,6 +35,9 @@ const isCropperOpen = ref(false)
 const tempImage = ref('')
 const originalFileName = ref('image.jpg')
 const originalFileType = ref('image/jpeg')
+const validationError = ref('')
+
+const displayedError = computed(() => validationError.value || props.error)
 
 const stencilComponent = computed(() => {
   return props.cropShape === 'circle' ? CircleStencil : RectangleStencil
@@ -62,6 +68,20 @@ const onFileChange = (event: Event) => {
   const file = target.files?.[0]
 
   if (!file) {
+    return
+  }
+
+  validationError.value = ''
+
+  if (file.size > MAX_IMAGE_SIZE) {
+    validationError.value = 'Размер изображения не должен превышать 20 МБ'
+    target.value = ''
+    return
+  }
+
+  if (!ALLOWED_IMAGE_TYPES.has(file.type)) {
+    validationError.value = 'Поддерживаются только изображения JPEG, PNG и WebP'
+    target.value = ''
     return
   }
 
@@ -132,7 +152,7 @@ onBeforeUnmount(() => {
         class="group relative flex cursor-pointer items-center justify-center overflow-hidden border border-dashed transition"
         :class="[
           cropShape === 'circle' ? 'size-56 rounded-full' : 'h-56 w-full rounded-3xl',
-          error
+          displayedError
             ? 'border-red-500/40 bg-red-500/5 hover:border-red-500/60'
             : 'border-white/10 bg-(--secondary)/10 hover:border-(--primary)/40',
         ]"
@@ -168,7 +188,7 @@ onBeforeUnmount(() => {
 
           <div>
             <p class="text-sm font-medium">Загрузить изображение</p>
-            <p class="mt-1 text-xs text-gray-400">PNG, JPG, WEBP</p>
+            <p class="mt-1 text-xs text-gray-400">PNG, JPG, WEBP · до 20 МБ</p>
           </div>
         </div>
 
@@ -180,14 +200,19 @@ onBeforeUnmount(() => {
           Изменить
         </div>
 
-        <input type="file" accept="image/*" class="hidden" @change="onFileChange" />
+        <input
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          class="hidden"
+          @change="onFileChange"
+        />
       </label>
     </div>
 
     <p v-if="loading" class="mt-2 text-xs text-gray-500">Загрузка изображения...</p>
 
-    <p v-if="error" class="mt-2 text-xs text-red-400">
-      {{ error }}
+    <p v-if="displayedError" class="mt-2 text-xs text-red-400">
+      {{ displayedError }}
     </p>
 
     <Teleport to="body">
