@@ -1,4 +1,10 @@
-import type { GetUsersResponse, PublicUserProfile } from '~/types/user'
+import type { EventGameType } from '~/types/event'
+import type {
+  GetUsersResponse,
+  PublicUserProfile,
+  UpdateUserGameStatsPayload,
+  UpdateUserGameStatsResponse,
+} from '~/types/user'
 
 export function useUsersApi() {
   const api = useApi()
@@ -15,8 +21,23 @@ export function useUsersApi() {
     })
   }
 
+  const updateUserGameStats = (
+    userId: string,
+    gameType: EventGameType,
+    payload: UpdateUserGameStatsPayload,
+  ) => {
+    return api.request<UpdateUserGameStatsResponse, UpdateUserGameStatsPayload>(
+      `/users/${encodeURIComponent(userId)}/stats/${encodeURIComponent(gameType)}`,
+      {
+        method: 'PATCH',
+        body: payload,
+      },
+    )
+  }
+
   return {
     getUser,
     getUsers,
+    updateUserGameStats,
   }
 }
