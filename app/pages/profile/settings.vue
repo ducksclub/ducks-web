@@ -51,11 +51,11 @@ const saveProfile = async () => {
     }
 
     await auth.updateProfile({
-      email: form.email,
-      nickname: form.nickname,
-      phone: form.phone,
-      avatarUrl: imageUrl,
-      avatarHash: imageHash,
+      ...(form.email.trim() && { email: form.email }),
+      ...(form.nickname.trim() && { nickname: form.nickname }),
+      ...(form.phone.trim() && { phone: form.phone }),
+      ...(imageUrl.trim() && { avatarUrl: imageUrl }),
+      ...(imageHash.trim() && { avatarHash: imageHash }),
     })
     notify.success('Профиль сохранен')
     await auth.restoreSession()

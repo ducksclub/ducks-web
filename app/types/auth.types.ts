@@ -46,11 +46,11 @@ export type SignInWithTelegramOidcPayload = {
 }
 
 export type UpdateProfilePayload = {
-  email: string
-  phone: string
-  nickname: string
-  avatarUrl: string
-  avatarHash: string
+  email?: string
+  phone?: string
+  nickname?: string
+  avatarUrl?: string
+  avatarHash?: string
 }
 
 export type SignUpPayload = {
