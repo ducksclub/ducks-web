@@ -1,15 +1,27 @@
 import { getEventIdFromStartParam } from '~/utils/telegramStartParam'
 
-export default defineNuxtPlugin(async () => {
-  const route = useRoute()
+export default defineNuxtPlugin((nuxtApp) => {
+  const router = useRouter()
   const telegram = useTelegramWebApp()
-  const eventId = getEventIdFromStartParam(telegram.getStartParam())
+  let handledStartParam = ''
 
-  if (!eventId) return
+  const openEventFromStartParam = async () => {
+    const startParam = telegram.getStartParam()
 
-  const eventPath = `/events/${eventId}`
+    if (!startParam || startParam === handledStartParam) return
 
-  if (route.path === eventPath) return
+    handledStartParam = startParam
 
-  await navigateTo(eventPath, { replace: true })
+    const eventId = getEventIdFromStartParam(startParam)
+
+    if (!eventId) return
+
+    const eventPath = `/events/${eventId}`
+
+    if (router.currentRoute.value.path === eventPath) return
+
+    await router.replace(eventPath)
+  }
+
+  nuxtApp.hook('app:mounted', openEventFromStartParam)
 })

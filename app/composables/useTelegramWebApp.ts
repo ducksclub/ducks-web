@@ -97,6 +97,13 @@ export function useTelegramWebApp() {
       return telegramStartParam.trim()
     }
 
+    const freshInitData = getWebApp()?.initData || getInitDataFromUrl()
+    const signedStartParam = freshInitData
+      ? new URLSearchParams(freshInitData).get('start_param')
+      : null
+
+    if (signedStartParam?.trim()) return signedStartParam.trim()
+
     const sources = [
       window.location.hash.replace(/^#/, ''),
       window.location.search.replace(/^\?/, ''),
