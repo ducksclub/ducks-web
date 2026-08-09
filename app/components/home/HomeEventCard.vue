@@ -13,6 +13,11 @@ const props = defineProps<{
   event: Event
 }>()
 
+const eventStartDate = formatDate(props.event.startsAt, {
+  dateStyle: 'medium',
+  timeStyle: 'short',
+})
+
 const styles = computed(() => {
   const map: Record<EventGameType, EventGameTypeStyle> = {
     quiz: {
@@ -90,12 +95,7 @@ const styles = computed(() => {
           <p
             class="rounded-xl border border-white/10 bg-black/60 px-2.5 py-2 text-[10px] font-medium leading-tight text-white/85 shadow-[0_8px_24px_rgba(0,0,0,0.4)] backdrop-blur-md drop-shadow-[0_1px_5px_rgba(0,0,0,0.9)] w-fit"
           >
-            {{
-              formatDate(event.startsAt, {
-                dateStyle: 'medium',
-                timeStyle: 'short',
-              })
-            }}
+            {{ eventStartDate }}
           </p>
 
           <span
