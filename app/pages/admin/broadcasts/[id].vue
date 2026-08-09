@@ -55,7 +55,22 @@ onMounted(loadBroadcast)
 
     <template v-else-if="broadcast">
       <section class="rounded-3xl border border-white/5 bg-(--secondary)/20 p-4">
+        <img
+          v-if="broadcast.imageUrl"
+          :src="renderPicture(broadcast.imageUrl)"
+          alt="Изображение рассылки"
+          class="mb-4 max-h-96 w-full rounded-2xl object-cover"
+        />
         <p class="whitespace-pre-wrap text-sm leading-relaxed">{{ broadcast.message }}</p>
+        <a
+          v-if="broadcast.buttonText && broadcast.buttonUrl"
+          :href="broadcast.buttonUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-4 flex w-full items-center justify-center rounded-2xl bg-(--logo-bg) px-4 py-3 text-sm font-black text-black"
+        >
+          {{ broadcast.buttonText }}
+        </a>
         <p class="mt-3 text-[11px] text-gray-500">
           {{ formatDate(broadcast.createdAt, { dateStyle: 'medium', timeStyle: 'short' }) }}
         </p>

@@ -1,5 +1,8 @@
 export type CreateBroadcastPayload = {
   message: string
+  imageUrl?: string
+  buttonText?: string
+  buttonUrl?: string
 }
 
 export type CreateBroadcastResponse = {
@@ -7,6 +10,9 @@ export type CreateBroadcastResponse = {
   data: {
     id: string
     message: string
+    imageUrl: string | null
+    buttonText: string | null
+    buttonUrl: string | null
     totalUsers: number
     createdCount: number
     skippedCount: number
@@ -23,6 +29,9 @@ export type BroadcastDelivery = {
 export type BroadcastListItem = {
   id: string
   message: string
+  imageUrl: string | null
+  buttonText: string | null
+  buttonUrl: string | null
   totalUsers: number
   createdCount: number
   skippedCount: number
