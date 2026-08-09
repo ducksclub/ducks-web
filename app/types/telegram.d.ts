@@ -6,7 +6,11 @@ interface TelegramHapticFeedback {
 
 interface TelegramWebApp {
   initData: string
-  initDataUnsafe: any
+  initDataUnsafe: {
+    start_param?: string
+    startParam?: string
+    [key: string]: unknown
+  }
   version: string
   platform: string
 

@@ -28,15 +28,19 @@ const buttonFieldsMatch = computed(() => hasButtonText.value === hasButtonUrl.va
 const isButtonUrlValid = computed(() => {
   if (!hasButtonUrl.value) return true
 
+  const buttonUrl = form.buttonUrl.trim()
+
+  if (buttonUrl.startsWith('/')) return true
+
   try {
-    return ['http:', 'https:'].includes(new URL(form.buttonUrl.trim()).protocol)
+    return ['http:', 'https:'].includes(new URL(buttonUrl).protocol)
   } catch {
     return false
   }
 })
 const buttonError = computed(() => {
   if (!buttonFieldsMatch.value) return 'Название и ссылка кнопки должны быть заполнены вместе'
-  if (!isButtonUrlValid.value) return 'Ссылка должна начинаться с http:// или https://'
+  if (!isButtonUrlValid.value) return 'Укажите путь /page или полную ссылку'
   return ''
 })
 const isValid = computed(
@@ -111,9 +115,10 @@ async function submit() {
       />
       <BaseInput
         v-model="form.buttonUrl"
-        type="url"
-        label="Ссылка на кнопку"
-        placeholder="https://example.com"
+        type="text"
+        label="Страница в Web App"
+        placeholder="/events/event-id"
+        hint="Можно указать путь внутри приложения или полный URL"
         :error="buttonError"
       />
     </div>

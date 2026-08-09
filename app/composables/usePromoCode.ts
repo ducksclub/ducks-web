@@ -1,4 +1,5 @@
 import { usePromoLinksApi, type PromoLinkType } from '~/api/promoLinksApi'
+import { isEventStartParam } from '~/utils/telegramStartParam'
 
 const PROMO_CODE_KEY = 'promoCode'
 const PROMO_LINK_TYPE_KEY = 'promoLinkType'
@@ -13,6 +14,8 @@ const normalizePromoCode = (value: unknown) => {
   } else {
     code = typeof value === 'string' ? value.trim() : ''
   }
+
+  if (isEventStartParam(code)) return ''
 
   return PROMO_CODE_PATTERN.test(code) ? code : ''
 }
@@ -30,9 +33,7 @@ export function usePromoCode() {
   const getPromoCodeFromTelegram = () => {
     if (!process.client) return ''
 
-    const initDataUnsafe = window.Telegram?.WebApp?.initDataUnsafe
-
-    return normalizePromoCode(initDataUnsafe?.start_param || initDataUnsafe?.startParam)
+    return normalizePromoCode(useTelegramWebApp().getStartParam())
   }
 
   const getPromoCodeFromUrl = () => {

@@ -87,6 +87,34 @@ export function useTelegramWebApp() {
     return Boolean(getInitData())
   }
 
+  function getStartParam() {
+    if (!import.meta.client) return ''
+
+    const initDataUnsafe = getWebApp()?.initDataUnsafe
+    const telegramStartParam = initDataUnsafe?.start_param ?? initDataUnsafe?.startParam
+
+    if (typeof telegramStartParam === 'string' && telegramStartParam.trim()) {
+      return telegramStartParam.trim()
+    }
+
+    const sources = [
+      window.location.hash.replace(/^#/, ''),
+      window.location.search.replace(/^\?/, ''),
+    ]
+
+    for (const source of sources) {
+      const params = new URLSearchParams(source)
+      const startParam =
+        params.get('tgWebAppStartParam') ||
+        params.get('startapp') ||
+        params.get('start_param')
+
+      if (startParam?.trim()) return startParam.trim()
+    }
+
+    return ''
+  }
+
   return {
     getWebApp,
     getStoredInitData,
@@ -94,5 +122,6 @@ export function useTelegramWebApp() {
     syncInitDataFromTelegram,
     getInitData,
     hasInitData,
+    getStartParam,
   }
 }
