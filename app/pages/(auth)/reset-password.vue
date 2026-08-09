@@ -48,8 +48,7 @@ const submit = async () => {
     notify.success(response.message)
     await navigateTo('/signin')
   } catch (err) {
-    const message =
-      (err as any)?.response?.data?.error?.message ?? 'Не удалось изменить пароль'
+    const message = (err as any)?.response?.data?.error?.message ?? 'Не удалось изменить пароль'
     notify.error(message)
   } finally {
     isLoading.value = false
@@ -67,7 +66,7 @@ const submit = async () => {
       <template v-if="isTokenMissing">
         <div class="flex justify-center mb-5">
           <div
-            class="w-15 h-15 rounded-2xl bg-[var(--warning)]/15 border border-[var(--warning)]/30 flex items-center justify-center text-[var(--warning)]"
+            class="w-15 h-15 rounded-2xl bg-(--warning)/15 border border-(--warning)/30 flex items-center justify-center text-(--warning)"
           >
             <CircleAlert class="w-8 h-8" />
           </div>
@@ -81,7 +80,7 @@ const submit = async () => {
 
         <NuxtLink
           to="/forgot-password"
-          class="w-full mt-5 py-4 rounded-xl font-bold uppercase text-xs tracking-widest transition active:scale-[0.97] flex items-center justify-center bg-[var(--logo-bg)] text-white"
+          class="w-full mt-5 py-4 rounded-xl font-bold uppercase text-xs tracking-widest transition active:scale-[0.97] flex items-center justify-center bg-(--logo-bg) text-white"
         >
           Получить ссылку
         </NuxtLink>
