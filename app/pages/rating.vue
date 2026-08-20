@@ -16,7 +16,7 @@ const activeTab = ref(EventGameType.POKER)
 const tabs = [
   { label: 'Покер', value: EventGameType.POKER },
   { label: 'Дартс', value: EventGameType.DARTS },
-  { label: 'Бильярд', value: EventGameType.POOL },
+  { label: 'Шахматы', value: EventGameType.POOL },
 ]
 
 const { rating, isLoading, error } = useRatingQuery(activeTab)

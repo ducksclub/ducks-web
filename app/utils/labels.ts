@@ -4,7 +4,7 @@ export const getGameLabel = (type: string) => {
   return (
     {
       poker: 'Покер',
-      pool: 'Бильярд',
+      pool: 'Шахматы',
       darts: 'Дартс',
       quiz: 'Квиз',
       mafia: 'Мафия',
