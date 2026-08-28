@@ -137,7 +137,7 @@ onMounted(async () => {
 <template>
   <BaseHeader>
     <template #left>
-      <HeaderBackButton />
+      <HeaderBackButton back-to="/" />
     </template>
 
     <template #default>

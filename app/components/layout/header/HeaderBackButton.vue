@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import { ChevronLeft } from '@lucide/vue'
 
+defineProps<{
+  backTo?: string
+}>()
+
 const { impact } = useTelegramHaptics()
 const router = useRouter()
 
-const goBack = () => {
+const goBack = (path?: string) => {
   impact('light')
+
+  if (path) {
+    return router.push(path)
+  }
   router.back()
 }
 </script>
@@ -13,7 +21,7 @@ const goBack = () => {
 <template>
   <button
     class="group flex items-center gap-1 text-red-400 transition-all active:scale-95"
-    @click="goBack"
+    @click="goBack(backTo)"
   >
     <ChevronLeft
       :size="18"
